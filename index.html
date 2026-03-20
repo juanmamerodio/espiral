@@ -340,7 +340,7 @@
                                 </div>
                             </div>
 
-                            <audio id="main-audio" src="audio.mp3" preload="metadata"></audio>
+                            <audio id="main-audio" preload="metadata"></audio>
                         </div>
                     </div>
                 </div>
@@ -674,6 +674,15 @@
             const visualizer = document.getElementById('visualizer');
             let isPlaying = false;
 
+            // FIX INGENIERO: Asignamos el origen dinámicamente y atajamos el error de raíz
+            const audioSrc = "audio.mp3";
+            audio.src = audioSrc;
+
+            audio.addEventListener('error', function() {
+                console.warn(`[Control de Audio] Archivo '${audioSrc}' no detectado. El reproductor aguarda el archivo.`);
+                document.getElementById('audio-duration').textContent = "--:--";
+            });
+
             function fmtTime(secs) {
                 if (isNaN(secs)) return "0:00";
                 const m = Math.floor(secs / 60); const s = Math.floor(secs % 60);
@@ -700,14 +709,19 @@
                     isPlaying = false;
                     updatePlayUI(false);
                 } else {
+                    // Guardia: Evita el DOMException crudo en consola si el archivo no existe
+                    if (audio.error) {
+                        document.getElementById('audio-duration').textContent = "Falta archivo";
+                        return; 
+                    }
+
                     try {
                         await audio.play();
                         isPlaying = true;
                         updatePlayUI(true);
                     } catch (err) {
-                        console.error("Audio no encontrado:", err);
-                        // Eliminamos la alerta invasiva con 'alert()' según las reglas, usamos la interfaz
-                        document.getElementById('audio-duration').textContent = "Audio no hallado";
+                        console.warn("[Control de Audio] Reproducción abortada:", err.message);
+                        document.getElementById('audio-duration').textContent = "Error";
                     }
                 }
             });
