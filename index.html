@@ -1,276 +1,789 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Campana - Cartelera</title>
-    <link rel="shortcut icon" href="ticket.png">
-    <!-- Tailwind CSS CDN -->
+    <title>Informe Académico: Modelo en Espiral - Equipo 7mo Año</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-    <!-- Estilos personalizados y animaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Aplicar la fuente Inter a todo el cuerpo */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #0c0c0c; /* Un negro un poco más suave */
-        }
-        h1,h2{
-          font-family: "Inter", sans-serif
-        }
-        /* Animaciones */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .animate-fadeIn {
-            animation: fadeIn 0.8s ease-in-out forwards;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeInDown {
-            animation: fadeInDown 0.6s ease-out forwards;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 350px; }
+        .slide-suggestion { border-left: 4px solid #3b82f6; background-color: #eff6ff; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; margin-top: 1.5rem; }
         
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeInUp {
-            opacity: 0; /* Inicia invisible */
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
+        /* Hide scrollbar for clean UI but keep functionality */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Estilo del spinner de carga */
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top: 4px solid #facc15; /* yellow-400 */
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .active-nav-link { background-color: #e2e8f0; font-weight: 600; color: #1e40af; border-right: 4px solid #1e40af; }
+        
+        /* Interactive Quadrant Styles */
+        .quadrant { transition: all 0.3s ease; }
+        .quadrant:hover { transform: scale(1.02); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); z-index: 10; }
     </style>
 </head>
-<body class="text-white">
+<body class="flex h-screen overflow-hidden">
 
-    <!-- Contenedor principal de la aplicación -->
-    <div id="app-container" class="hidden">
+    <!-- Chosen Palette: Slate background (#f8fafc), text (#1e293b), primary blue (#3b82f6), dark blue accents (#1e40af). -->
+    <!-- Application Structure Plan: A responsive dashboard layout with a fixed sidebar for rapid navigation. The main content area scrolls to specific sections. This structure was chosen because an academic report of this depth needs clear, persistent outlining (sidebar) allowing the students to quickly jump between concepts while studying or during the debate. Interactive elements (like the CSS grid spiral and Chart.js risk data) are embedded within their logical sections to aid comprehension without breaking the reading flow. -->
+    <!-- Visualization & Content Choices: 
+         1. Concept: Risk Impact -> Goal: Show why risk analysis matters -> Viz: Doughnut Chart (Chart.js) -> Justification: Clearly illustrates the proportion of failed/challenged projects vs successful ones (Standish Group data). NO SVG used.
+         2. Concept: Spiral Stages -> Goal: Explain the 4 quadrants interactively -> Viz: Interactive 2x2 CSS Grid with hover states -> Justification: Allows users to focus on one stage at a time without overwhelming them with text. Avoids banned SVG/Mermaid tools.
+         3. Concept: Pros/Cons -> Goal: Comparison -> Viz: Side-by-side flexbox lists -> Justification: Easiest way to scan and compare points for debate prep. 
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
-        <!-- Header -->
-        <header class="bg-black/30 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 animate-fadeInDown">
-            <div class="container mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <a href="#" class="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 text-yellow-400"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M7 3v18"></path><path d="M3 7.5h4"></path><path d="M3 12h18"></path><path d="M3 16.5h4"></path><path d="M17 3v18"></path><path d="M17 7.5h4"></path><path d="M17 16.5h4"></path></svg>
-                        <span class="text-2xl font-bold text-white leading-tight tracking-wide">Cine <span class="font-semibold text-yellow-400">Campana</span></span>
-                    </a>
-                    <button class="md:hidden bg-gray-800/50 text-white p-2 rounded-full hover:bg-gray-700/70 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                    </button>
-                </div>
-            </div>
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 h-full flex flex-col hidden md:flex flex-shrink-0 z-20 shadow-sm">
+        <div class="p-6 border-b border-slate-200">
+            <h1 class="text-xl font-bold text-slate-800 leading-tight">Modelo en Espiral</h1>
+            <p class="text-xs text-slate-500 mt-2">Investigación 7mo Año Programación</p>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4" id="nav-menu">
+            <ul class="space-y-1">
+                <li><a href="#intro" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="intro">1. Ciclo de Vida</a></li>
+                <li><a href="#definicion" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="definicion">2. El Modelo Espiral</a></li>
+                <li><a href="#historia" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="historia">3. Historia y Origen</a></li>
+                <li><a href="#etapas" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="etapas">4. Etapas del Ciclo</a></li>
+                <li><a href="#riesgos" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="riesgos">5. Análisis de Riesgos</a></li>
+                <li><a href="#pros-contras" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="pros-contras">6. Pros y Contras</a></li>
+                <li><a href="#casos" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="casos">7. Casos Reales</a></li>
+                <li><a href="#datos" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="datos">8. Datos Curiosos</a></li>
+                <li><a href="#conclusion" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="conclusion">9. Conclusión</a></li>
+                <li><a href="#bibliografia" class="nav-link block px-6 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors" data-target="bibliografia">10. Bibliografía</a></li>
+                <li class="mt-4 pt-4 border-t border-slate-200"><a href="#debate" class="nav-link block px-6 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors" data-target="debate">🗣️ Preparación Debate</a></li>
+            </ul>
+        </nav>
+        <div class="p-4 bg-slate-50 text-xs text-slate-500 border-t border-slate-200">
+            <strong>Equipo:</strong><br> Enzo Queipo, Isabela Infante,<br> Celeste Cáceres, Juan Manuel Merodio.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto h-full scroll-smooth" id="main-content">
+        
+        <!-- Mobile Header -->
+        <header class="md:hidden bg-white shadow-sm p-4 sticky top-0 z-30 flex justify-between items-center">
+            <h1 class="text-lg font-bold text-slate-800">Modelo Espiral</h1>
+            <button id="mobile-menu-btn" class="text-slate-600 focus:outline-none">
+                <span class="text-2xl">&#9776;</span>
+            </button>
         </header>
 
-        <main>
-            <!-- Sección Hero (Película destacada) - Contenido se inyectará aquí -->
-            <section id="hero-container" class="animate-fadeIn"></section>
+        <!-- Mobile Nav Overlay -->
+        <div id="mobile-nav" class="fixed inset-0 bg-slate-800 bg-opacity-75 z-40 hidden">
+            <div class="bg-white w-3/4 h-full p-6 overflow-y-auto">
+                <button id="close-menu-btn" class="mb-4 text-slate-800 font-bold text-xl">&times; Cerrar</button>
+                <ul class="space-y-4" id="mobile-menu-list">
+                    <!-- Cloned from desktop via JS -->
+                </ul>
+            </div>
+        </div>
 
-            <!-- Lista de otras películas - Contenido se inyectará aquí -->
-            <section id="movie-list-container" class="py-16 bg-black/50">
-                <div class="container mx-auto px-6">
-                    <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-yellow-400 pl-4">También en Cartelera</h2>
-                    <div id="movie-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                        <!-- Las tarjetas de películas se inyectarán aquí -->
+        <div class="max-w-5xl mx-auto p-6 md:p-10 pb-32 space-y-16">
+
+            <!-- Title Section -->
+            <section class="mb-12 border-b border-slate-300 pb-8">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">El Modelo de Ciclo de Vida en Espiral</h1>
+                <p class="text-xl text-slate-600">Investigación exhaustiva para defensa académica</p>
+                <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
+                    Orientado a Ingeniería de Software (Nivel Técnico)
+                </div>
+            </section>
+
+            <!-- 1. Intro -->
+            <section id="intro" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">1</span> Definición de Ciclo de Vida</h2>
+                
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    En la Ingeniería de Software, el <strong>Ciclo de Vida de Desarrollo de Sistemas (SDLC)</strong> es el marco estructurado que detalla los procesos, fases y actividades necesarias para planificar, crear, probar, desplegar y mantener un sistema de información. Proporciona una metodología sistemática para garantizar que el software construido cumpla con los requisitos del cliente, sea de alta calidad, se termine a tiempo y respete el presupuesto estimado.
+                </p>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mt-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2 flex items-center"><span>☕</span> <span class="ml-2">Analogía Cotidiana: Construir una Casa</span></h3>
+                    <p class="text-slate-600 text-sm">
+                        Imagina que quieres construir tu casa ideal. No compras ladrillos el primer día y empiezas a apilarlos. Primero, hablas con un arquitecto (<strong>Requisitos</strong>), él hace los planos (<strong>Diseño</strong>), los obreros levantan las paredes y ponen tuberías (<strong>Desarrollo</strong>), el inspector revisa que no haya fugas (<strong>Pruebas</strong>), te mudas (<strong>Despliegue</strong>) y eventualmente pintas o arreglas una gotera años después (<strong>Mantenimiento</strong>). Ese proceso completo, de principio a fin, es el "Ciclo de Vida".
+                    </p>
+                </div>
+
+                <div class="slide-suggestion">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Usen una imagen dividida: a la izquierda, código de programación; a la derecha, el plano arquitectónico de una casa. Título: "El SDLC es el plano de construcción del software".</p>
+                </div>
+            </section>
+
+            <!-- 2. Definición Espiral -->
+            <section id="definicion" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">2</span> El Modelo Espiral: Concepto Central</h2>
+                
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    El <strong>Modelo Espiral</strong> es un enfoque de desarrollo de software impulsado por el riesgo (<em>risk-driven</em>). Combina la naturaleza iterativa del desarrollo por prototipos con los aspectos sistemáticos y controlados del modelo tradicional en Cascada (Waterfall).
+                </p>
+                
+                <h3 class="text-xl font-bold text-slate-800 mt-6 mb-3">¿Por qué "Espiral"? La Metáfora Visual</h3>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    Se representa como una espiral donde cada bucle o vuelta representa una fase del proceso de software (ej. viabilidad, requisitos, diseño). El radio de la espiral representa el <strong>costo acumulado</strong>, mientras que la dimensión angular representa el <strong>progreso</strong> en la fase actual. A medida que avanzamos hacia afuera, el proyecto crece en alcance, costo y definición, pero siempre pasando por una fase crítica en cada vuelta: la evaluación de riesgos.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg">
+                        <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-300 pb-1">Cascada (Waterfall)</h4>
+                        <p class="text-sm text-slate-600">Lineal. Si te equivocas al principio, el error viaja hasta el final. No maneja bien la incertidumbre.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg">
+                        <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-300 pb-1">Ágil (Agile)</h4>
+                        <p class="text-sm text-slate-600">Iteraciones rápidas. Excelente para cambios, pero a veces pierde de vista la arquitectura global o riesgos críticos a gran escala.</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 border border-blue-200 rounded-lg shadow-sm">
+                        <h4 class="font-bold text-blue-800 mb-2 border-b border-blue-200 pb-1">Espiral (Spiral)</h4>
+                        <p class="text-sm text-blue-700">Iterativo pero centrado en <strong>minimizar riesgos</strong> antes de escribir código masivo. Avanza construyendo prototipos cada vez más completos.</p>
+                    </div>
+                </div>
+
+                <div class="slide-suggestion">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Muestren una animación o gráfico estático de un tornado o espiral creciendo. Destaquen que <strong>cada vuelta cuesta más dinero</strong> (radio) pero nos acerca más al producto final (ángulo).</p>
+                </div>
+            </section>
+
+            <!-- 3. Historia -->
+            <section id="historia" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">3</span> Historia y Origen</h2>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">El Padre de la Espiral: Barry Boehm</h3>
+                        <p class="text-slate-700 mb-4 leading-relaxed">
+                            Fue propuesto por primera vez en <strong>1986</strong> y formalizado en <strong>1988</strong> a través del histórico artículo <em>"A Spiral Model of Software Development and Enhancement"</em> publicado en la revista <em>IEEE Computer</em>.
+                        </p>
+                        <p class="text-slate-700 leading-relaxed text-sm">
+                            Barry Boehm, trabajando en la empresa contratista aeroespacial <strong>TRW Inc.</strong> (hoy parte de Northrop Grumman), observó que los proyectos masivos del gobierno de EE.UU. fracasaban estrepitosamente usando el modelo Cascada porque los requisitos cambiaban, o aparecían problemas técnicos tardíos (riesgos) que obligaban a rehacer todo. Necesitaba un modelo que "probará las aguas" antes de lanzarse de cabeza.
+                        </p>
+                    </div>
+                    <div class="bg-slate-100 p-4 rounded-lg w-full md:w-1/3 text-center border-2 border-dashed border-slate-300">
+                        <div class="text-4xl mb-2">📄</div>
+                        <div class="font-bold text-slate-800">Paper Original</div>
+                        <div class="text-xs text-slate-500 mt-1">IEEE Computer, Vol. 21, Mayo 1988. Un hito que cambió la ingeniería de software moderna.</div>
+                    </div>
+                </div>
+
+                <div class="slide-suggestion">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Pongan el año "1988" en gigante. Mencionen que Boehm trabajaba haciendo software para el Departamento de Defensa: ¡cuando un software militar falla, no hay una "pantalla azul", hay consecuencias críticas! Por eso el riesgo es el centro.</p>
+                </div>
+            </section>
+
+            <!-- 4. Etapas -->
+            <section id="etapas" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">4</span> Las 4 Etapas (Cuadrantes)</h2>
+                
+                <p class="text-slate-700 leading-relaxed mb-6">
+                    Cada ciclo en la espiral se divide en cuatro cuadrantes principales. Interactúa con cada cuadrante a continuación para entender sus actividades y entregables.
+                </p>
+
+                <!-- Interactive CSS Grid Representation -->
+                <div class="grid grid-cols-2 gap-2 md:gap-4 max-w-3xl mx-auto mb-8 relative">
+                    <!-- Q1 -->
+                    <div class="quadrant bg-indigo-50 border-2 border-indigo-200 p-6 rounded-tl-3xl cursor-pointer" onclick="document.getElementById('q1-details').classList.remove('hidden'); hideOthers('q1')">
+                        <div class="text-indigo-800 font-bold text-lg mb-2">1. Planificación (Objetivos)</div>
+                        <p class="text-xs text-indigo-600">Click para ver detalles</p>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="quadrant bg-rose-50 border-2 border-rose-200 p-6 rounded-tr-3xl cursor-pointer" onclick="document.getElementById('q2-details').classList.remove('hidden'); hideOthers('q2')">
+                        <div class="text-rose-800 font-bold text-lg mb-2">2. Análisis de Riesgos</div>
+                        <p class="text-xs text-rose-600">Click para ver detalles</p>
+                    </div>
+                    <!-- Q4 -->
+                    <div class="quadrant bg-emerald-50 border-2 border-emerald-200 p-6 rounded-bl-3xl cursor-pointer" onclick="document.getElementById('q4-details').classList.remove('hidden'); hideOthers('q4')">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">4. Evaluación / Revisión</div>
+                        <p class="text-xs text-emerald-600">Click para ver detalles</p>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="quadrant bg-sky-50 border-2 border-sky-200 p-6 rounded-br-3xl cursor-pointer" onclick="document.getElementById('q3-details').classList.remove('hidden'); hideOthers('q3')">
+                        <div class="text-sky-800 font-bold text-lg mb-2">3. Desarrollo y Pruebas</div>
+                        <p class="text-xs text-sky-600">Click para ver detalles</p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Content Boxes -->
+                <div id="q1-details" class="detail-box bg-white p-6 rounded-lg shadow-md border-l-4 border-indigo-500 mb-6 transition-opacity">
+                    <h3 class="text-xl font-bold text-indigo-900 mb-2">1. Determinación de Objetivos, Alternativas y Restricciones</h3>
+                    <ul class="list-disc pl-5 text-slate-700 space-y-1 mb-4">
+                        <li><strong>Objetivo:</strong> Entender qué se quiere lograr en esta vuelta de la espiral.</li>
+                        <li><strong>Actividades:</strong> Reuniones con clientes, definición de requisitos funcionales y de rendimiento.</li>
+                        <li><strong>Entregable:</strong> Documento de especificación de requisitos iniciales o plan de proyecto.</li>
+                    </ul>
+                    <div class="bg-indigo-50 p-3 rounded text-sm text-indigo-800"><strong>Ejemplo cotidiano:</strong> Planear un viaje por carretera. Decides el destino (objetivo), evalúas si ir por autopista o montaña (alternativas) y consideras tu presupuesto y tiempo (restricciones).</div>
+                </div>
+
+                <div id="q2-details" class="detail-box hidden bg-white p-6 rounded-lg shadow-md border-l-4 border-rose-500 mb-6">
+                    <h3 class="text-xl font-bold text-rose-900 mb-2">2. Análisis de Riesgos y Evaluación de Alternativas</h3>
+                    <ul class="list-disc pl-5 text-slate-700 space-y-1 mb-4">
+                        <li><strong>Objetivo:</strong> Identificar qué puede salir mal técnica o comercialmente y mitigarlo tempranamente.</li>
+                        <li><strong>Actividades:</strong> Crear prototipos rápidos, simulaciones, análisis de mercado, pruebas de concepto.</li>
+                        <li><strong>Entregable:</strong> Documento de gestión de riesgos, Prototipos funcionales iniciales.</li>
+                    </ul>
+                    <div class="bg-rose-50 p-3 rounded text-sm text-rose-800"><strong>Ejemplo cotidiano:</strong> Antes del viaje, revisas el pronóstico del clima (riesgo: tormenta) y llevas el auto al mecánico para revisar los frenos (riesgo: accidente). Llevas una rueda de auxilio (mitigación).</div>
+                </div>
+
+                <div id="q3-details" class="detail-box hidden bg-white p-6 rounded-lg shadow-md border-l-4 border-sky-500 mb-6">
+                    <h3 class="text-xl font-bold text-sky-900 mb-2">3. Desarrollo y Validación del Producto</h3>
+                    <ul class="list-disc pl-5 text-slate-700 space-y-1 mb-4">
+                        <li><strong>Objetivo:</strong> Construir la versión del software correspondiente a la iteración actual.</li>
+                        <li><strong>Actividades:</strong> Diseño detallado, codificación, pruebas unitarias y de integración (similar al modelo Cascada pero a menor escala).</li>
+                        <li><strong>Entregable:</strong> Código fuente, manuales de usuario, software ejecutable (versión beta o release).</li>
+                    </ul>
+                    <div class="bg-sky-50 p-3 rounded text-sm text-sky-800"><strong>Ejemplo cotidiano:</strong> Es el acto de conducir el auto, respetando las leyes de tránsito (codificar bien), y escuchar el GPS para no perderse (pruebas).</div>
+                </div>
+
+                <div id="q4-details" class="detail-box hidden bg-white p-6 rounded-lg shadow-md border-l-4 border-emerald-500 mb-6">
+                    <h3 class="text-xl font-bold text-emerald-900 mb-2">4. Planificación de la Siguiente Iteración (Revisión)</h3>
+                    <ul class="list-disc pl-5 text-slate-700 space-y-1 mb-4">
+                        <li><strong>Objetivo:</strong> Evaluar lo construido junto al cliente y decidir si se avanza al siguiente ciclo.</li>
+                        <li><strong>Actividades:</strong> Pruebas de aceptación del cliente, revisión de presupuesto, planificación del siguiente "bucle".</li>
+                        <li><strong>Entregable:</strong> Aprobación del cliente, plan actualizado de la siguiente fase.</li>
+                    </ul>
+                    <div class="bg-emerald-50 p-3 rounded text-sm text-emerald-800"><strong>Ejemplo cotidiano:</strong> Parar en una estación de servicio a mitad del viaje. Revisas el mapa, preguntas a tu familia si están cómodos, recargas combustible y planeas el tramo final.</div>
+                </div>
+
+                <script>
+                    function hideOthers(activeId) {
+                        const boxes = document.querySelectorAll('.detail-box');
+                        boxes.forEach(box => {
+                            if (box.id !== activeId + '-details') {
+                                box.classList.add('hidden');
+                            }
+                        });
+                    }
+                </script>
+
+                <div class="slide-suggestion mt-8">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Usen un diseño de cuadrícula (2x2) en la diapositiva. Expliquen los 4 cuadrantes rápidamente y dediquen el tiempo a la analogía del "viaje en auto". Es la forma más didáctica para que el profesor vea que entendieron el fondo y no solo repiten teoría.</p>
+                </div>
+            </section>
+
+            <!-- 5. El Riesgo -->
+            <section id="riesgos" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">5</span> El Rol Central del Análisis de Riesgos</h2>
+                
+                <p class="text-slate-700 leading-relaxed mb-6">
+                    El rasgo distintivo del Modelo Espiral es su obsesión con el <strong>riesgo</strong>. En ingeniería de software, un riesgo es cualquier situación que pueda comprometer el éxito del proyecto (que cueste más dinero, que tarde más tiempo, o que no sirva). Boehm argumentó que los desarrolladores suelen apresurarse a programar sin validar si lo que programan es factible.
+                </p>
+
+                <div class="bg-white p-6 border border-slate-200 shadow-sm rounded-lg mb-8 flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">La Realidad de la Industria (The CHAOS Report)</h3>
+                        <p class="text-sm text-slate-600 mb-4">
+                            Según datos históricos del famoso <em>CHAOS Report</em> del Standish Group, la falta de gestión de riesgos y la mala recolección de requisitos son las principales causas del fracaso en IT. El modelo espiral ataca directamente esta estadística mediante la creación de prototipos antes del desarrollo final.
+                        </p>
+                        <ul class="text-sm text-slate-700 space-y-2">
+                            <li>⚠️ <strong>Riesgo Técnico:</strong> ¿Podrá nuestro servidor soportar 1 millón de usuarios? (Mitigación: Hacer una prueba de estrés en el ciclo 1).</li>
+                            <li>⚠️ <strong>Riesgo de Requisitos:</strong> El cliente no sabe exactamente cómo quiere la interfaz. (Mitigación: Hacer mockups interactivos antes de codificar el backend).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="w-full lg:w-1/2">
+                        <div class="chart-container">
+                            <canvas id="chaosChart"></canvas>
+                        </div>
+                        <p class="text-xs text-center text-slate-500 mt-2">Fuente representativa: Standish Group CHAOS Report trends (Promedios históricos).</p>
+                    </div>
+                </div>
+
+                <div class="slide-suggestion">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Muestren el gráfico de pastel. El titular debe ser contundente: "Solo el 31% de los proyectos tienen éxito absoluto". El modelo Espiral nace para achicar la porción roja (Fallidos) gestionando la incertidumbre tempranamente.</p>
+                </div>
+
+                <!-- CARACTERÍSTICA IA: Simulador de Riesgos -->
+                <div class="mt-10 bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl border border-purple-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg font-bold text-xs flex items-center">
+                        <span>✨ Potenciado por Gemini IA</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-purple-900 mb-2 flex items-center">🔍 Simulador de Riesgos IA</h3>
+                    <p class="text-sm text-purple-800 mb-4">Describe un proyecto de software imaginario y la IA de Gemini identificará los 3 riesgos más críticos que deberías evaluar en el primer ciclo de tu espiral.</p>
+                    <div class="flex flex-col gap-3">
+                        <input type="text" id="ai-project-input" placeholder="Ej: Una app tipo Uber para pasear perros con geolocalización en tiempo real..." class="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none text-sm">
+                        <button id="ai-risk-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            ✨ Analizar Riesgos del Proyecto
+                        </button>
+                    </div>
+                    <div id="ai-risk-result" class="mt-4 text-sm text-slate-700 hidden bg-white p-4 rounded border border-purple-100 min-h-[100px] shadow-inner"></div>
+                </div>
+
+            </section>
+
+            <!-- 6. Pros y Contras -->
+            <section id="pros-contras" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">6</span> Ventajas y Desventajas</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Pros -->
+                    <div class="bg-white border-t-4 border-green-500 shadow-sm rounded p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-4 flex items-center"><span class="mr-2">👍</span> Ventajas (Pros)</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Reducción de riesgos críticos:</strong> Al armar prototipos en cada vuelta, los problemas gigantes se detectan cuando aún son pequeños.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Flexibilidad a los cambios:</strong> Si el cliente cambia de idea, se acomoda en la planificación del próximo ciclo, no rompe todo el proyecto.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Ideal para proyectos inmensos:</strong> Perfecto para sistemas complejos (ej. software de aviones) donde el costo de fallar es inaceptable.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Feedback temprano del cliente:</strong> El usuario ve software funcional (prototipos) rápido, no tiene que esperar meses al producto final.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Mejora la estimación:</strong> Los presupuestos y tiempos se recalibran en cada ciclo, siendo más realistas.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-800">Integra desarrollo y mantenimiento:</strong> El mantenimiento es simplemente "una vuelta más" en la espiral.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Cons -->
+                    <div class="bg-white border-t-4 border-red-500 shadow-sm rounded p-6">
+                        <h3 class="text-xl font-bold text-red-700 mb-4 flex items-center"><span class="mr-2">👎</span> Desventajas (Contras)</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Altamente costoso:</strong> Realizar análisis de riesgos complejos y prototipos constantes requiere presupuesto elevado.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Requiere gran expertise:</strong> Si el equipo no sabe cómo evaluar riesgos correctamente, el modelo pierde toda su utilidad y fracasa.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Excesivo para proyectos chicos:</strong> Usar espiral para hacer un blog o una app simple es "matar una mosca con un cañón".
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Difícil control de tiempo final:</strong> Como el ciclo puede repetirse indefinidamente, es difícil asegurar una fecha exacta de finalización final al principio.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Complejidad administrativa:</strong> Genera mucha documentación y requiere reuniones constantes de planificación y revisión.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2 font-bold">✗</span>
+                                <div>
+                                    <strong class="text-slate-800">Dependencia de prototipos:</strong> Si los prototipos iniciales engañan al cliente prometiendo algo inviable a nivel técnico a largo plazo.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="slide-suggestion mt-6">
+                    <p class="text-sm font-semibold text-blue-900">💡 Sugerencia para la diapositiva:</p>
+                    <p class="text-sm text-blue-800 mt-1">Hagan una tabla simple con íconos (✅ y ❌). Resalten verbalmente la frase clave: "Es el mejor para proyectos enormes y el peor para proyectos chicos".</p>
+                </div>
+            </section>
+
+            <!-- 7. Casos Reales -->
+            <section id="casos" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">7</span> Casos Reales de Aplicación</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-white p-6 border border-slate-200 rounded flex flex-col md:flex-row gap-6 items-center shadow-sm">
+                        <div class="md:w-1/4 text-center">
+                            <div class="text-6xl mb-2">🚀</div>
+                            <h4 class="font-bold text-slate-800">Sector Aeroespacial (NASA / DoD)</h4>
+                        </div>
+                        <div class="md:w-3/4">
+                            <p class="text-slate-700 text-sm leading-relaxed">
+                                El Departamento de Defensa de EE.UU. (DoD) adoptó oficialmente el modelo espiral (y sus derivados) a finales de los 90. Proyectos como el software de control de satélites o simuladores de vuelo no pueden tener "bugs" en producción. Usan la espiral para simular subsistemas (ej. módulo de navegación) antes de integrarlos al sistema mayor.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-slate-200 rounded flex flex-col md:flex-row gap-6 items-center shadow-sm">
+                        <div class="md:w-1/4 text-center">
+                            <div class="text-6xl mb-2">💻</div>
+                            <h4 class="font-bold text-slate-800">Desarrollo de Sistemas Operativos (Microsoft)</h4>
+                        </div>
+                        <div class="md:w-3/4">
+                            <p class="text-slate-700 text-sm leading-relaxed">
+                                Aunque hoy usan Agile y DevOps, en el desarrollo de los primeros sistemas operativos grandes (como partes de Windows NT/2000), Microsoft utilizó enfoques basados en espiral. El ciclo de vida de "Sync-and-Stabilize" de Microsoft comparte filosofía: construían el núcleo, analizaban fallos de memoria (riesgo crítico), lo estabilizaban, y luego daban la siguiente "vuelta" añadiendo interfaces y utilidades.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-slate-200 rounded flex flex-col md:flex-row gap-6 items-center shadow-sm">
+                        <div class="md:w-1/4 text-center">
+                            <div class="text-6xl mb-2">🎮</div>
+                            <h4 class="font-bold text-slate-800">Motores de Videojuegos (AAA)</h4>
+                        </div>
+                        <div class="md:w-3/4">
+                            <p class="text-slate-700 text-sm leading-relaxed">
+                                Crear un nuevo motor gráfico (como Unreal Engine) requiere espiral. En el primer ciclo, evalúan si el hardware moderno soporta cierto tipo de cálculo de luz (prototipo). Si funciona, evalúan el rendimiento en consola. Construyen iterativamente mitigando el riesgo técnico (que el juego funcione a pocos FPS) antes de empezar a crear el arte final.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
-        </main>
 
-        <!-- Footer -->
-        <footer class="bg-gray-900/50 text-gray-500 py-8">
-            <div class="container mx-auto px-6 text-center">
-                <p>&copy; 2026 Cine Campana. Todos los derechos reservados.</p>
-                <p class="text-sm mt-2">Una experiencia cinematográfica inigualable.</p>
-            </div>
-        </footer>
+            <!-- 8. Datos Curiosos -->
+            <section id="datos" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">8</span> 5 Datos Impactantes</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 shadow-sm">
+                        <div class="font-bold text-amber-900 mb-1">1. El Costo de los Bugs</div>
+                        <p class="text-sm text-slate-700">Boehm demostró matemáticamente que arreglar un error en la fase de código cuesta <strong>100 veces más</strong> que detectarlo en la fase de diseño (riesgo). Por eso la espiral ahorra millones.</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 shadow-sm">
+                        <div class="font-bold text-amber-900 mb-1">2. Precursor de Agile</div>
+                        <p class="text-sm text-slate-700">Aunque parece rígido, el modelo espiral (1988) sentó las bases para el Manifiesto Ágil (2001). Fue el primero en decir "dejemos de escribir manuales enormes y hagamos prototipos".</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 shadow-sm">
+                        <div class="font-bold text-amber-900 mb-1">3. El concepto del Win-Win</div>
+                        <p class="text-sm text-slate-700">Años más tarde, Boehm actualizó el modelo a la versión <strong>"WinWin Spiral Model"</strong>, agregando actividades front-end para asegurar que el cliente y el desarrollador negocien hasta que ambos "ganen".</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 shadow-sm">
+                        <div class="font-bold text-amber-900 mb-1">4. No es una metodología, es un "Generador"</div>
+                        <p class="text-sm text-slate-700">Boehm aclaró que la espiral <em>no es</em> una metodología fija paso a paso. Es un "metamodelo": un marco que genera metodologías adaptadas a cada proyecto dependiendo de sus riesgos.</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded border-l-4 border-amber-500 shadow-sm md:col-span-2">
+                        <div class="font-bold text-amber-900 mb-1">5. La NASA lo estandarizó</div>
+                        <p class="text-sm text-slate-700">La NASA documenta en su Manual de Ingeniería de Sistemas (NASA Systems Engineering Handbook) variaciones del modelo espiral como obligatorias para el desarrollo de misiones de exploración de alto riesgo.</p>
+                    </div>
+                </div>
+            </section>
 
-    </div>
+            <!-- 9. Conclusión -->
+            <section id="conclusion" class="scroll-mt-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center"><span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">9</span> Conclusión Académica</h2>
+                
+                <p class="text-slate-700 leading-relaxed mb-4 text-lg">
+                    El Modelo en Espiral representó un cambio de paradigma en la Ingeniería de Software. Obligó a la industria a dejar de ver la programación como una cadena de montaje industrial (cascada) y empezar a verla como un proceso de <strong>gestión de la incertidumbre</strong>.
+                </p>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    <strong>¿Sigue siendo relevante hoy?</strong> Absolutamente, aunque no con ese nombre estricto. Las filosofías modernas como <em>Scaled Agile Framework (SAFe)</em> o <em>Lean Startup</em> (crear un Producto Mínimo Viable, medir, aprender) son, en esencia, la aplicación práctica de los cuadrantes del modelo espiral adaptados al ritmo veloz de la web.
+                </p>
+                <div class="bg-slate-800 text-white p-6 rounded-lg shadow-lg mt-6">
+                    <h3 class="text-xl font-bold mb-2">La lección final para un programador:</h3>
+                    <p class="text-slate-300 italic">"No escribas mil líneas de código asumiendo que el usuario lo va a entender o que el servidor lo va a soportar. Construye un prototipo de 100 líneas, identifica el riesgo técnico más grave, pruébalo, y solo entonces, da la siguiente vuelta a la espiral."</p>
+                </div>
+            </section>
 
-    <!-- Estado de Carga -->
-    <div id="loading-state" class="min-h-screen flex flex-col items-center justify-center text-gray-400">
-        <div class="loader"></div>
-        <p class="mt-4 text-lg">Cargando cartelera...</p>
-    </div>
+            <!-- 10. Bibliografía -->
+            <section id="bibliografia" class="scroll-mt-10 mb-12 border-t border-slate-300 pt-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">10. Bibliografía (Formato APA)</h2>
+                <ul class="space-y-3 text-sm text-slate-600">
+                    <li class="pl-4 border-l-2 border-slate-300">Boehm, B. W. (1988). A spiral model of software development and enhancement. <em>Computer</em>, 21(5), 61-72. (Paper fundacional).</li>
+                    <li class="pl-4 border-l-2 border-slate-300">Pressman, R. S., & Maxim, B. R. (2015). <em>Ingeniería de software: un enfoque práctico</em> (8va ed.). McGraw-Hill Interamericana.</li>
+                    <li class="pl-4 border-l-2 border-slate-300">Sommerville, I. (2011). <em>Ingeniería de software</em> (9na ed.). Pearson Educación.</li>
+                    <li class="pl-4 border-l-2 border-slate-300">The Standish Group. (2015). <em>CHAOS Report 2015</em>. Standish Group International.</li>
+                    <li class="pl-4 border-l-2 border-slate-300">NASA. (2016). <em>NASA Systems Engineering Handbook</em> (SP-2016-6105 Rev 2). Washington, DC: National Aeronautics and Space Administration.</li>
+                    <li class="pl-4 border-l-2 border-slate-300">IBM Cloud Education. (2021). <em>What is the Spiral Model?</em> Recuperado en marzo 2026, de documentación técnica de IBM.</li>
+                </ul>
+            </section>
 
-    <!-- Estado de Error -->
-    <div id="error-state" class="hidden min-h-screen flex items-center justify-center text-center text-red-400 px-4">
-        <div>
-            <h2 class="text-2xl font-bold mb-4">¡Oops! Algo salió mal.</h2>
-            <p id="error-message" class="text-red-300"></p>
-            <p class="mt-2 text-gray-500 text-sm">Por favor, verifica que la hoja de cálculo esté publicada correctamente.</p>
+            <!-- EXTRA: DEBATE PREP -->
+            <section id="debate" class="scroll-mt-10 bg-blue-50 border-2 border-blue-600 rounded-xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 rounded-bl-lg font-bold text-sm">SECCIÓN EXCLUSIVA DEL EQUIPO</div>
+                
+                <h2 class="text-3xl font-extrabold text-blue-900 mb-2 flex items-center">🗣️ Preparación para el Debate</h2>
+                <p class="text-blue-700 mb-8">Armamento argumentativo para Enzo, Isabela, Celeste y Juan Manuel.</p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Argumentos a favor -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 bg-white px-3 py-1 rounded inline-block shadow-sm">Defensa: 5 Argumentos Sólidos</h3>
+                        <ul class="space-y-3">
+                            <li class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500">
+                                <strong class="text-sm">1. La realidad del riesgo:</strong> "Agile asume que equivocarse es barato; la Espiral reconoce que en sistemas complejos (ej. bancos, salud), un error en producción cuesta millones. Mitigamos antes de programar."
+                            </li>
+                            <li class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500">
+                                <strong class="text-sm">2. Flexibilidad controlada:</strong> "Permite cambios como Agile, pero con la planificación documentada y segura del modelo en Cascada. Es el puente perfecto."
+                            </li>
+                            <li class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500">
+                                <strong class="text-sm">3. Orientado al negocio:</strong> "Al involucrar al cliente en cada ciclo y evaluar riesgos de mercado, garantiza que el software construido realmente resuelva el problema comercial."
+                            </li>
+                            <li class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500">
+                                <strong class="text-sm">4. Calidad del código:</strong> "Al construir sobre prototipos probados, la arquitectura final es más robusta y menos propensa a refactorizaciones masivas de última hora."
+                            </li>
+                            <li class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500">
+                                <strong class="text-sm">5. Mantenimiento fluido:</strong> "En este modelo, el mantenimiento no es una fase olvidada al final, es simplemente el siguiente bucle de la espiral."
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Críticas y Contraargumentos -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 bg-white px-3 py-1 rounded inline-block shadow-sm">Anticipando Críticas (Tácticas)</h3>
+                        <ul class="space-y-4">
+                            <li class="bg-white p-4 rounded shadow-sm border border-red-200">
+                                <div class="text-red-600 font-bold text-sm mb-1">Crítica del profesor/compañero: "Es demasiado caro para aplicarlo."</div>
+                                <div class="text-slate-700 text-sm"><strong>Nuestro Contraargumento:</strong> "Profesor, caro es rehacer el 50% de un sistema al final porque la arquitectura original no soportaba la carga. La espiral no gasta de más, <em>invierte</em> al principio en análisis para ahorrar fortunas en la fase de código y mantenimiento."</div>
+                            </li>
+                            <li class="bg-white p-4 rounded shadow-sm border border-red-200">
+                                <div class="text-red-600 font-bold text-sm mb-1">Crítica: "Es un modelo lento comparado con Scrum."</div>
+                                <div class="text-slate-700 text-sm"><strong>Nuestro Contraargumento:</strong> "Scrum es táctico; la Espiral es estratégica. Para lanzar una app móvil simple, usamos Scrum. Para construir el sistema central del Banco Nación, usamos Espiral. La velocidad no sirve si corres hacia el precipicio equivocado."</div>
+                            </li>
+                            <li class="bg-white p-4 rounded shadow-sm border border-red-200">
+                                <div class="text-red-600 font-bold text-sm mb-1">Crítica: "Requiere expertos en riesgos, nadie sabe hacer eso."</div>
+                                <div class="text-slate-700 text-sm"><strong>Nuestro Contraargumento:</strong> "Exactamente, exige profesionalizar la Ingeniería de Software. No ser un simple 'pica-teclas', sino un ingeniero que prevé problemas. Es un modelo que nos eleva el nivel profesional."</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Cierre Contundente -->
+                <div class="mt-8 bg-blue-900 text-white p-6 rounded-lg text-center shadow-xl">
+                    <h3 class="text-lg font-bold text-blue-300 mb-2">🎤 Cierre de 1 Minuto (Para leer con convicción)</h3>
+                    <p class="text-lg leading-relaxed italic text-slate-100">
+                        "Compañeros, Profesor. El modelo Cascada asume que somos perfectos y no cambiaremos de opinión. El modelo Ágil asume que equivocarse es gratis y podemos arreglarlo en el próximo sprint. Solo el <strong>Modelo Espiral</strong> reconoce la verdad fundamental de la Ingeniería de Software moderna: los proyectos gigantes fallan por riesgos imprevistos. Boehm nos enseñó que el código más barato de mantener es el que nunca se escribió porque un prototipo previo demostró que la idea era inviable. El futuro del software crítico no pasa por programar más rápido, sino por planificar más inteligente. Muchas gracias."
+                    </p>
+                </div>
+
+                <!-- CARACTERÍSTICA IA: Coach de Debate -->
+                <div class="mt-10 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-600 text-white px-3 py-1 rounded-bl-lg font-bold text-xs flex items-center">
+                        <span>✨ Potenciado por Gemini IA</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-emerald-900 mb-2 flex items-center">🥊 Sparring de Debate IA</h3>
+                    <p class="text-sm text-emerald-800 mb-4">Escribe un argumento defendiendo el modelo espiral (o criticándolo). La IA actuará como el "profesor evaluador" y te dará una réplica para que practiques tu respuesta en el debate.</p>
+                    <div class="flex flex-col gap-3">
+                        <textarea id="ai-debate-input" rows="3" placeholder="Ej: El modelo espiral es la mejor opción porque previene desastres financieros al evaluar riesgos en las primeras etapas..." class="w-full p-3 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"></textarea>
+                        <button id="ai-debate-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            ✨ Poner a prueba mi argumento
+                        </button>
+                    </div>
+                    <div id="ai-debate-result" class="mt-4 text-sm text-slate-700 hidden bg-white p-4 rounded border border-emerald-100 min-h-[100px] shadow-inner"></div>
+                </div>
+
+            </section>
+
         </div>
-    </div>
+    </main>
 
-
-    <!-- JavaScript para la lógica de la aplicación -->
+    <!-- JavaScript for Interactivity -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- ELEMENTOS DEL DOM ---
-            const appContainer = document.getElementById('app-container');
-            const loadingState = document.getElementById('loading-state');
-            const errorState = document.getElementById('error-state');
-            const errorMessage = document.getElementById('error-message');
-            const heroContainer = document.getElementById('hero-container');
-            const movieGrid = document.getElementById('movie-grid');
-
-            // --- FUNCIÓN MEJORADA PARA CONVERTIR CSV A JSON ---
-            const csvToJson = (csv) => {
-                // Parsea una línea de CSV, respetando las comas dentro de campos entre comillas.
-                const parseCsvLine = (line) => {
-                    const values = [];
-                    let current = '';
-                    let inQuotes = false;
-                    for (const char of line) {
-                        if (char === '"') {
-                            inQuotes = !inQuotes;
-                        } else if (char === ',' && !inQuotes) {
-                            values.push(current);
-                            current = '';
-                        } else {
-                            current += char;
-                        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart.js Initialization for Chaos Report Data
+            const ctx = document.getElementById('chaosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Exitosos (A tiempo, en presupuesto)', 'Desafiados (Atrasados o sobre costo)', 'Fallidos (Cancelados)'],
+                    datasets: [{
+                        data: [31, 50, 19],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)', // Green
+                            'rgba(245, 158, 11, 0.8)', // Amber
+                            'rgba(239, 68, 68, 0.8)'   // Red
+                        ],
+                        borderColor: [
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 11 } } },
+                        title: { display: true, text: 'Tasa de Éxito en Proyectos IT (Standish Group)' }
                     }
-                    values.push(current);
-                    return values.map(v => v.trim().replace(/^"|"$/g, '')); // Limpia espacios y comillas
+                }
+            });
+
+            // Active Navigation Highlighting on Scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mainContent = document.getElementById('main-content');
+
+            mainContent.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Adjusted offset for active state
+                    if (mainContent.scrollTop >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav-link', 'text-blue-700');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active-nav-link');
+                    }
+                });
+            });
+
+            // Smooth Scroll for Sidebar links inside overflow container
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mobile-nav').classList.add('hidden');
+                });
+            });
+
+            // Mobile Menu Logic
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+            const desktopMenu = document.querySelector('#nav-menu ul');
+            const mobileMenuList = document.getElementById('mobile-menu-list');
+
+            // Clone menu for mobile
+            mobileMenuList.innerHTML = desktopMenu.innerHTML;
+
+            mobileBtn.addEventListener('click', () => mobileNav.classList.remove('hidden'));
+            closeBtn.addEventListener('click', () => mobileNav.classList.add('hidden'));
+
+            // Re-attach event listeners to cloned mobile links
+            const mobileLinks = mobileMenuList.querySelectorAll('.nav-link');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                    mobileNav.classList.add('hidden');
+                });
+            });
+
+            // --- INTEGRACIÓN DE IA (API DE GEMINI) ---
+            const apiKey = ""; // La clave se provee a través del entorno de ejecución de la herramienta
+            
+            async function callGemini(prompt, systemInstruction) {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] }
                 };
 
-                const lines = csv.split('\n').filter(line => line); // Filtra líneas vacías
-                if (lines.length < 2) return []; // No hay datos si solo hay cabecera o nada
-
-                const result = [];
-                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-                
-                for (let i = 1; i < lines.length; i++) {
-                    if (!lines[i]) continue;
-                    const obj = {};
-                    const currentline = parseCsvLine(lines[i]);
-
-                    if (currentline.length === headers.length) {
-                        for (let j = 0; j < headers.length; j++) {
-                            const header = headers[j];
-                            const value = currentline[j] || '';
-                            if (header === 'isFeatured') {
-                                obj[header] = value.toUpperCase() === 'TRUE';
-                            } else {
-                                obj[header] = value;
-                            }
+                // Implementación de retraso exponencial (Exponential Backoff)
+                const delays = [1000, 2000, 4000, 8000, 16000];
+                for (let attempt = 0; attempt <= delays.length; attempt++) {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) throw new Error(`Error HTTP! status: ${response.status}`);
+                        const result = await response.json();
+                        return result.candidates?.[0]?.content?.parts?.[0]?.text || "No se recibió respuesta válida del modelo.";
+                    } catch (error) {
+                        if (attempt === delays.length) {
+                            console.error("Error en la API de Gemini:", error);
+                            return "<p class='text-red-600 font-bold'>Hubo un error al conectar con la IA. Por favor, intenta de nuevo más tarde.</p>";
                         }
-                        result.push(obj);
-                    } else {
-                         console.warn(`Error al parsear la línea ${i + 1}: el número de columnas no coincide.`, { headers, currentline });
+                        await new Promise(res => setTimeout(res, delays[attempt]));
                     }
-                }
-                return result;
-            };
-
-            // --- FUNCIONES PARA RENDERIZAR HTML ---
-            const renderHero = (movie) => {
-                if (!movie) {
-                    heroContainer.innerHTML = ''; // No muestra nada si no hay película destacada
-                    return;
-                }
-                heroContainer.innerHTML = `
-                    <div class="relative h-[90vh] min-h-[600px] w-full flex items-end text-white">
-                        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('${movie.posterUrl}')">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-                        </div>
-                        <div class="relative z-10 container mx-auto px-6 pb-16 animate-fadeInUp" style="animation-delay: 300ms;">
-                            <h2 class="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-4" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.8)">
-                                ${movie.title}
-                            </h2>
-                            <div class="flex items-center space-x-4 mb-6 text-gray-300">
-                                <span>${movie.genre}</span>
-                                <span class="text-yellow-400">•</span>
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-1.5 flex-shrink-0"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                    <span>${movie.duration}</span>
-                                </div>
-                            </div>
-                            <p class="max-w-2xl text-gray-200 mb-8 hidden md:block">${movie.synopsis}</p>
-                            <button class="bg-yellow-400 text-black font-bold py-3 px-8 rounded-full inline-flex items-center text-lg hover:bg-yellow-300 transform hover:scale-105 transition-all duration-300 ease-in-out shadow-lg shadow-yellow-500/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5 flex-shrink-0"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
-                                <span>Ver Horarios</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            };
-
-            const renderMovieCard = (movie, index) => {
-                return `
-                    <div class="group relative overflow-hidden rounded-lg shadow-xl animate-fadeInUp" style="animation-delay: ${index * 100}ms;">
-                        <img src="${movie.posterUrl}" alt="Poster de ${movie.title}" class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/1a202c/4a5568?text=Error+Img';">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent"></div>
-                        <div class="absolute bottom-0 left-0 p-4">
-                            <h3 class="text-white text-lg font-bold">${movie.title}</h3>
-                            <p class="text-gray-400 text-sm">${movie.genre}</p>
-                        </div>
-                    </div>
-                `;
-            };
-
-            // --- LÓGICA PRINCIPAL PARA CARGAR DATOS ---
-            async function loadMovies() {
-                const sheetId = '1ah6eFpIuqnJahPN_R8dNhvIa_7T4Jovgf9Oc9dRYPAg';
-                const sheetName = 'Peliculas';
-                const googleSheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
-
-                try {
-                    const response = await fetch(googleSheetUrl);
-                    if (!response.ok) {
-                        throw new Error(`Error de red: ${response.statusText}`);
-                    }
-                    const csvText = await response.text();
-                    const movies = csvToJson(csvText);
-
-                    const featuredMovie = movies.find(m => m.isFeatured);
-                    const otherMovies = movies.filter(m => !m.isFeatured);
-
-                    // Renderizar contenido
-                    renderHero(featuredMovie);
-                    movieGrid.innerHTML = otherMovies.map(renderMovieCard).join('');
-
-                    // Mostrar la aplicación y ocultar el loader
-                    loadingState.classList.add('hidden');
-                    appContainer.classList.remove('hidden');
-
-                } catch (err) {
-                    console.error("Error al cargar las películas:", err);
-                    errorMessage.textContent = err.message;
-                    loadingState.classList.add('hidden');
-                    errorState.classList.remove('hidden');
                 }
             }
 
-            // Iniciar la carga de películas
-            loadMovies();
+            // Lógica para Feature 1: Simulador de Riesgos
+            const riskBtn = document.getElementById('ai-risk-btn');
+            const riskInput = document.getElementById('ai-project-input');
+            const riskResult = document.getElementById('ai-risk-result');
+
+            if (riskBtn && riskInput && riskResult) {
+                riskBtn.addEventListener('click', async () => {
+                    const project = riskInput.value.trim();
+                    if (!project) {
+                        riskResult.classList.remove('hidden');
+                        riskResult.innerHTML = '<span class="text-red-500 font-bold">Por favor, ingresa una descripción para tu proyecto.</span>';
+                        return;
+                    }
+                    
+                    riskBtn.disabled = true;
+                    riskBtn.innerHTML = '⏳ Analizando matriz de riesgos...';
+                    riskResult.classList.remove('hidden');
+                    riskResult.innerHTML = '<div class="animate-pulse flex space-x-4"><div class="flex-1 space-y-4 py-1"><div class="h-4 bg-purple-200 rounded w-3/4"></div><div class="h-4 bg-purple-200 rounded"></div><div class="h-4 bg-purple-200 rounded w-5/6"></div></div></div>';
+
+                    const prompt = `El estudiante tiene el siguiente proyecto de software en mente: "${project}".`;
+                    const systemInstruction = "Eres un Arquitecto de Software experto en el Modelo Espiral. Tu objetivo es analizar el proyecto dado e identificar los 3 riesgos técnicos o de negocio más críticos. Para cada riesgo, proporciona un párrafo breve con una mitigación específica utilizando la creación de prototipos rápidos (una regla del modelo espiral). Devuelve la respuesta estructurada en HTML limpio (usando <strong>, <ul>, y <li>), sin usar etiquetas o bloques de código markdown.";
+                    
+                    const response = await callGemini(prompt, systemInstruction);
+                    
+                    riskResult.innerHTML = response;
+                    riskBtn.disabled = false;
+                    riskBtn.innerHTML = '✨ Analizar Riesgos del Proyecto';
+                });
+            }
+
+            // Lógica para Feature 2: Coach de Debate
+            const debateBtn = document.getElementById('ai-debate-btn');
+            const debateInput = document.getElementById('ai-debate-input');
+            const debateResult = document.getElementById('ai-debate-result');
+
+            if (debateBtn && debateInput && debateResult) {
+                debateBtn.addEventListener('click', async () => {
+                    const argument = debateInput.value.trim();
+                    if (!argument) {
+                        debateResult.classList.remove('hidden');
+                        debateResult.innerHTML = '<span class="text-red-500 font-bold">Por favor, ingresa tu argumento para el debate.</span>';
+                        return;
+                    }
+                    
+                    debateBtn.disabled = true;
+                    debateBtn.innerHTML = '⏳ Formulando contraargumento...';
+                    debateResult.classList.remove('hidden');
+                    debateResult.innerHTML = '<div class="animate-pulse flex space-x-4"><div class="flex-1 space-y-4 py-1"><div class="h-4 bg-emerald-200 rounded w-3/4"></div><div class="h-4 bg-emerald-200 rounded"></div><div class="h-4 bg-emerald-200 rounded w-5/6"></div></div></div>';
+
+                    const prompt = `Argumento del estudiante: "${argument}".`;
+                    const systemInstruction = "Eres un profesor universitario muy exigente de Ingeniería de Software participando en un debate con un estudiante sobre metodologías. El estudiante defiende (o ataca) el Modelo Espiral. Encuentra una vulnerabilidad lógica o técnica en su argumento y respóndele asumiendo tu rol, presentando un contraargumento fuerte y desafiante (como la falta de presupuesto, la lentitud del proceso, etc). Al final, añade una nota (fuera de tu personaje) dándole un consejo constructivo sobre cómo defenderse de tu ataque. Devuelve el texto en HTML limpio con formato, usando <strong> y <em>, sin bloques markdown.";
+                    
+                    const response = await callGemini(prompt, systemInstruction);
+                    
+                    debateResult.innerHTML = response;
+                    debateBtn.disabled = false;
+                    debateBtn.innerHTML = '✨ Poner a prueba mi argumento';
+                });
+            }
+
         });
     </script>
-
 </body>
 </html>
