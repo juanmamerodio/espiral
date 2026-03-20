@@ -290,7 +290,7 @@
                     <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
                         <!-- Disco -->
                         <div class="w-32 h-32 flex-shrink-0 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-[0_10px_30px_rgba(79,55,139,0.2)] flex flex-col items-center justify-center border border-white relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                            <div class="text-5xl mb-1">🎧</div>
+                            <div id="cover-emoji" class="text-5xl mb-1 transition-opacity duration-300">🎧</div>
                             <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Resumen</div>
                             <div id="visualizer" class="absolute bottom-4 flex gap-1 items-end h-6 opacity-0 transition-opacity">
                                 <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -690,16 +690,19 @@
             }
 
             function updatePlayUI(playing) {
+                const coverEmoji = document.getElementById('cover-emoji');
                 if (playing) {
                     playIcon.classList.add('hidden');
                     pauseIcon.classList.remove('hidden');
                     visualizer.parentElement.classList.add('playing'); 
                     visualizer.style.opacity = "1";
+                    if (coverEmoji) coverEmoji.style.opacity = "0";
                 } else {
                     playIcon.classList.remove('hidden');
                     pauseIcon.classList.add('hidden');
                     visualizer.parentElement.classList.remove('playing'); 
                     visualizer.style.opacity = "0";
+                    if (coverEmoji) coverEmoji.style.opacity = "1";
                 }
             }
 
