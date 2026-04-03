@@ -701,25 +701,57 @@
             });
 
             // --- GEMINI API IA ---
-            const apiKey = "AIzaSyDRwd4LKNSGUaDGkLeXaHMcpqL0dZ_Dde0"; 
+            // Juanma, por favor, borrá esta key de AI Studio y hacé una nueva. 
+// Ya quedó re expuesta en el chat.
+const apiKey = "TU_NUEVA_API_KEY"; 
 
-            async function callGemini(prompt, systemInstruction) {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-lite:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemInstruction }] } };
-                const delays = [1000, 2000, 4000];
-                for (let attempt = 0; attempt <= delays.length; attempt++) {
-                    try {
-                        const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                        if (!res.ok) throw new Error();
-                        const data = await res.json();
-                        Haptics.success(); // Vibración de éxito al recibir respuesta
-                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
-                    } catch (err) {
-                        if (attempt === delays.length) return "<p style='color:red'>Conexión fallida con el engine IA.</p>";
-                        await new Promise(r => setTimeout(r, delays[attempt]));
-                    }
-                }
+async function callGemini(prompt, systemInstruction) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-lite:generateContent?key=${apiKey}`;
+    
+    // EL CAMBIO CLAVE: system_instruction (con guion bajo)
+    const payload = { 
+        contents: [{ 
+            parts: [{ text: prompt }] 
+        }], 
+        system_instruction: { 
+            parts: [{ text: systemInstruction }] 
+        } 
+    };
+
+    const delays = [1000, 2000, 4000];
+
+    for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+            const res = await fetch(url, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(payload) 
+            });
+
+            if (!res.ok) {
+                // Esto te va a decir el error real en la consola (ej: "Invalid field...")
+                const errorData = await res.json();
+                console.error("Error de la API:", errorData);
+                throw new Error(`API Error: ${res.status}`);
             }
+
+            const data = await res.json();
+            
+            // Verificamos si hay haptics (asumiendo que estás en Capacitor/Cordova o similar)
+            if (window.Haptics) Haptics.success(); 
+
+            // Estructura de respuesta de Gemini
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
+
+        } catch (err) {
+            console.warn(`Intento ${attempt + 1} fallido:`, err.message);
+            if (attempt === delays.length) {
+                return "<p style='color:red'>Conexión fallida con el engine IA.</p>";
+            }
+            await new Promise(r => setTimeout(r, delays[attempt]));
+        }
+    }
+}
 
             // 1. Elevator Pitch Gen
             document.getElementById('ai-hook-btn').addEventListener('click', async function() {
