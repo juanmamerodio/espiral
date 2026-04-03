@@ -700,58 +700,10 @@
                 });
             });
 
-            // --- GEMINI API IA ---
-            // Juanma, por favor, borrá esta key de AI Studio y hacé una nueva. 
-// Ya quedó re expuesta en el chat.
 const apiKey = "AIzaSyDgAuf1iMW8VxRmR78aM_xoZh-Pzr60i_Y"; 
 
-async function callGemini(prompt, systemInstruction) {
+  async function callGemini(prompt, systemInstruction) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    
-    // EL CAMBIO CLAVE: system_instruction (con guion bajo)
-    const payload = { 
-        contents: [{ 
-            parts: [{ text: prompt }] 
-        }], 
-        system_instruction: { 
-            parts: [{ text: systemInstruction }] 
-        } 
-    };
-
-    const delays = [1000, 2000, 4000];
-
-    for (let attempt = 0; attempt <= delays.length; attempt++) {
-        try {
-            const res = await fetch(url, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(payload) 
-            });
-
-            if (!res.ok) {
-                // Esto te va a decir el error real en la consola (ej: "Invalid field...")
-                const errorData = await res.json();
-                console.error("Error de la API:", errorData);
-                throw new Error(`API Error: ${res.status}`);
-            }
-
-            const data = await res.json();
-            
-            // Verificamos si hay haptics (asumiendo que estás en Capacitor/Cordova o similar)
-            if (window.Haptics) Haptics.success(); 
-
-            // Estructura de respuesta de Gemini
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
-
-        } catch (err) {
-            console.warn(`Intento ${attempt + 1} fallido:`, err.message);
-            if (attempt === delays.length) {
-                return "<p style='color:red'>Conexión fallida con el engine IA.</p>";
-            }
-            await new Promise(r => setTimeout(r, delays[attempt]));
-        }
-    }
-}
 
             // 1. Elevator Pitch Gen
             document.getElementById('ai-hook-btn').addEventListener('click', async function() {
