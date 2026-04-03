@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Modelo Espiral - Guía Definitiva</title>
+    <title>SpiralRisk AI - Gestión de Riesgos Inteligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Tipografía geométrica y limpia -->
@@ -14,6 +14,8 @@
             --md-sys-color-surface: rgba(255, 255, 255, 0.70);
             --ios-blur: blur(40px);
             --text-main: #1C1B1F;
+            /* iOS 26 Spring Bezier */
+            --ios-spring: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         body { 
@@ -30,57 +32,65 @@
             top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2;
             background: 
-                radial-gradient(circle at 15% 50%, rgba(208, 188, 255, 0.8) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(168, 239, 255, 0.8) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(255, 180, 230, 0.8) 0%, transparent 50%);
+                radial-gradient(circle at 15% 50%, rgba(208, 188, 255, 0.85) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(168, 239, 255, 0.85) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255, 180, 230, 0.85) 0%, transparent 50%);
             filter: blur(60px);
-            animation: breathe 15s ease-in-out infinite alternate;
+            animation: breathe 18s ease-in-out infinite alternate;
         }
 
         @keyframes breathe {
             0% { transform: scale(1) translate(0px, 0px); }
-            50% { transform: scale(1.05) translate(20px, -20px); }
-            100% { transform: scale(1) translate(-20px, 20px); }
+            50% { transform: scale(1.08) translate(30px, -20px); }
+            100% { transform: scale(1) translate(-20px, 30px); }
         }
 
-        /* Hybrid Card: Material You Shapes + iOS Glassmorphism */
+        /* Smooth Reveal on Scroll (iOS Style) */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.8s var(--ios-spring), transform 0.8s var(--ios-spring);
+            will-change: opacity, transform;
+        }
+        .reveal-element.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Hybrid Card */
         .hybrid-card {
             background: var(--md-sys-color-surface);
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
             border-radius: 2.5rem; 
             border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 
-                0 10px 40px -10px rgba(0,0,0,0.05),
-                inset 0 1px 0 rgba(255,255,255,0.8);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
+            transition: transform 0.5s var(--ios-spring), box-shadow 0.5s var(--ios-spring);
         }
 
         .hybrid-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px -10px rgba(79, 55, 139, 0.12), inset 0 1px 0 rgba(255,255,255,1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(79, 55, 139, 0.15), inset 0 1px 0 rgba(255,255,255,1);
         }
 
-        /* Botones tipo Píldora */
+        /* Botones tipo Píldora con Spring Bounce */
         .pill-btn {
             border-radius: 9999px;
             font-weight: 700;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s var(--ios-spring), box-shadow 0.3s var(--ios-spring), background-color 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transform-origin: center;
         }
-        .pill-btn:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .pill-btn:active { 
+            transform: scale(0.92); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        }
 
         /* Custom Audio Range Slider */
-        input[type=range] {
-            -webkit-appearance: none; width: 100%; background: transparent; height: 8px; border-radius: 4px; cursor: pointer;
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
-            background: #4F378B; margin-top: -6px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.1s;
-        }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; height: 10px; border-radius: 5px; cursor: pointer; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; transition: background 0.3s; }
+        input[type=range]:active::-webkit-slider-runnable-track { background: rgba(0,0,0,0.15); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #4F378B; margin-top: -8px; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s var(--ios-spring); }
         input[type=range]:active::-webkit-slider-thumb { transform: scale(1.3); }
 
         /* Audio Visualizer */
@@ -92,150 +102,118 @@
         .bar:nth-child(5) { animation-duration: 400ms; }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .nav-link.active-nav-link { background: #EADDFF; color: #4F378B; font-weight: 800; transform: translateX(8px); transition: transform 0.3s var(--ios-spring), background 0.3s; }
+        .nav-link { transition: transform 0.3s var(--ios-spring), background 0.3s; }
 
-        .nav-link.active-nav-link { background: #EADDFF; color: #4F378B; font-weight: 800; }
-
-        /* --- GLITCH FIX: Nuevo efecto AI Glow (Elegante y sin tirones) --- */
-        .ai-glow-border {
-            position: relative;
-            z-index: 1;
-        }
+        /* AI Glow Fluido */
+        .ai-glow-border { position: relative; z-index: 1; }
         .ai-glow-border::before {
-            content: ''; 
-            position: absolute; 
-            inset: -3px; 
-            border-radius: inherit; /* Hereda el border radius de la tarjeta */
+            content: ''; position: absolute; inset: -3px; border-radius: inherit; 
             background: linear-gradient(90deg, #ff00cc, #3333ff, #00ccff, #ff00cc, #3333ff);
-            background-size: 300% 100%;
-            z-index: -1; 
-            animation: gradientPan 6s ease infinite; 
-            opacity: 0; 
-            filter: blur(12px);
-            transition: opacity 0.4s ease;
+            background-size: 300% 100%; z-index: -1; animation: gradientPan 6s ease infinite; 
+            opacity: 0; filter: blur(12px); transition: opacity 0.6s var(--ios-spring);
         }
         .ai-glow-border:hover::before { opacity: 0.6; }
-        @keyframes gradientPan { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
-        }
+        @keyframes gradientPan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         /* Animación Pestañas */
-        .tab-content { display: none; animation: fadeSlideUp 0.3s ease forwards; }
-        .tab-content.active { display: block; }
-        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ios-spring), transform 0.4s var(--ios-spring); }
+        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-        /* Right Sidebar Panel (iOS 26 Style) */
-        #right-sidebar {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateX(100%);
-        }
+        /* Right Sidebar Panel */
+        #right-sidebar { transition: transform 0.5s var(--ios-spring); transform: translateX(100%); }
         #right-sidebar.open { transform: translateX(0); }
-        .widget-card {
-            background: rgba(255,255,255,0.5);
-            border: 1px solid rgba(255,255,255,0.7);
-            border-radius: 1.5rem;
-            transition: background 0.2s;
-        }
-        .widget-card:hover { background: rgba(255,255,255,0.8); }
+        .widget-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 1.5rem; transition: background 0.3s, transform 0.3s var(--ios-spring); }
+        .widget-card:hover { background: rgba(255,255,255,0.9); transform: scale(1.02); }
+
+        /* Formato Salidas IA */
+        .ai-output ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .ai-output li { margin-bottom: 0.5rem; }
+        .ai-output strong { color: #4F378B; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-gray-800">
 
     <div class="mesh-bg"></div>
 
-    <!-- Sidebar Navegación Izquierda (Desktop) -->
+    <!-- Sidebar Navegación Izquierda -->
     <aside class="w-80 h-full flex flex-col hidden xl:flex flex-shrink-0 z-20 p-6">
         <div class="hybrid-card h-full flex flex-col p-2 overflow-hidden">
             <div class="p-6 border-b border-white/30">
-                <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[1.2rem] flex items-center justify-center text-white text-3xl shadow-lg mb-4">
-                    🌀
+                <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-[1.2rem] flex items-center justify-center text-white text-3xl shadow-lg mb-4 hover:rotate-12 transition-transform duration-500">
+                    ⚡
                 </div>
-                <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 leading-none mb-1">Modelo Espiral</h1>
-                <p class="text-sm font-medium text-purple-700/70">Guía Definitiva OS</p>
+                <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 leading-none mb-1">SpiralRisk</h1>
+                <p class="text-sm font-medium text-purple-700/70">AI Framework</p>
             </div>
             <nav class="flex-1 overflow-y-auto p-4 space-y-2" id="nav-menu">
-                <a href="#intro" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="intro"><span class="text-xl">1️⃣</span> Ciclo de Vida</a>
-                <a href="#definicion" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="definicion"><span class="text-xl">2️⃣</span> Concepto Espiral</a>
-                <a href="#historia" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="historia"><span class="text-xl">3️⃣</span> Historia</a>
-                <a href="#etapas" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="etapas"><span class="text-xl">4️⃣</span> Las 4 Etapas</a>
-                <a href="#riesgos" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="riesgos"><span class="text-xl">5️⃣</span> Riesgos</a>
-                <a href="#pros-contras" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="pros-contras"><span class="text-xl">6️⃣</span> Pros y Contras</a>
-                <a href="#casos" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="casos"><span class="text-xl">7️⃣</span> Casos Reales</a>
-                <a href="#datos" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem] transition-colors" data-target="datos"><span class="text-xl">8️⃣</span> Curiosidades</a>
+                <a href="#hero-section" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="hero-section"><span class="text-xl">📊</span> Inicio / Pitch</a>
+                <a href="#principiantes" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="principiantes"><span class="text-xl">👶</span> Para Principiantes</a>
+                <a href="#audio-resumen" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="audio-resumen"><span class="text-xl">🎧</span> Briefing Ejecutivo</a>
+                <a href="#boehm-tips" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="boehm-tips"><span class="text-xl">💡</span> Tips de Boehm</a>
+                <a href="#framework" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="framework"><span class="text-xl">⚙️</span> Core Framework</a>
+                <a href="#riesgos" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="riesgos"><span class="text-xl">🛡️</span> Matriz de Riesgo AI</a>
+                <a href="#debate" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="debate"><span class="text-xl">💼</span> Stakeholder AI</a>
             </nav>
+            <div class="p-4 border-t border-white/30 text-xs text-gray-500 text-center font-medium">
+                Desarrollado por Enzo, Isabela, Celeste y Juan M.
+            </div>
         </div>
     </aside>
 
     <!-- Top Bar Integrada (Mobile & Desktop Right Menu Toggle) -->
     <header class="absolute top-4 left-0 right-0 z-30 flex justify-between px-6 pointer-events-none">
-        <!-- Mobile Left Toggle -->
-        <div class="xl:hidden hybrid-card rounded-full px-5 py-3 flex items-center gap-3 pointer-events-auto shadow-sm">
-            <span class="text-xl">🌀</span>
-            <button id="mobile-menu-btn" class="font-bold text-sm text-purple-800 bg-purple-100/50 px-3 py-1 rounded-full">Menú</button>
+        <div class="xl:hidden hybrid-card rounded-full px-5 py-3 flex items-center gap-3 pointer-events-auto shadow-sm active:scale-95 transition-transform" onclick="Haptics.light()">
+            <span class="text-xl">⚡</span>
+            <button id="mobile-menu-btn" class="font-bold text-sm text-purple-800 bg-purple-100/50 px-3 py-1 rounded-full">App Menu</button>
         </div>
-        <div class="hidden xl:block"></div> <!-- Spacer -->
+        <div class="hidden xl:block"></div>
 
-        <!-- Right Tools Toggle (Control Center iOS 26) -->
         <button id="toggle-right-sidebar" class="hybrid-card w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg pointer-events-auto hover:bg-white transition-colors border border-white/60 group">
-            <span class="group-hover:rotate-45 transition-transform duration-300">⚙️</span>
+            <span class="group-hover:rotate-90 transition-transform duration-500 ease-in-out">⚙️</span>
         </button>
     </header>
 
-    <!-- 🍎 NUEVO: Menú Lateral Derecho (iOS 26 Control Center) -->
+    <!-- Menú Lateral Derecho (iOS 26 Control Center) -->
     <div id="right-sidebar-overlay" class="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
     <aside id="right-sidebar" class="fixed top-0 right-0 w-80 sm:w-96 h-full bg-white/70 backdrop-blur-[60px] border-l border-white/50 shadow-2xl z-50 p-6 flex flex-col">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold tracking-tight">Centro de Control</h2>
+            <h2 class="text-2xl font-bold tracking-tight">AI Tools</h2>
             <button id="close-right-sidebar" class="w-8 h-8 bg-gray-200/50 rounded-full flex items-center justify-center font-bold text-gray-600 hover:bg-gray-300 transition-colors">✕</button>
         </div>
         
         <div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-20 hide-scroll">
-            <!-- Widget Audio -->
-            <a href="#audio-resumen" class="block widget-card p-4 shadow-sm" onclick="closeRightSidebar()">
+            <a href="#riesgos" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
                 <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">🎧</div>
-                    <span class="font-bold text-sm">Resumen Ejecutivo</span>
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">🛡️</div>
+                    <span class="font-bold text-sm">Evaluador de Riesgo</span>
                 </div>
-                <p class="text-xs text-gray-500">Escuchar el audio resumen de 3 minutos del proyecto.</p>
+                <p class="text-xs text-gray-500">Detecta fallos críticos en tu arquitectura antes de invertir.</p>
             </a>
 
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-6 mb-2 ml-2">Herramientas IA ✨</div>
-            
-            <!-- Widget Hook -->
-            <a href="#hero-section" class="block widget-card p-4 shadow-sm" onclick="closeRightSidebar()">
+            <a href="#debate" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">💼</div>
+                    <span class="font-bold text-sm">Shark Tank Simulator</span>
+                </div>
+                <p class="text-xs text-gray-500">Pitchea tu idea y la IA buscará tus vulnerabilidades técnicas.</p>
+            </a>
+
+            <a href="#hero-section" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">✍️</div>
-                    <span class="font-bold text-sm">Generar Apertura</span>
+                    <span class="font-bold text-sm">Resumen Ejecutivo</span>
                 </div>
-                <p class="text-xs text-gray-500">Crear guion de introducción para la presentación.</p>
-            </a>
-
-            <!-- Widget Riesgos -->
-            <a href="#riesgos" class="block widget-card p-4 shadow-sm" onclick="closeRightSidebar()">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">⚠️</div>
-                    <span class="font-bold text-sm">Simulador de Riesgos</span>
-                </div>
-                <p class="text-xs text-gray-500">Evaluar matriz de riesgo para una idea de software nueva.</p>
-            </a>
-
-            <!-- Widget Debate -->
-            <a href="#debate" class="block widget-card p-4 shadow-sm" onclick="closeRightSidebar()">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">🗣️</div>
-                    <span class="font-bold text-sm">Sparring de Debate</span>
-                </div>
-                <p class="text-xs text-gray-500">Preparar argumentos y refutaciones con el profesor IA.</p>
+                <p class="text-xs text-gray-500">Genera el Elevator Pitch perfecto basado en reducción de riesgo.</p>
             </a>
         </div>
     </aside>
 
-    <!-- Mobile Nav Sheet (Izquierdo) -->
+    <!-- Mobile Nav Sheet -->
     <div id="mobile-nav" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
-        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-t-[2.5rem] p-6 pb-12 max-h-[85vh] overflow-y-auto transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]" id="mobile-menu-sheet">
+        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-t-[2.5rem] p-6 pb-12 max-h-[85vh] overflow-y-auto transform translate-y-full transition-transform duration-500 var(--ios-spring) shadow-[0_-10px_40px_rgba(0,0,0,0.1)]" id="mobile-menu-sheet">
             <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6"></div>
-            <h2 class="text-2xl font-extrabold mb-4 px-2">Navegación</h2>
+            <h2 class="text-2xl font-extrabold mb-4 px-2">Menú</h2>
             <ul class="space-y-1" id="mobile-menu-list">
                 <!-- Cloned via JS -->
             </ul>
@@ -243,245 +221,217 @@
     </div>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto h-full scroll-smooth pt-24 xl:pt-0" id="main-content">
+    <main class="flex-1 overflow-y-auto h-full scroll-smooth pt-24 xl:pt-0 pb-20" id="main-content">
         
-        <div class="max-w-4xl mx-auto p-4 md:p-8 pb-40 space-y-12">
+        <div class="max-w-4xl mx-auto p-4 md:p-8 space-y-16">
 
-            <!-- Title Widget / Hero -->
-            <section id="hero-section" class="mb-4 pt-4 xl:pt-10 scroll-mt-32">
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-gray-900 leading-[1.05]">El Modelo de <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">Ciclo en Espiral</span></h1>
-                <p class="text-xl md:text-2xl text-gray-600 font-medium mb-6">La Guía Definitiva con ejemplos prácticos e IA.</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-white/60 backdrop-blur-md border border-white px-4 py-2 rounded-full text-sm font-bold shadow-sm">Ingeniería de Software</span>
-                    <span class="bg-white/60 backdrop-blur-md border border-white px-4 py-2 rounded-full text-sm font-bold shadow-sm">Equipo: Enzo, Isabela, Celeste, Juan M.</span>
+            <!-- Hero Section -->
+            <section id="hero-section" class="pt-4 xl:pt-10 scroll-mt-32 reveal-element">
+                <div class="inline-block bg-white/60 backdrop-blur-md border border-white px-4 py-1.5 rounded-full text-xs font-bold text-purple-700 shadow-sm mb-4">
+                    B2B Software Development Suite
                 </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-gray-900 leading-[1.05]">
+                    Mitigación de <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">Riesgo IA</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 font-medium mb-8">
+                    El 80% de las startups fallan por escalar arquitecturas rotas. SpiralRisk utiliza IA y el Modelo Espiral para testear tu software antes de escribir código.
+                </p>
 
-                <!-- ✨ Generador de Apertura IA (Corregido glitch visual) -->
+                <!-- ✨ Executive Pitch Generator IA -->
                 <div class="mt-10 hybrid-card p-6 md:p-8 relative group ai-glow-border">
                     <div class="relative z-10 flex flex-col gap-4">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">✨ Generador de Apertura IA</h3>
-                            <span class="bg-purple-100 text-purple-700 text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full shadow-sm">Gemini</span>
+                            <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">✨ Elevator Pitch Generator</h3>
+                            <span class="bg-purple-100 text-purple-700 text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full shadow-sm">Gemini AI</span>
                         </div>
                         <p class="text-gray-700 leading-relaxed mb-2 text-[15px]">
-                            ¿Nervios antes de empezar la exposición? Elegí un estilo y la IA redactará <strong>el gancho perfecto de 30 segundos</strong> para atrapar al profesor desde el primer momento.
+                            Describí tu startup. La IA redactará tu resumen ejecutivo de 30 segundos orientado a inversores, destacando cómo el Modelo Espiral protegerá su capital.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <select id="ai-hook-tone" class="flex-1 px-5 py-4 rounded-[1.2rem] bg-white border border-gray-200 focus:border-purple-400 focus:outline-none text-sm font-medium shadow-sm cursor-pointer text-gray-700 transition-colors">
-                                <option value="storytelling">📖 Storytelling (Atrapar con una historia)</option>
-                                <option value="steve_jobs">🚀 Visionario (Estilo presentación de Apple)</option>
-                                <option value="humor">😂 Rompehielo (Empezar con una broma inteligente)</option>
-                                <option value="formal">🎓 Académico (Formal, serio e impactante)</option>
-                            </select>
-                            <button id="ai-hook-btn" class="pill-btn bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 text-[15px] border-none whitespace-nowrap">
-                                Crear Guion
+                            <input type="text" id="ai-hook-input" placeholder="Ej: Fintech para pagos con cripto..." class="flex-1 px-5 py-4 rounded-[1.2rem] bg-white border border-gray-200 focus:border-purple-400 focus:outline-none text-sm font-medium shadow-sm text-gray-700 transition-all">
+                            <button id="ai-hook-btn" class="pill-btn bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 text-[15px] border-none whitespace-nowrap haptic-heavy">
+                                Generar Pitch
                             </button>
                         </div>
-                        <div id="ai-hook-result" class="mt-2 text-[16px] text-gray-800 hidden bg-white/80 backdrop-blur-md p-6 rounded-[1.5rem] border border-white/80 leading-relaxed italic shadow-inner relative z-10"></div>
+                        <div id="ai-hook-result" class="mt-2 text-[15px] text-gray-800 hidden bg-white/80 backdrop-blur-md p-6 rounded-[1.5rem] border border-white/80 leading-relaxed shadow-inner relative z-10 ai-output transition-all duration-500"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- 🎧 Reproductor de Audio (Híbrido OS) -->
-            <section id="audio-resumen" class="scroll-mt-32">
+            <!-- 🆕 PRINCIPIANTES: Explain like I'm 5 -->
+            <section id="principiantes" class="scroll-mt-32 reveal-element">
+                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-blue-50/50 to-cyan-50/50">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-[1rem] bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-2xl">👶</div>
+                        <h2 class="text-3xl font-bold">Espiral para Principiantes</h2>
+                    </div>
+                    
+                    <p class="text-gray-700 leading-relaxed mb-6 text-lg">
+                        ¿No entendés nada de programación? No pasa nada. Imaginate que querés fabricar un **paracaídas nuevo**.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="bg-white/70 p-6 rounded-[2rem] shadow-sm border border-white">
+                            <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">❌ El método tradicional (Cascada)</h3>
+                            <p class="text-[15px] text-gray-600">Diseñás el paracaídas en un papel, comprás toda la tela, lo cosés completo y recién al final te tirás de un avión para ver si funciona. <strong>Riesgo: Muerte (o quiebra de la empresa).</strong></p>
+                        </div>
+                        
+                        <div class="bg-white/70 p-6 rounded-[2rem] shadow-sm border border-white">
+                            <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">🔄 El método moderno (Ágil)</h3>
+                            <p class="text-[15px] text-gray-600">Hacés un paraguas rápido en una semana y te tirás de la silla. Funciona. A la semana siguiente le agregás más tela y te tirás del techo. Es rápido, pero cuando llegues al avión, la estructura base del paraguas se va a romper. <strong>Riesgo: Escalar mal.</strong></p>
+                        </div>
+
+                        <div class="bg-blue-600 text-white p-6 rounded-[2rem] shadow-lg border border-blue-500 transform hover:scale-[1.02] transition-transform var(--ios-spring)">
+                            <h3 class="font-bold mb-2 flex items-center gap-2">🌀 El Modelo Espiral</h3>
+                            <p class="text-[15px] text-blue-50">Antes de coser nada, agarrás un muñeco de prueba, hacés un mini-paracaídas (prototipo) y lo tirás de un balcón. ¿Se rompió? Arreglás el diseño. Recién cuando el prototipo valida que la física funciona (mitigación de riesgo), invertís plata en hacer el real. <strong>Cuesta un poco más al principio, pero te salva la vida al final.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 🎧 Audio Briefing Ejecutivo -->
+            <section id="audio-resumen" class="scroll-mt-32 reveal-element">
                 <div class="hybrid-card p-6 md:p-8 relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-blue-500/20 blur-2xl z-0 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-blue-500/20 blur-2xl z-0 pointer-events-none"></div>
                     
                     <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                        <!-- Disco -->
-                        <div class="w-32 h-32 flex-shrink-0 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-[0_10px_30px_rgba(79,55,139,0.2)] flex flex-col items-center justify-center border border-white relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                        <div class="w-32 h-32 flex-shrink-0 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-[0_10px_30px_rgba(79,55,139,0.2)] flex flex-col items-center justify-center border border-white relative overflow-hidden group-hover:scale-105 transition-transform duration-500 var(--ios-spring)">
                             <div id="cover-emoji" class="text-5xl mb-1 transition-opacity duration-300">🎧</div>
-                            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Resumen</div>
+                            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Briefing</div>
                             <div id="visualizer" class="absolute bottom-4 flex gap-1 items-end h-6 opacity-0 transition-opacity">
                                 <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                             </div>
                         </div>
                         
-                        <!-- Controles -->
                         <div class="flex-1 w-full">
                             <div class="flex justify-between items-start mb-6">
                                 <div>
-                                    <h3 class="text-2xl font-extrabold text-gray-900 mb-1">Resumen Ejecutivo Completo</h3>
-                                    <p class="text-sm font-medium text-purple-600 bg-purple-100/50 inline-block px-3 py-1 rounded-full">Audio Generado (IA)</p>
+                                    <h3 class="text-2xl font-extrabold text-gray-900 mb-1">El Valor del Modelo Espiral</h3>
+                                    <p class="text-sm font-medium text-indigo-600 bg-indigo-100/50 inline-block px-3 py-1 rounded-full">Para Inversores (Audio)</p>
                                 </div>
                             </div>
                             
                             <div class="flex flex-col gap-2 mb-4">
-                                <input type="range" id="audio-scrubber" min="0" max="100" value="0">
+                                <input type="range" id="audio-scrubber" min="0" max="100" value="0" class="haptic-slide">
                                 <div class="flex justify-between text-xs font-bold text-gray-500 font-mono">
                                     <span id="audio-current">0:00</span>
                                     <span id="audio-duration">0:00</span>
                                 </div>
                             </div>
                             
-                            <!-- Controles rediseñados (Iconos SVG + Volumen iOS) -->
                             <div class="flex justify-between items-center mt-2">
-                                <div class="w-20 hidden sm:block"></div> <!-- Espaciador para centrar -->
-                                
+                                <div class="w-20 hidden sm:block"></div>
                                 <div class="flex justify-center gap-5 md:gap-6 items-center">
-                                    <button id="rewind-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95" title="Atrasar 10s">
+                                    <button id="rewind-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95 haptic-click">
                                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C20.89 11.12 17.03 8 12.5 8z"/></svg>
                                     </button>
                                     
-                                    <button id="play-pause-btn" class="pill-btn w-16 h-16 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-black border-none shadow-[0_8px_20px_rgba(0,0,0,0.3)]">
+                                    <button id="play-pause-btn" class="pill-btn w-16 h-16 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-black border-none shadow-[0_8px_20px_rgba(0,0,0,0.3)] haptic-heavy">
                                         <svg id="play-icon" class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                         <svg id="pause-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                                     </button>
                                     
-                                    <button id="forward-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95" title="Adelantar 10s">
+                                    <button id="forward-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95 haptic-click">
                                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.5 8c2.65 0 5.05.99 6.9 2.6L22 7v9h-9l3.62-3.62c-1.39-1.16-3.16-1.88-5.12-1.88-3.54 0-6.55 2.31-7.6 5.5l-2.37-.78C4.11 11.12 7.97 8 11.5 8z"/></svg>
                                     </button>
                                 </div>
-
-                                <!-- Control de Volumen Estilo iOS -->
                                 <div class="flex items-center gap-2 w-20 md:w-24 group">
-                                    <svg class="w-4 h-4 text-gray-500 group-hover:text-purple-600 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-                                    <input type="range" id="audio-volume" min="0" max="1" step="0.05" value="1" class="w-full">
+                                    <svg class="w-4 h-4 text-gray-500 group-hover:text-indigo-600 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                                    <input type="range" id="audio-volume" min="0" max="1" step="0.05" value="1" class="w-full haptic-slide">
                                 </div>
                             </div>
-
                             <audio id="main-audio" preload="metadata"></audio>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 1. Intro -->
-            <section id="intro" class="scroll-mt-32">
-                <div class="hybrid-card p-8 md:p-10">
+            <!-- 🆕 BOEHM TIPS -->
+            <section id="boehm-tips" class="scroll-mt-32 reveal-element">
+                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-yellow-50/50 to-orange-50/50">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-lg">1</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">Definición de Ciclo de Vida</h2>
+                        <div class="w-12 h-12 rounded-[1rem] bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-2xl">💡</div>
+                        <h2 class="text-3xl font-bold">Las Leyes de Barry Boehm</h2>
                     </div>
-                    <p class="text-gray-700 leading-relaxed mb-6 text-lg">
-                        El <strong>Ciclo de Vida de Desarrollo de Sistemas (SDLC)</strong> es el mapa táctico de la Ingeniería de Software. Define las fases estructuradas para planificar, crear, probar, desplegar y mantener un sistema. Sin él, programar es un caos absoluto.
+                    
+                    <p class="text-gray-700 leading-relaxed mb-8 text-[15px]">
+                        Barry Boehm (el creador de este modelo) nos dejó principios fundamentales que todo ingeniero y empresario debe saber de memoria antes de tocar código:
                     </p>
-                    <div class="bg-white/60 p-6 rounded-[2rem] border border-white shadow-sm flex flex-col md:flex-row gap-6 items-center">
-                        <div class="text-5xl">🏗️</div>
-                        <div>
-                            <h3 class="font-bold text-lg mb-2">Analogía: La Casa vs El Software</h3>
-                            <p class="text-sm text-gray-600 leading-relaxed">
-                                Construir una casa tiene pasos fijos (planos, cimientos, techo). Pero el software es "invisible y maleable". Si al cliente se le ocurre que la casa de 1 piso ahora debe ser un rascacielos cuando ya pintaste el techo, en la vida civil es imposible. En software, el SDLC existe justamente para gestionar estos cambios constantes sin que el sistema colapse.
-                            </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white">
+                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">01</div>
+                            <h4 class="font-bold text-gray-900 mb-2">La Regla del 100x</h4>
+                            <p class="text-sm text-gray-600">Encontrar y arreglar un problema de diseño después de que el software está terminado cuesta <strong>100 veces más</strong> que encontrarlo en la fase de prototipo inicial.</p>
+                        </div>
+                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white">
+                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">02</div>
+                            <h4 class="font-bold text-gray-900 mb-2">Prototipos Descartables</h4>
+                            <p class="text-sm text-gray-600">No te enamores de tu primer código. Un prototipo se hace rápido para responder una pregunta de riesgo (ej. ¿Soporta la base de datos?). Una vez respondida, <strong>tiralo y programá en serio</strong>.</p>
+                        </div>
+                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white md:col-span-2">
+                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">03</div>
+                            <h4 class="font-bold text-gray-900 mb-2">El Modelo Win-Win (Ganar-Ganar)</h4>
+                            <p class="text-sm text-gray-600">En 1994, Boehm actualizó su espiral agregando esto: El desarrollo no arranca hasta que no haya una negociación donde el cliente gane (obtenga lo que necesita) y el desarrollador gane (tenga presupuesto y tiempo realistas). Si uno pierde, el proyecto fracasa.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 2. Definición Espiral -->
-            <section id="definicion" class="scroll-mt-32">
+            <!-- 4. Framework Técnico -->
+            <section id="framework" class="scroll-mt-32 reveal-element">
                 <div class="hybrid-card p-8 md:p-10">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-lg">2</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">El Modelo Espiral</h2>
+                        <div class="w-12 h-12 rounded-[1rem] bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xl">⚙️</div>
+                        <h2 class="text-3xl font-bold">El Engine: Los 4 Cuadrantes</h2>
                     </div>
-                    <p class="text-gray-700 leading-relaxed mb-6 text-lg">
-                        Es el enfoque de desarrollo impulsado por la <strong>gestión del riesgo</strong>. Es una mezcla perfecta entre el control estricto de los modelos antiguos (Cascada) y la flexibilidad iterativa (prototipos) de los modelos modernos (Agile).
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                        <div class="bg-white/60 p-6 rounded-[2rem] border border-white shadow-sm hover:shadow-md transition-shadow">
-                            <h4 class="font-extrabold text-purple-900 mb-2 flex items-center gap-2"><span>📏</span> Radio = Inversión</h4>
-                            <p class="text-sm text-gray-600">A medida que la espiral se aleja del centro, representa el <strong>costo acumulado</strong>. Cada vuelta cuesta más dinero.</p>
-                        </div>
-                        <div class="bg-white/60 p-6 rounded-[2rem] border border-white shadow-sm hover:shadow-md transition-shadow">
-                            <h4 class="font-extrabold text-blue-900 mb-2 flex items-center gap-2"><span>⏱️</span> Ángulo = Progreso</h4>
-                            <p class="text-sm text-gray-600">Completar los 360 grados representa completar una fase entera del ciclo. Se evalúa con el cliente y se avanza.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 3. Historia -->
-            <section id="historia" class="scroll-mt-32">
-                <div class="hybrid-card p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-700 font-bold text-lg">3</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">Historia y Origen</h2>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-8 items-center">
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold mb-3 text-gray-900">Barry Boehm y el Pentágono</h3>
-                            <p class="text-gray-700 mb-4 leading-relaxed">
-                                Barry Boehm, trabajando en TRW Inc. (corporación de defensa), observó en los 80s que los sistemas masivos del gobierno de EE.UU. fracasaban usando el modelo Cascada. Era imposible saber todos los requisitos del Pentágono el día 1.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed">
-                                Formalizó el modelo en <strong>1988</strong>. Necesitaba un sistema que permitiera "probar el terreno" con prototipos y fallar barato antes de comprometer millones de dólares en código final.
-                            </p>
-                        </div>
-                        <div class="bg-orange-50/50 p-6 rounded-[2rem] border border-orange-100 w-full md:w-1/3 text-center shadow-sm">
-                            <div class="text-5xl mb-3">📄</div>
-                            <div class="font-bold text-orange-900">Paper Original</div>
-                            <div class="text-sm text-gray-600 mt-2">"A Spiral Model of Software Development and Enhancement" (1988, IEEE).</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 4. Etapas (Pestañas Interactivas) -->
-            <section id="etapas" class="scroll-mt-32">
-                <div class="hybrid-card p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-lg">4</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">Las 4 Etapas (En la Práctica)</h2>
-                    </div>
-                    <p class="text-gray-600 mb-6">Aplicación práctica en el desarrollo de la "Vuelta 1" de una <strong>App Bancaria Nacional</strong>.</p>
+                    <p class="text-gray-600 mb-6 text-[15px]">Cómo ejecuta el desarrollo una empresa que adopta el framework Espiral. Navegá por las pestañas.</p>
 
                     <div class="flex overflow-x-auto gap-2 mb-6 pb-2 hide-scroll">
-                        <button class="tab-btn active pill-btn px-6 py-3 bg-gray-900 text-white text-sm whitespace-nowrap" data-target="tab-1">1. Planificar</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white" data-target="tab-2">2. Riesgos</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white" data-target="tab-3">3. Desarrollo</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white" data-target="tab-4">4. Evaluar</button>
+                        <button class="tab-btn active pill-btn px-6 py-3 bg-indigo-600 text-white text-sm whitespace-nowrap haptic-light" data-target="tab-1">1. Meta</button>
+                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-2">2. Riesgo</button>
+                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-3">3. Ingeniería</button>
+                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-4">4. Revisión</button>
                     </div>
 
                     <div class="relative bg-white/60 rounded-[2rem] p-6 border border-white shadow-sm min-h-[200px]">
                         <div id="tab-1" class="tab-content active">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">Determinación de Objetivos</h3>
-                            <p class="text-sm text-gray-700 mb-4">Se fija la meta de la iteración y las restricciones (presupuesto/tecnología).</p>
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                <span class="text-xl mr-2">🏦</span> <strong>Ejemplo:</strong> Queremos agregar transferencias con QR. Restricción: Encriptación nivel banco central y 2 meses.
-                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">1. Determinación de Objetivos</h3>
+                            <p class="text-[15px] text-gray-700 mb-4">Se define el foco comercial de la iteración actual (Ej. "Validar pasarela de pago") y se marcan los límites duros de presupuesto y compliance legal.</p>
                         </div>
                         <div id="tab-2" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">Análisis de Riesgos (El corazón del modelo)</h3>
-                            <p class="text-sm text-gray-700 mb-4">Construir <strong>prototipos</strong> baratos para comprobar vulnerabilidades antes de gastar millones.</p>
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                <span class="text-xl mr-2">⚠️</span> <strong>Ejemplo:</strong> Riesgo: ¿El servidor viejo colapsará? Mitigación: Hacemos un script (prototipo) que ataca al servidor masivamente.
-                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">2. Análisis de Riesgos</h3>
+                            <p class="text-[15px] text-gray-700 mb-4">La fase crítica diferencial. En vez de programar, se construyen <strong>prototipos técnicos o simuladores</strong> para romper el sistema de forma controlada y asegurar que la arquitectura soporta el estrés.</p>
                         </div>
                         <div id="tab-3" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">Desarrollo y Pruebas</h3>
-                            <p class="text-sm text-gray-700 mb-4">Si los riesgos se superaron, se programa la funcionalidad real usando enfoques estandarizados.</p>
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                <span class="text-xl mr-2">💻</span> <strong>Ejemplo:</strong> El servidor aguantó. Los devs programan el frontend de la cámara QR y lo conectan a la base de datos real.
-                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">3. Desarrollo y Validación</h3>
+                            <p class="text-[15px] text-gray-700 mb-4">Solo si los riesgos del cuadrante 2 fueron mitigados y validados, se despliegan los ingenieros para codificar y testear la funcionalidad a nivel de producción.</p>
                         </div>
                         <div id="tab-4" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">Planificación (Siguiente Iteración)</h3>
-                            <p class="text-sm text-gray-700 mb-4">El cliente revisa lo construido en este bucle y se decide el camino a seguir.</p>
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                <span class="text-xl mr-2">🤝</span> <strong>Ejemplo:</strong> El banco aprueba el QR, pero nota que en celulares lentos traba. Objetivo Vuelta 2: Optimizar rendimiento.
-                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">4. Planificación del Próximo Bucle</h3>
+                            <p class="text-[15px] text-gray-700 mb-4">Stakeholders e inversores evalúan el software funcional entregado. Se aprueba la inversión para ensanchar el alcance (próxima vuelta) o se pivotea.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 5. El Riesgo (Con gráfico y Gemini) -->
-            <section id="riesgos" class="scroll-mt-32">
+            <!-- 5. Análisis Riesgo (Con gráfico y Gemini) -->
+            <section id="riesgos" class="scroll-mt-32 reveal-element">
                 <div class="hybrid-card p-8 md:p-10 ai-glow-border group">
                     <div class="relative z-10">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold text-lg">5</div>
-                            <h2 class="text-2xl md:text-3xl font-bold">El Riesgo y el Fracaso IT</h2>
+                            <div class="w-12 h-12 rounded-[1rem] bg-red-100 flex items-center justify-center text-red-700 font-bold text-xl">🛡️</div>
+                            <h2 class="text-3xl font-bold">Matriz de Riesgo Operativa</h2>
                         </div>
 
                         <div class="flex flex-col lg:flex-row gap-8 items-center mb-10">
                             <div class="flex-1">
-                                <p class="text-gray-700 leading-relaxed mb-4">
-                                    Según The Standish Group (CHAOS Report), la falta de gestión de riesgos hunde la mayoría de los proyectos. La espiral existe para inflar el gasto inicial en la fase de "Análisis" y ahorrar fortunas monumentales en la fase de "Reescribir código fallido".
+                                <h3 class="font-bold text-lg mb-2">Por qué la industria falla (CHAOS Report)</h3>
+                                <p class="text-gray-700 leading-relaxed mb-4 text-[15px]">
+                                    Los frameworks ágiles asumen que arreglar código es barato. En software complejo (bancos, salud, apps masivas), un error en producción cuesta millones. SpiralRisk mitiga esto, evitando que seas parte de la porción roja de la torta.
                                 </p>
                             </div>
-                            <div class="w-full lg:w-1/2 bg-white/60 p-4 rounded-[2rem] border border-white shadow-sm">
+                            <div class="w-full lg:w-1/2 bg-white/60 p-4 rounded-[2rem] border border-white shadow-sm hover:scale-105 transition-transform var(--ios-spring)">
                                 <div class="chart-container relative h-48 w-full max-w-sm mx-auto">
                                     <canvas id="chaosChart"></canvas>
                                 </div>
@@ -489,55 +439,28 @@
                         </div>
 
                         <!-- ✨ Simulador Riesgos IA -->
-                        <div class="bg-gradient-to-br from-red-50/50 to-orange-50/50 p-6 rounded-[2rem] border border-red-100 shadow-inner">
+                        <div class="bg-gradient-to-br from-red-50/50 to-orange-50/50 p-6 md:p-8 rounded-[2rem] border border-red-100 shadow-inner transition-all duration-300">
                             <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-extrabold text-gray-900 flex items-center gap-2">✨ Simulador IA: Matriz de Riesgo</h3>
+                                <h3 class="font-extrabold text-gray-900 flex items-center gap-2">✨ Evaluador de Arquitectura IA</h3>
                             </div>
-                            <p class="text-sm text-gray-700 mb-4">Escribí tu idea de app. Gemini te dirá los 3 riesgos técnicos a probar en tu primera vuelta espiral.</p>
+                            <p class="text-[15px] text-gray-700 mb-6">
+                                Detallá tu producto. El motor Gemini (actuando como CTO) generará los objetivos de la Iteración 1 y detectará los 3 riesgos más destructivos.
+                            </p>
                             
-                            <div class="flex flex-col sm:flex-row gap-3">
-                                <input type="text" id="ai-project-input" placeholder="Ej: Un Tinder para adoptar mascotas callejeras..." class="flex-1 px-5 py-4 rounded-full bg-white border border-gray-200 focus:border-red-400 focus:outline-none text-sm font-medium shadow-sm transition-colors">
-                                <button id="ai-risk-btn" class="pill-btn bg-red-500 text-white px-8 py-4 text-sm hover:bg-red-600 border-none">
-                                    Analizar Proyecto
+                            <div class="flex flex-col gap-3">
+                                <textarea id="ai-risk-input" rows="2" placeholder="Ej: App de delivery con drones autoguiados..." class="w-full px-5 py-4 rounded-[1.5rem] bg-white border border-gray-200 focus:border-red-400 focus:outline-none text-[15px] shadow-sm transition-colors resize-none"></textarea>
+                                <button id="ai-risk-btn" class="pill-btn bg-red-600 text-white px-8 py-4 text-[15px] hover:bg-red-700 border-none w-full sm:w-auto self-end haptic-heavy">
+                                    Generar Matriz
                                 </button>
                             </div>
-                            <div id="ai-risk-result" class="mt-4 text-sm text-gray-700 hidden bg-white/80 p-6 rounded-[1.5rem] border border-white min-h-[100px] leading-relaxed shadow-sm"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 6. Pros y Contras -->
-            <section id="pros-contras" class="scroll-mt-32">
-                <div class="hybrid-card p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold text-lg">6</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">Pros y Contras</h2>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white/60 p-6 rounded-[2rem] border border-green-100 shadow-sm border-t-4 border-t-green-400">
-                            <h3 class="font-bold text-green-800 mb-4 text-lg">✅ Ventajas (Pros)</h3>
-                            <ul class="space-y-3 text-sm text-gray-700">
-                                <li><strong>Mitigación Temprana:</strong> Detectar errores en papel cuesta $1. En producción, $100.</li>
-                                <li><strong>Adaptabilidad:</strong> Si el cliente cambia de idea, entra en la planificación del próximo ciclo limpio.</li>
-                                <li><strong>Arquitectura Sólida:</strong> Obliga a pensar en el rendimiento futuro desde el día 1, no como el Agile apresurado.</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white/60 p-6 rounded-[2rem] border border-red-100 shadow-sm border-t-4 border-t-red-400">
-                            <h3 class="font-bold text-red-800 mb-4 text-lg">❌ Desventajas (Contras)</h3>
-                            <ul class="space-y-3 text-sm text-gray-700">
-                                <li><strong>Caro y Especializado:</strong> Contratar analistas de riesgo y crear prototipos descartables eleva el presupuesto inicial.</li>
-                                <li><strong>Excesivo para Apps Simples:</strong> Usar esto para hacer una página web estática es matar una mosca con un cañón.</li>
-                                <li><strong>Espirales Infinitas:</strong> Puede generar un bucle donde el software nunca se lanza comercialmente.</li>
-                            </ul>
+                            <div id="ai-risk-result" class="mt-6 text-[15px] text-gray-800 hidden bg-white p-6 rounded-[1.5rem] border border-red-100 leading-relaxed shadow-sm ai-output transition-all duration-500"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- 7. Casos Reales -->
-            <section id="casos" class="scroll-mt-32">
+            <section id="casos" class="scroll-mt-32 reveal-element">
                 <div class="hybrid-card p-8 md:p-10">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-lg">7</div>
@@ -545,21 +468,21 @@
                     </div>
                     
                     <div class="space-y-4">
-                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm">
+                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm hover:scale-[1.02] var(--ios-spring)">
                             <div class="text-4xl flex-shrink-0 mt-1">🫀</div>
                             <div>
-                                <h4 class="font-extrabold text-gray-900 text-lg">Software Médico Regulado</h4>
+                                <h4 class="font-extrabold text-gray-900 text-lg">MedTech (Salud Regulada)</h4>
                                 <p class="text-sm text-gray-600 mt-2 leading-relaxed">
-                                    Software de marcapasos o bombas de insulina. Un bug cuesta vidas. Usan iteraciones espirales para simular fallas de hardware y cortes de batería antes de compilar el código final.
+                                    Software de marcapasos. Un bug cuesta vidas. Usan iteraciones espirales para simular fallas de hardware, radiación y cortes de batería <strong>miles de veces en simuladores</strong> antes de instalar el código en el chip final del paciente.
                                 </p>
                             </div>
                         </div>
-                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm">
+                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm hover:scale-[1.02] var(--ios-spring)">
                             <div class="text-4xl flex-shrink-0 mt-1">🚀</div>
                             <div>
-                                <h4 class="font-extrabold text-gray-900 text-lg">Sector Aeroespacial (NASA)</h4>
+                                <h4 class="font-extrabold text-gray-900 text-lg">Aeroespacial (NASA)</h4>
                                 <p class="text-sm text-gray-600 mt-2 leading-relaxed">
-                                    El Rover marciano no admite "parches de día uno". Construyen simuladores virtuales de gravedad (mitigación de riesgo atmosférico) en las primeras vueltas antes de ensamblar la nave.
+                                    El Rover marciano no admite "parches de actualización por WiFi" si falla el aterrizaje. Construyen simuladores virtuales de atmósfera marciana (mitigación de riesgo) en las primeras vueltas de la espiral antes de ensamblar la nave física.
                                 </p>
                             </div>
                         </div>
@@ -567,73 +490,33 @@
                 </div>
             </section>
 
-            <!-- 8. Curiosidades & Conclusión -->
-            <section id="datos" class="scroll-mt-32">
-                <div class="grid lg:grid-cols-2 gap-8 mb-8">
-                    <div class="hybrid-card p-8 flex flex-col justify-center">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-900">Curiosidades Rápidas</h2>
-                        <ul class="space-y-4 text-sm text-gray-700 font-medium">
-                            <li class="flex items-start gap-3"><span class="text-xl">💡</span> <strong>Regla del 100x:</strong> Un error de arquitectura cuesta 100 veces más arreglarlo al final que al principio.</li>
-                            <li class="flex items-start gap-3"><span class="text-xl">🕰️</span> <strong>Precursor Ágil:</strong> Su enfoque de "prototipos" sentó la base filosófica para el Manifiesto Ágil moderno.</li>
-                            <li class="flex items-start gap-3"><span class="text-xl">🤝</span> <strong>Win-Win:</strong> En 1994, Boehm añadió fases de "negociación" previas para que cliente y dev siempre ganen.</li>
-                        </ul>
-                    </div>
-
-                    <div class="hybrid-card bg-gray-900 text-white p-8 border-gray-700 shadow-xl flex flex-col justify-center text-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-                        <h2 class="text-3xl font-extrabold mb-4 relative z-10">Conclusión</h2>
-                        <p class="text-gray-300 leading-relaxed text-sm relative z-10 mb-6 font-medium">
-                            La Espiral cambió la filosofía: el desarrollo no es una cadena de montaje industrial, es gestión de incertidumbre.
-                        </p>
-                        <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-md relative z-10">
-                            <p class="italic text-purple-200 font-semibold text-sm">
-                                "El código más barato de mantener es aquel que nunca se escribió, porque un prototipo previo demostró que la idea era inviable."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- DEBATE PREP (Sin Glitches) -->
-            <section id="debate" class="scroll-mt-32">
-                <div class="hybrid-card p-8 md:p-10 ai-glow-border group">
+            <!-- STAKEHOLDER SIMULATOR -->
+            <section id="debate" class="scroll-mt-32 reveal-element">
+                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-gray-900 to-indigo-950 text-white border-gray-700 ai-glow-border group">
                     <div class="relative z-10">
-                        <div class="mb-8 border-b border-gray-200 pb-6 flex justify-between items-center">
-                            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">🗣️ Sparring de Debate</h2>
-                            <span class="bg-gray-900 text-white px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase shadow-md">Confidencial</span>
+                        <div class="mb-8 border-b border-gray-700 pb-6 flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-[1rem] bg-green-500/20 border border-green-400/30 flex items-center justify-center text-green-400 font-bold text-xl">💼</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Shark Tank AI</h2>
+                            </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-8 mb-10">
-                            <div>
-                                <h3 class="font-bold text-purple-800 text-lg mb-4">Armas Argumentativas</h3>
-                                <ul class="space-y-4 text-sm text-gray-700">
-                                    <li class="bg-white/60 p-4 rounded-2xl shadow-sm border border-white"><strong>1. Anti-Agile Crítico:</strong> "Agile asume que equivocarse es gratis. La espiral asume la realidad: en bancos, equivocarse funde la empresa."</li>
-                                    <li class="bg-white/60 p-4 rounded-2xl shadow-sm border border-white"><strong>2. El Mantenimiento:</strong> "Soportar un software viejo acá no es un trauma metodológico; es simplemente darle una 'nueva vuelta' a la espiral."</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-red-800 text-lg mb-4">Contra-Ataques</h3>
-                                <ul class="space-y-4 text-sm text-gray-700">
-                                    <li class="bg-red-50/50 p-4 rounded-2xl border border-red-200 shadow-sm">
-                                        <span class="text-red-700 font-bold block">Crítica: "Es muy caro y lento."</span>
-                                        <span class="mt-2 block"><strong>Respuesta:</strong> "Profesor, caro es programar 6 meses para notar que el servidor no lo soporta. Invertimos rápido en prototipos para ahorrar millones."</span>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="mb-8 text-gray-300 text-[15px] leading-relaxed">
+                            <p>En el mundo real, los inversores no compran código, compran <strong>reducción de riesgo</strong>. Esta herramienta entrena a fundadores a defender sus decisiones de arquitectura técnica frente a un directorio.</p>
                         </div>
 
                         <!-- ✨ COACH DEBATE IA -->
-                        <div class="bg-gradient-to-br from-green-50/80 to-teal-50/80 p-6 md:p-8 rounded-[2rem] border border-green-100 shadow-inner">
-                            <h3 class="font-extrabold text-gray-900 flex items-center gap-2 mb-2">✨ Profesor IA</h3>
-                            <p class="text-sm text-gray-600 mb-6">Tirá tu mejor argumento. La IA será un profesor exigente e intentará desarmarlo. Defendete.</p>
+                        <div class="bg-black/40 p-6 md:p-8 rounded-[2rem] border border-white/10 shadow-inner">
+                            <h3 class="font-extrabold text-white flex items-center gap-2 mb-2">✨ Simulador de Inversor Exigente</h3>
+                            <p class="text-[14px] text-gray-400 mb-6">Pitchea tu producto. La IA asumirá el rol de un inversor agresivo que intentará destrozar tu idea basándose en vulnerabilidades técnicas de las que no te diste cuenta.</p>
                             
                             <div class="flex flex-col gap-3">
-                                <textarea id="ai-debate-input" rows="2" placeholder="Ej: Uso Espiral para evitar fallos catastróficos al final..." class="w-full px-5 py-4 rounded-[1.5rem] bg-white border border-gray-200 focus:border-green-400 focus:outline-none text-sm font-medium text-gray-800 resize-none transition-shadow shadow-sm"></textarea>
-                                <button id="ai-debate-btn" class="pill-btn bg-green-600 text-white px-8 py-4 text-sm shadow-md hover:bg-green-700 self-end border-none">
-                                    Desafiar Argumento
+                                <textarea id="ai-debate-input" rows="3" placeholder="Ej: Voy a crear un banco digital exclusivo para el campo argentino..." class="w-full px-5 py-4 rounded-[1.5rem] bg-white/10 border border-white/20 focus:border-green-400 focus:outline-none text-[15px] font-medium text-white resize-none transition-shadow"></textarea>
+                                <button id="ai-debate-btn" class="pill-btn bg-green-500 text-black px-8 py-4 text-[15px] hover:bg-green-400 self-end border-none font-bold haptic-heavy">
+                                    Enfrentar al Inversor
                                 </button>
                             </div>
-                            <div id="ai-debate-result" class="mt-4 text-sm text-gray-800 hidden bg-white/90 p-6 rounded-[1.5rem] border border-green-200 min-h-[100px] leading-relaxed shadow-sm"></div>
+                            <div id="ai-debate-result" class="mt-6 text-[15px] text-gray-200 hidden bg-black/60 p-6 rounded-[1.5rem] border border-white/10 min-h-[100px] leading-relaxed shadow-sm ai-output transition-all duration-500"></div>
                         </div>
                     </div>
                 </div>
@@ -645,16 +528,53 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // --- GRÁFICO (Material/iOS Vibe) ---
+            // --- MOTOR HÁPTICO (VIBRACIÓN iOS STYLE) ---
+            const Haptics = {
+                light: () => { if (navigator.vibrate) navigator.vibrate(20); },
+                heavy: () => { if (navigator.vibrate) navigator.vibrate(40); },
+                success: () => { if (navigator.vibrate) navigator.vibrate([20, 50, 30]); }
+            };
+            // Exponemos al window para que los onclicks del HTML funcionen
+            window.Haptics = Haptics;
+
+            // Bindear haptics a elementos por clase
+            document.querySelectorAll('.haptic-click').forEach(el => el.addEventListener('click', Haptics.light));
+            document.querySelectorAll('.haptic-heavy').forEach(el => el.addEventListener('click', Haptics.heavy));
+            document.querySelectorAll('.haptic-slide').forEach(el => el.addEventListener('input', () => {
+                // Vibración super sutil al deslizar (throttleado para no trabar el thread)
+                if (Math.random() > 0.8) Haptics.light(); 
+            }));
+
+
+            // --- ANIMACIONES ON SCROLL (Intersection Observer) ---
+            const observerOptions = {
+                root: document.getElementById('main-content'),
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // No dejamos de observar, así si suben y bajan, se vuelve a animar
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+
+
+            // --- GRÁFICO ---
             const ctx = document.getElementById('chaosChart').getContext('2d');
             Chart.defaults.font.family = "'Outfit', sans-serif";
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Éxito', 'Atrasados', 'Fallidos'],
+                    labels: ['Éxito', 'Desafiados', 'Fallidos'],
                     datasets: [{
                         data: [31, 50, 19],
-                        backgroundColor: ['#D0BCFF', '#FFB4E6', '#A8EFFF'],
+                        backgroundColor: ['#D0BCFF', '#FFB4E6', '#FF8A8A'],
                         borderColor: 'transparent', borderWidth: 0, hoverOffset: 8
                     }]
                 },
@@ -674,12 +594,11 @@
             const visualizer = document.getElementById('visualizer');
             let isPlaying = false;
 
-            // FIX INGENIERO: Asignamos el origen dinámicamente y atajamos el error de raíz
             const audioSrc = "audio.mp3";
             audio.src = audioSrc;
 
             audio.addEventListener('error', function() {
-                console.warn(`[Control de Audio] Archivo '${audioSrc}' no detectado. El reproductor aguarda el archivo.`);
+                console.warn(`[Sistema] Archivo '${audioSrc}' no provisto.`);
                 document.getElementById('audio-duration').textContent = "--:--";
             });
 
@@ -692,94 +611,53 @@
             function updatePlayUI(playing) {
                 const coverEmoji = document.getElementById('cover-emoji');
                 if (playing) {
-                    playIcon.classList.add('hidden');
-                    pauseIcon.classList.remove('hidden');
-                    visualizer.parentElement.classList.add('playing'); 
-                    visualizer.style.opacity = "1";
+                    playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+                    visualizer.parentElement.classList.add('playing'); visualizer.style.opacity = "1";
                     if (coverEmoji) coverEmoji.style.opacity = "0";
                 } else {
-                    playIcon.classList.remove('hidden');
-                    pauseIcon.classList.add('hidden');
-                    visualizer.parentElement.classList.remove('playing'); 
-                    visualizer.style.opacity = "0";
+                    playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+                    visualizer.parentElement.classList.remove('playing'); visualizer.style.opacity = "0";
                     if (coverEmoji) coverEmoji.style.opacity = "1";
                 }
             }
 
             playPauseBtn.addEventListener('click', async () => {
-                if (isPlaying) {
-                    audio.pause(); 
-                    isPlaying = false;
-                    updatePlayUI(false);
-                } else {
-                    // Guardia: Evita el DOMException crudo en consola si el archivo no existe
-                    if (audio.error) {
-                        document.getElementById('audio-duration').textContent = "Falta archivo";
-                        return; 
-                    }
-
-                    try {
-                        await audio.play();
-                        isPlaying = true;
-                        updatePlayUI(true);
-                    } catch (err) {
-                        console.warn("[Control de Audio] Reproducción abortada:", err.message);
-                        document.getElementById('audio-duration').textContent = "Error";
-                    }
+                if (isPlaying) { audio.pause(); isPlaying = false; updatePlayUI(false); } 
+                else {
+                    if (audio.error) { document.getElementById('audio-duration').textContent = "Req. Audio"; return; }
+                    try { await audio.play(); isPlaying = true; updatePlayUI(true); } 
+                    catch (err) { console.warn("[Audio abortado]:", err.message); document.getElementById('audio-duration').textContent = "Error"; }
                 }
             });
 
-            audio.addEventListener('ended', () => {
-                isPlaying = false;
-                updatePlayUI(false);
-                scrubber.value = 0;
-            });
-
-            audio.addEventListener('timeupdate', () => {
-                if(audio.duration) {
-                    scrubber.value = (audio.currentTime / audio.duration) * 100 || 0;
-                    document.getElementById('audio-current').textContent = fmtTime(audio.currentTime);
-                }
-            });
-            
+            audio.addEventListener('ended', () => { isPlaying = false; updatePlayUI(false); scrubber.value = 0; });
+            audio.addEventListener('timeupdate', () => { if(audio.duration) { scrubber.value = (audio.currentTime / audio.duration) * 100 || 0; document.getElementById('audio-current').textContent = fmtTime(audio.currentTime); }});
             audio.addEventListener('loadedmetadata', () => document.getElementById('audio-duration').textContent = fmtTime(audio.duration));
             scrubber.addEventListener('input', (e) => { if(audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration; });
+            document.getElementById('rewind-btn').addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+            document.getElementById('forward-btn').addEventListener('click', () => { if(audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10); });
+            volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
 
-            // Controles de Adelantar/Atrasar 10s
-            document.getElementById('rewind-btn').addEventListener('click', () => {
-                audio.currentTime = Math.max(0, audio.currentTime - 10);
-            });
-            document.getElementById('forward-btn').addEventListener('click', () => {
-                if(audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
-            });
-
-            // Control de Volumen
-            volumeSlider.addEventListener('input', (e) => {
-                audio.volume = e.target.value;
-            });
-
-            // --- PESTAÑAS ---
+            // --- PESTAÑAS CORE FRAMEWORK ---
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
+                    Haptics.light(); // Vibración al cambiar de tab
                     document.querySelectorAll('.tab-btn').forEach(b => {
-                        b.classList.remove('active', 'bg-gray-900', 'text-white');
+                        b.classList.remove('active', 'bg-indigo-600', 'text-white');
                         b.classList.add('bg-white/60', 'text-gray-600');
                     });
-                    btn.classList.add('active', 'bg-gray-900', 'text-white');
+                    btn.classList.add('active', 'bg-indigo-600', 'text-white');
                     btn.classList.remove('bg-white/60', 'text-gray-600');
-
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     document.getElementById(btn.getAttribute('data-target')).classList.add('active');
                 });
             });
 
-            // --- SCROLL SPY & MENÚ MÓVIL IZQUIERDO ---
+            // --- UI MENÚS & NAVEGACIÓN ---
             const mainContent = document.getElementById('main-content');
             mainContent.addEventListener('scroll', () => {
                 let current = '';
-                document.querySelectorAll('section').forEach(sec => {
-                    if (mainContent.scrollTop >= (sec.offsetTop - 250)) current = sec.getAttribute('id');
-                });
+                document.querySelectorAll('section').forEach(sec => { if (mainContent.scrollTop >= (sec.offsetTop - 300)) current = sec.getAttribute('id'); });
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.remove('active-nav-link');
                     if (link.getAttribute('href') === `#${current}`) link.classList.add('active-nav-link');
@@ -791,47 +669,34 @@
             document.getElementById('mobile-menu-list').innerHTML = document.getElementById('nav-menu').innerHTML;
 
             document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                mobileNav.classList.remove('hidden');
-                setTimeout(() => { mobileNav.classList.remove('opacity-0'); mobileSheet.classList.remove('translate-y-full'); }, 10);
+                mobileNav.classList.remove('hidden'); setTimeout(() => { mobileNav.classList.remove('opacity-0'); mobileSheet.classList.remove('translate-y-full'); }, 10);
             });
-
             mobileNav.addEventListener('click', (e) => {
-                if(e.target === mobileNav) {
-                    mobileNav.classList.add('opacity-0'); mobileSheet.classList.add('translate-y-full');
-                    setTimeout(() => mobileNav.classList.add('hidden'), 300);
-                }
+                if(e.target === mobileNav) { mobileNav.classList.add('opacity-0'); mobileSheet.classList.add('translate-y-full'); setTimeout(() => mobileNav.classList.add('hidden'), 300); }
             });
-
             document.querySelectorAll('#mobile-menu-list a').forEach(l => {
                 l.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById(l.getAttribute('data-target') || l.getAttribute('href').replace('#','')).scrollIntoView({ behavior: 'smooth' });
+                    e.preventDefault(); 
+                    document.getElementById(l.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth' }); 
                     mobileNav.click();
+                    Haptics.light();
                 });
             });
 
-            // --- NUEVO: MENÚ DERECHO (CONTROL CENTER) ---
+            // Menú Derecho
             const rightSidebar = document.getElementById('right-sidebar');
             const rightSidebarOverlay = document.getElementById('right-sidebar-overlay');
-            
-            function openRightSidebar() {
-                rightSidebarOverlay.classList.remove('hidden');
-                setTimeout(() => { rightSidebarOverlay.classList.remove('opacity-0'); rightSidebar.classList.add('open'); }, 10);
-            }
-            
-            window.closeRightSidebar = function() { // Global for inline onclick
-                rightSidebarOverlay.classList.add('opacity-0'); rightSidebar.classList.remove('open');
-                setTimeout(() => rightSidebarOverlay.classList.add('hidden'), 300);
-            }
-
+            function openRightSidebar() { Haptics.light(); rightSidebarOverlay.classList.remove('hidden'); setTimeout(() => { rightSidebarOverlay.classList.remove('opacity-0'); rightSidebar.classList.add('open'); }, 10); }
+            window.closeRightSidebar = function() { rightSidebarOverlay.classList.add('opacity-0'); rightSidebar.classList.remove('open'); setTimeout(() => rightSidebarOverlay.classList.add('hidden'), 300); }
             document.getElementById('toggle-right-sidebar').addEventListener('click', openRightSidebar);
             document.getElementById('close-right-sidebar').addEventListener('click', closeRightSidebar);
             rightSidebarOverlay.addEventListener('click', closeRightSidebar);
 
-            // Desktop left menu smooth scroll
             document.querySelectorAll('#nav-menu a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault(); document.getElementById(link.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth' });
+                link.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    document.getElementById(link.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth' }); 
+                    Haptics.light();
                 });
             });
 
@@ -841,50 +706,62 @@
             async function callGemini(prompt, systemInstruction) {
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemInstruction }] } };
-                const delays = [1000, 2000];
+                const delays = [1000, 2000, 4000];
                 for (let attempt = 0; attempt <= delays.length; attempt++) {
                     try {
                         const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                         if (!res.ok) throw new Error();
                         const data = await res.json();
-                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta.";
+                        Haptics.success(); // Vibración de éxito al recibir respuesta
+                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
                     } catch (err) {
-                        if (attempt === delays.length) return "<p style='color:red'>Conexión fallida.</p>";
+                        if (attempt === delays.length) return "<p style='color:red'>Conexión fallida con el engine IA.</p>";
                         await new Promise(r => setTimeout(r, delays[attempt]));
                     }
                 }
             }
 
-            // Hook Gen
+            // 1. Elevator Pitch Gen
             document.getElementById('ai-hook-btn').addEventListener('click', async function() {
+                const input = document.getElementById('ai-hook-input').value;
                 const result = document.getElementById('ai-hook-result');
-                this.disabled = true; this.innerText = 'Creando...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5">Pensando gancho...</span>';
-                const sys = "Coach oratoria. Genera guion corto, usa <strong>. Sin markdown bloques.";
-                result.innerHTML = await callGemini(`Guion de 30s para modelo espiral. Tono: ${document.getElementById('ai-hook-tone').value}`, sys);
-                this.disabled = false; this.innerText = 'Crear Guion';
+                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Detallá la idea de tu startup primero.'; Haptics.light(); return; }
+                this.disabled = true; this.innerText = 'Redactando...';
+                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Generando síntesis comercial...</span>';
+                
+                const prompt = `Idea: "${input}". Pitch de 30s (max 4 oraciones) para inversores. Destacá el uso del modelo espiral para mitigar riesgos.`;
+                const sys = "Sos asesor de Silicon Valley. Genera texto. Usa HTML <strong>. Tono comercial. Cero markdown.";
+                
+                result.innerHTML = await callGemini(prompt, sys);
+                this.disabled = false; this.innerText = 'Generar Pitch';
             });
 
-            // Riesgos
+            // 2. Evaluador Riesgos
             document.getElementById('ai-risk-btn').addEventListener('click', async function() {
-                const input = document.getElementById('ai-project-input').value;
+                const input = document.getElementById('ai-risk-input').value;
                 const result = document.getElementById('ai-risk-result');
-                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Escribí algo primero.'; return; }
-                this.disabled = true; this.innerText = 'Analizando...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5">Pensando...</span>';
-                result.innerHTML = await callGemini(`Proyecto: ${input}`, "Arquitecto Software. Da 3 riesgos en lista HTML.");
-                this.disabled = false; this.innerText = 'Analizar Proyecto';
+                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Escribí los detalles de la app primero.'; Haptics.light(); return; }
+                this.disabled = true; this.innerText = 'Procesando...';
+                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Computando arquitectura y vectores de fallo...</span>';
+                
+                const prompt = `Producto: "${input}". Creá el plan del Primer Ciclo Espiral.`;
+                const sys = "Sos un CTO. Devuelve HTML (<ul> <li> <strong>). 1) Objetivo Vuelta 1. 2) Los 3 Riesgos Críticos. 3) Prototipo para mitigar cada uno.";
+                
+                result.innerHTML = await callGemini(prompt, sys);
+                this.disabled = false; this.innerText = 'Generar Matriz Espiral';
             });
 
-            // Debate
+            // 3. Shark Tank Simulator
             document.getElementById('ai-debate-btn').addEventListener('click', async function() {
                 const input = document.getElementById('ai-debate-input').value;
                 const result = document.getElementById('ai-debate-result');
-                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Ingresá tu argumento.'; return; }
-                this.disabled = true; this.innerText = 'Pensando...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5">Generando ataque...</span>';
-                result.innerHTML = await callGemini(`Argumento: ${input}`, "Profesor exigente. Refuta el argumento. HTML <strong>. Cero markdown.");
-                this.disabled = false; this.innerText = 'Desafiar Argumento';
+                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Ingresá el pitch de tu negocio.'; Haptics.light(); return; }
+                this.disabled = true; this.innerText = 'Analizando mercado...';
+                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Evaluando viabilidad financiera y técnica...</span>';
+                
+                const sys = "Sos inversor 'Shark Tank', CTO. El usuario pitchea. Destruí su idea encontrando 2 agujeros técnicos. Al final, ofréceles financiar la 'primera vuelta espiral' si hacen un prototipo. Usa HTML <strong>.";
+                result.innerHTML = await callGemini(`Mi startup es: ${input}`, sys);
+                this.disabled = false; this.innerText = 'Enfrentar al Inversor';
             });
         });
     </script>
