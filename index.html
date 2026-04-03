@@ -706,7 +706,7 @@
 const apiKey = "AIzaSyDgAuf1iMW8VxRmR78aM_xoZh-Pzr60i_Y"; 
 
 async function callGemini(prompt, systemInstruction) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-lite:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
     
     // EL CAMBIO CLAVE: system_instruction (con guion bajo)
     const payload = { 
