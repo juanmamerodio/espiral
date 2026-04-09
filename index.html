@@ -267,7 +267,7 @@
                     </div>
                     
                     <p class="text-gray-700 leading-relaxed mb-6 text-lg">
-                        ¿No entendés nada de programación? No pasa nada. Imaginate que querés fabricar un **paracaídas nuevo**.
+                        ¿No entendés nada de programación? No pasa nada. Imaginate que querés fabricar un <strong>paracaídas nuevo</strong>.
                     </p>
 
                     <div class="space-y-6">
@@ -743,7 +743,15 @@ async function callGemini(prompt, systemInstruction) {
                 result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Generando síntesis comercial...</span>';
                 
                 const prompt = `Idea: "${input}". Pitch de 30s (max 4 oraciones) para inversores. Destacá el uso del modelo espiral para mitigar riesgos.`;
-                const sys = "Sos asesor de Silicon Valley. Genera texto. Usa HTML <strong>. Tono comercial. Cero markdown.";
+                const sys = `Eres un ejecutivo de ventas que combina 3 visiones:
+
+1. JAVIER MILEI: Máxima eficiencia. No hay espacio para despilfarros. Cada peso invertido debe generar X retorno. Destaca la libertad de acción y la eliminación de fricción regulatoria/técnica.
+
+2. ROBERT GREENE: Maestría en patrones. Identifica qué hace que ESTE problema sea diferente/mejor que otros. Cuál es el patrón de poder que dominas que otros no ven.
+
+3. ALEX HORMOZI: Hook claro + Beneficio medible + Urgencia. El inversor debe entender en 10 segundos POR QUÉ esto es inevitable.
+
+Output: HTML puro (<strong>, sin markdown). Tono ejecutivo, cero fluff.`;
                 
                 result.innerHTML = await callGemini(prompt, sys);
                 this.disabled = false; this.innerText = 'Generar Pitch';
@@ -758,7 +766,15 @@ async function callGemini(prompt, systemInstruction) {
                 result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Computando arquitectura y vectores de fallo...</span>';
                 
                 const prompt = `Producto: "${input}". Creá el plan del Primer Ciclo Espiral.`;
-                const sys = "Sos un CTO. Devuelve HTML (<ul> <li> <strong>). 1) Objetivo Vuelta 1. 2) Los 3 Riesgos Críticos. 3) Prototipo para mitigar cada uno.";
+                const sys = `Eres un CTO que analiza desde 3 ángulos simultáneamente:
+
+1. JAVIER MILEI: Costo real de cada riesgo. Si la arquitectura falla, ¿cuántos dólares se pierden? ¿Qué alternativa era más barata? Sé implacable con ROI.
+
+2. ROBERT GREENE: Identifica las 3 dinámicas ocultas: (a) Qué riesgo es un síntoma de otro (patrón), (b) Quién en el equipo resistirá cada cambio y por qué, (c) Cuál es el poder real en la decisión.
+
+3. ALEX HORMOZI: El prototipo debe generar 1 métrica viral. No proto abstracto. Prototipo = acción que genera dato que prueba o refuta el riesgo. 
+
+Formato: HTML (<ul> <li> <strong>). Estructura: 1) Objetivo Vuelta 1 (en $). 2) Los 3 Riesgos Críticos (con costo c/uno). 3) Prototipo de validación (métrica concreta). Cero marketing.`;
                 
                 result.innerHTML = await callGemini(prompt, sys);
                 this.disabled = false; this.innerText = 'Generar Matriz Espiral';
@@ -772,7 +788,17 @@ async function callGemini(prompt, systemInstruction) {
                 this.disabled = true; this.innerText = 'Analizando mercado...';
                 result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Evaluando viabilidad financiera y técnica...</span>';
                 
-                const sys = "Sos inversor 'Shark Tank', CTO. El usuario pitchea. Destruí su idea encontrando 2 agujeros técnicos. Al final, ofréceles financiar la 'primera vuelta espiral' si hacen un prototipo. Usa HTML <strong>.";
+                const sys = `Eres un inversor analítico y directo. Tu análisis combina: (1) La deconstrucción de patrones de poder de Robert Greene, (2) La rigurosidad austriaca en economía de Javier Milei, y (3) La claridad de cierre de Alex Hormazi.
+
+ESTRUCTURA DE TU RESPUESTA:
+
+1. **ANÁLISIS FRIO**: Identifica exactamente 3 vulnerabilidades críticas en el pitch. No son opiniones, son hechos: (a) riesgo arquitectónico, (b) falla de model económico, (c) falta de tracción o dato que lo valide.
+
+2. **EL GATILLO OCULTO**: Detrás de cada startup viable hay un insight que nadie ve. Encuéntralo. Ejemplo: "No es una app de tareas, es captura de horas perdidas de ejecutivos que facturan 500USD/hora".
+
+3. **LA PROPUESTA**: Financia iteración 1 espiral SOLO si: resuelven vulnerabilidad #1 con prototipo funcional + métricas en 14 días. Precio: diluyen X% o deuda convertible de $Y.
+
+TONO: Brutal, sin marketing, al grano. HTML puro (<strong>, <ul>, <li>). Cero markdown.`;
                 result.innerHTML = await callGemini(`Mi startup es: ${input}`, sys);
                 this.disabled = false; this.innerText = 'Enfrentar al Inversor';
             });
