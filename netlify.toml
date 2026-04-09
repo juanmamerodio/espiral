@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "."
+
+[context.production]
+  environment = { NODE_ENV = "production" }
+
+[context.develop]
+  environment = { NODE_ENV = "development" }
+
+# Configuración de functions
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

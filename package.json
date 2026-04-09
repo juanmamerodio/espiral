@@ -1,0 +1,17 @@
+{
+  "name": "spiralrisk-ai",
+  "version": "1.0.0",
+  "description": "SpiralRisk AI - Gestión de Riesgos Inteligente con Netlify Functions",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Build completed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": ["spiral", "risk", "gemini", "ai"],
+  "author": "Enzo, Isabela, Celeste y Juan M.",
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
