@@ -699,43 +699,40 @@
                     Haptics.light();
                 });
             });
-const apiKey = "AIzaSyB6rddpSRmpTKgpealBoU_u7gYzTw18Eoc"; 
+// Obtenemos el texto del input
+async function callGemini(prompt, systemInstruction) {
+    // Apuntamos a nuestra función de Netlify en lugar de a Google
+    const url = '/.netlify/functions/gemini';
+    
+    // Le mandamos los dos datos crudos, la función se encarga del resto
+    const payload = { prompt, systemInstruction };
+    
+    const delays = [1000, 2000, 4000];
 
+    for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+            const res = await fetch(url, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(payload) 
+            });
 
+            if (!res.ok) throw new Error('Error en la red');
 
-            async function callGemini(prompt, systemInstruction) {
+            const data = await res.json();
+            Haptics.success(); // Vibración de éxito al recibir respuesta
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${apiKey}`;
+            // Desarmamos la respuesta que nos reenvía Netlify desde Gemini
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
 
-                const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemInstruction }] } };
+        } catch (err) {
+            if (attempt === delays.length) return "<p style='color:red'>Conexión fallida con el servidor.</p>";
+            await new Promise(r => setTimeout(r, delays[attempt]));
+        }
+    }
+}
 
-                const delays = [1000, 2000, 4000];
-
-                for (let attempt = 0; attempt <= delays.length; attempt++) {
-
-                    try {
-
-                        const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
-                        if (!res.ok) throw new Error();
-
-                        const data = await res.json();
-
-                        Haptics.success(); // Vibración de éxito al recibir respuesta
-
-                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
-
-                    } catch (err) {
-
-                        if (attempt === delays.length) return "<p style='color:red'>Conexión fallida con el engine IA.</p>";
-
-                        await new Promise(r => setTimeout(r, delays[attempt]));
-
-                    }
-
-                }
-
-            }
+// ... acá abajo siguen tus botones (Elevator Pitch Gen, etc.) sin cambios
 
             // 1. Elevator Pitch Gen
             document.getElementById('ai-hook-btn').addEventListener('click', async function() {
