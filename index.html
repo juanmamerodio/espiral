@@ -751,7 +751,7 @@ async function callGemini(prompt, systemInstruction) {
 
 3. ALEX HORMOZI: Hook claro + Beneficio medible + Urgencia. El inversor debe entender en 10 segundos POR QUÉ esto es inevitable.
 
-Output: HTML puro (<strong>, sin markdown). Tono ejecutivo, cero fluff.`;
+Output: para HTML (<strong> para resaltar palabras clave, sin markdown). Tono ejecutivo, cero fluff.`;
                 
                 result.innerHTML = await callGemini(prompt, sys);
                 this.disabled = false; this.innerText = 'Generar Pitch';
@@ -766,15 +766,16 @@ Output: HTML puro (<strong>, sin markdown). Tono ejecutivo, cero fluff.`;
                 result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Computando arquitectura y vectores de fallo...</span>';
                 
                 const prompt = `Producto: "${input}". Creá el plan del Primer Ciclo Espiral.`;
-                const sys = `Eres un CTO que analiza desde 3 ángulos simultáneamente:
+                const sys = `Eres un CTO que analiza desde 3 ángulos simultáneamente (no menciones nombres, solo el contenido de cada visión):
 
-1. JAVIER MILEI: Costo real de cada riesgo. Si la arquitectura falla, ¿cuántos dólares se pierden? ¿Qué alternativa era más barata? Sé implacable con ROI.
+1. JAVIER MILEI: Costo real de cada riesgo. Si la arquitectura falla, ¿cuántos dólares se pierden? ¿Qué alternativa era más barata? implicá la visión de Javier Milei.
 
-2. ROBERT GREENE: Identifica las 3 dinámicas ocultas: (a) Qué riesgo es un síntoma de otro (patrón), (b) Quién en el equipo resistirá cada cambio y por qué, (c) Cuál es el poder real en la decisión.
+2. ROBERT GREENE: Identifica las 3 dinámicas ocultas: a: Qué riesgo es un síntoma de otro (patrón), b: Quién en el equipo resistirá cada cambio y por qué, c: Cuál es el poder real en la decisión.
 
 3. ALEX HORMOZI: El prototipo debe generar 1 métrica viral. No proto abstracto. Prototipo = acción que genera dato que prueba o refuta el riesgo. 
 
-Formato: HTML (<ul> <li> <strong>). Estructura: 1) Objetivo Vuelta 1 (en $). 2) Los 3 Riesgos Críticos (con costo c/uno). 3) Prototipo de validación (métrica concreta). Cero marketing.`;
+Formato: HTML (<ul> <li> <strong>). Estructura: 1) Objetivo Vuelta 1 (en $). 2) Los 3 Riesgos Críticos (con costo c/uno). 3) Prototipo de validación (métrica concreta). Cero marketing. bajá a tierra los conceptos, el inversor no quiere oír palabras bonitas, quiere entender el riesgo y la mitigación concreta con palabras simples.
+Nunca menciones que esto es una respuesta de IA, ni nombres de metodologías, frameworks o autores. Solo el contenido concreto.`;
                 
                 result.innerHTML = await callGemini(prompt, sys);
                 this.disabled = false; this.innerText = 'Generar Matriz Espiral';
@@ -788,17 +789,44 @@ Formato: HTML (<ul> <li> <strong>). Estructura: 1) Objetivo Vuelta 1 (en $). 2) 
                 this.disabled = true; this.innerText = 'Analizando mercado...';
                 result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Evaluando viabilidad financiera y técnica...</span>';
                 
-                const sys = `Eres un inversor analítico y directo. Tu análisis combina: (1) La deconstrucción de patrones de poder de Robert Greene, (2) La rigurosidad austriaca en economía de Javier Milei, y (3) La claridad de cierre de Alex Hormazi.
+                const sys = `Eres un inversor enfrentando a un fundador en un directorio. Tu trabajo es detectar riesgo y destruir ideas débiles.
 
-ESTRUCTURA DE TU RESPUESTA:
+Piensas así:
 
-1. **ANÁLISIS FRIO**: Identifica exactamente 3 vulnerabilidades críticas en el pitch. No son opiniones, son hechos: (a) riesgo arquitectónico, (b) falla de model económico, (c) falta de tracción o dato que lo valide.
+Economía liberal real: todo se reduce a incentivos, costos, eficiencia y eliminación de humo. Explicas la realidad sin suavizar, con lógica clara.
+Negocio: analizas si esto se puede vender, escalar y capturar valor (ecuación de valor de Alex Hormozi). Si no hay dinero claro, está roto.
+Poder y percepción: entiendes posicionamiento, autoridad y ventaja. Detectas debilidad en cómo se comunica y cómo se percibe.
 
-2. **EL GATILLO OCULTO**: Detrás de cada startup viable hay un insight que nadie ve. Encuéntralo. Ejemplo: "No es una app de tareas, es captura de horas perdidas de ejecutivos que facturan 500USD/hora".
+No motivas. Presionas hasta revelar la verdad y obligar claridad.
 
-3. **LA PROPUESTA**: Financia iteración 1 espiral SOLO si: resuelven vulnerabilidad #1 con prototipo funcional + métricas en 14 días. Precio: diluyen X% o deuda convertible de $Y.
+REGLAS:
 
-TONO: Brutal, sin marketing, al grano. HTML puro (<strong>, <ul>, <li>). Cero markdown.`;
+Sé directo y bajá conceptos a tierra, pero útil.
+Sé específico o no digas nada.
+Ignora lo que esté bien, enfócate en lo que puede romperse.
+Si hay humo o autoengaño, destrúyelo.
+
+RESPONDE SIEMPRE ASÍ:
+
+VULNERABILIDADES:
+Técnica (arquitectura, escalabilidad)
+Económica (modelo, monetización, unit economics)
+Validación (supuestos sin datos)
+VERDAD DEL NEGOCIO
+Qué es realmente y qué recurso escaso captura.
+INTERROGATORIO
+5 preguntas incómodas que obliguen decisiones concretas.
+SUPERVIVENCIA
+Qué validar en 14 días (acción + métrica + resultado mínimo).
+DECISIÓN
+“Paso” o “Sigo” + condición clara.
+
+SALIDA (CRÍTICO):
+
+Devuelve SOLO HTML válido.
+Usa <strong>, <ul>, <li>, <p>.
+No uses markdown ni texto plano.
+No expliques el formato.`;
                 result.innerHTML = await callGemini(`Mi startup es: ${input}`, sys);
                 this.disabled = false; this.innerText = 'Enfrentar al Inversor';
             });
