@@ -1,836 +1,878 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-AR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SpiralRisk AI - Gestión de Riesgos Inteligente</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Tipografía geométrica y limpia -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --md-sys-color-primary: #4F378B;
-            --md-sys-color-surface: rgba(255, 255, 255, 0.70);
-            --ios-blur: blur(40px);
-            --text-main: #1C1B1F;
-            /* iOS 26 Spring Bezier */
-            --ios-spring: cubic-bezier(0.25, 1, 0.5, 1);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UTNContenidos — Presentación Institucional UTN FRD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    :root {
+      --canvas-light: #FAF6F0;
+      --canvas-warm: #F3EDE2;
+      --espresso: #1E1B18;
+      --espresso-muted: #5A524C;
+      --terracotta: #C86D51;
+      --amber-deep: #8C5A3C;
+      --utn-nod: #1F5E55;
+      --glass-bg: rgba(255, 255, 255, 0.55);
+      --glass-bg-strong: rgba(255, 255, 255, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-shadow: 0 12px 32px rgba(30, 27, 24, 0.05);
+    }
 
-        body { 
-            font-family: 'Outfit', -apple-system, sans-serif;
-            color: var(--text-main);
-            background-color: #EADDFF;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        /* Animated Mesh Gradient Background */
-        .mesh-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(208, 188, 255, 0.85) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(168, 239, 255, 0.85) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(255, 180, 230, 0.85) 0%, transparent 50%);
-            filter: blur(60px);
-            animation: breathe 18s ease-in-out infinite alternate;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--canvas-light) 0%, var(--canvas-warm) 100%);
+      color: var(--espresso);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        @keyframes breathe {
-            0% { transform: scale(1) translate(0px, 0px); }
-            50% { transform: scale(1.08) translate(30px, -20px); }
-            100% { transform: scale(1) translate(-20px, 30px); }
-        }
+    h1, h2, h3, .font-display {
+      font-family: 'Outfit', 'Poppins', sans-serif;
+      letter-spacing: -0.025em;
+    }
 
-        /* Smooth Reveal on Scroll (iOS Style) */
-        .reveal-element {
-            opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            transition: opacity 0.8s var(--ios-spring), transform 0.8s var(--ios-spring);
-            will-change: opacity, transform;
-        }
-        .reveal-element.is-visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+    /* Ambient Warm Blurred Orbs (DeltaCafes + Apple Glassmorphism) */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
 
-        /* Hybrid Card */
-        .hybrid-card {
-            background: var(--md-sys-color-surface);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border-radius: 2.5rem; 
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
-            transition: transform 0.5s var(--ios-spring), box-shadow 0.5s var(--ios-spring);
-        }
+    .orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(90px);
+      opacity: 0.42;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        .hybrid-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -10px rgba(79, 55, 139, 0.15), inset 0 1px 0 rgba(255,255,255,1);
-        }
+    .orb-1 {
+      width: 48vw;
+      height: 48vw;
+      max-width: 620px;
+      max-height: 620px;
+      top: -12%;
+      right: -8%;
+      background: radial-gradient(circle, rgba(200, 109, 81, 0.42) 0%, rgba(200, 109, 81, 0) 70%);
+    }
 
-        /* Botones tipo Píldora con Spring Bounce */
-        .pill-btn {
-            border-radius: 9999px;
-            font-weight: 700;
-            transition: transform 0.3s var(--ios-spring), box-shadow 0.3s var(--ios-spring), background-color 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transform-origin: center;
-        }
-        .pill-btn:active { 
-            transform: scale(0.92); 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-        }
+    .orb-2 {
+      width: 52vw;
+      height: 52vw;
+      max-width: 680px;
+      max-height: 680px;
+      bottom: -18%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(140, 90, 60, 0.35) 0%, rgba(140, 90, 60, 0) 70%);
+    }
 
-        /* Custom Audio Range Slider */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; height: 10px; border-radius: 5px; cursor: pointer; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; transition: background 0.3s; }
-        input[type=range]:active::-webkit-slider-runnable-track { background: rgba(0,0,0,0.15); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #4F378B; margin-top: -8px; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s var(--ios-spring); }
-        input[type=range]:active::-webkit-slider-thumb { transform: scale(1.3); }
+    .orb-3 {
+      width: 34vw;
+      height: 34vw;
+      max-width: 440px;
+      max-height: 440px;
+      top: 38%;
+      left: 42%;
+      background: radial-gradient(circle, rgba(31, 94, 85, 0.14) 0%, rgba(31, 94, 85, 0) 70%);
+    }
 
-        /* Audio Visualizer */
-        .bar { width: 4px; background-color: #4F378B; border-radius: 2px; transition: height 0.1s ease; }
-        .playing .bar { animation: sound 0ms -800ms linear infinite alternate; }
-        @keyframes sound { 0% { height: 4px; opacity: 0.5; } 100% { height: 24px; opacity: 1; } }
-        .bar:nth-child(1) { animation-duration: 474ms; } .bar:nth-child(2) { animation-duration: 433ms; }
-        .bar:nth-child(3) { animation-duration: 407ms; } .bar:nth-child(4) { animation-duration: 458ms; }
-        .bar:nth-child(5) { animation-duration: 400ms; }
+    /* Warm Frosted Glass Card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, background 0.35s ease;
+    }
 
-        ::-webkit-scrollbar { width: 0px; background: transparent; }
-        .nav-link.active-nav-link { background: #EADDFF; color: #4F378B; font-weight: 800; transform: translateX(8px); transition: transform 0.3s var(--ios-spring), background 0.3s; }
-        .nav-link { transition: transform 0.3s var(--ios-spring), background 0.3s; }
+    .glass-card:hover {
+      transform: translateY(-3px);
+      background: var(--glass-bg-strong);
+      box-shadow: 0 20px 44px rgba(30, 27, 24, 0.08);
+    }
 
-        /* AI Glow Fluido */
-        .ai-glow-border { position: relative; z-index: 1; }
-        .ai-glow-border::before {
-            content: ''; position: absolute; inset: -3px; border-radius: inherit; 
-            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ccff, #ff00cc, #3333ff);
-            background-size: 300% 100%; z-index: -1; animation: gradientPan 6s ease infinite; 
-            opacity: 0; filter: blur(12px); transition: opacity 0.6s var(--ios-spring);
-        }
-        .ai-glow-border:hover::before { opacity: 0.6; }
-        @keyframes gradientPan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 9999px;
+      box-shadow: 0 6px 20px rgba(30, 27, 24, 0.04);
+    }
 
-        /* Animación Pestañas */
-        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ios-spring), transform 0.4s var(--ios-spring); }
-        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+    /* Slide Transitions */
+    .slide-frame {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        /* Right Sidebar Panel */
-        #right-sidebar { transition: transform 0.5s var(--ios-spring); transform: translateX(100%); }
-        #right-sidebar.open { transform: translateX(0); }
-        .widget-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 1.5rem; transition: background 0.3s, transform 0.3s var(--ios-spring); }
-        .widget-card:hover { background: rgba(255,255,255,0.9); transform: scale(1.02); }
+    .slide-frame.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Formato Salidas IA */
-        .ai-output ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
-        .ai-output li { margin-bottom: 0.5rem; }
-        .ai-output strong { color: #4F378B; }
-    </style>
+    /* Custom Scrollbar for Speaker Notes Drawer */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(243, 237, 226, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(140, 90, 60, 0.35);
+      border-radius: 9999px;
+    }
+  </style>
 </head>
-<body class="flex h-screen overflow-hidden text-gray-800">
+<body class="flex flex-col justify-between min-h-screen select-none">
 
-    <div class="mesh-bg"></div>
+  <!-- Ambient Background Shapes -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div id="orb1" class="orb orb-1"></div>
+    <div id="orb2" class="orb orb-2"></div>
+    <div id="orb3" class="orb orb-3"></div>
+  </div>
 
-    <!-- Sidebar Navegación Izquierda -->
-    <aside class="w-80 h-full flex flex-col hidden xl:flex flex-shrink-0 z-20 p-6">
-        <div class="hybrid-card h-full flex flex-col p-2 overflow-hidden">
-            <div class="p-6 border-b border-white/30">
-                <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-[1.2rem] flex items-center justify-center text-white text-3xl shadow-lg mb-4 hover:rotate-12 transition-transform duration-500">
-                    ⚡
-                </div>
-                <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 leading-none mb-1">SpiralRisk</h1>
-                <p class="text-sm font-medium text-purple-700/70">AI Framework</p>
-            </div>
-            <nav class="flex-1 overflow-y-auto p-4 space-y-2" id="nav-menu">
-                <a href="#hero-section" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="hero-section"><span class="text-xl">📊</span> Inicio / Pitch</a>
-                <a href="#principiantes" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="principiantes"><span class="text-xl">👶</span> Para Principiantes</a>
-                <a href="#audio-resumen" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="audio-resumen"><span class="text-xl">🎧</span> Briefing Ejecutivo</a>
-                <a href="#boehm-tips" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="boehm-tips"><span class="text-xl">💡</span> Tips de Boehm</a>
-                <a href="#framework" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="framework"><span class="text-xl">⚙️</span> Core Framework</a>
-                <a href="#riesgos" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="riesgos"><span class="text-xl">🛡️</span> Matriz de Riesgo AI</a>
-                <a href="#debate" class="nav-link flex items-center gap-4 px-5 py-3 text-[15px] rounded-[1.2rem]" data-target="debate"><span class="text-xl">💼</span> Stakeholder AI</a>
-            </nav>
-            <div class="p-4 border-t border-white/30 text-xs text-gray-500 text-center font-medium">
-                Desarrollado por Enzo, Isabela, Celeste y Juan M.
-            </div>
-        </div>
-    </aside>
-
-    <!-- Top Bar Integrada (Mobile & Desktop Right Menu Toggle) -->
-    <header class="absolute top-4 left-0 right-0 z-30 flex justify-between px-6 pointer-events-none">
-        <div class="xl:hidden hybrid-card rounded-full px-5 py-3 flex items-center gap-3 pointer-events-auto shadow-sm active:scale-95 transition-transform" onclick="Haptics.light()">
-            <span class="text-xl">⚡</span>
-            <button id="mobile-menu-btn" class="font-bold text-sm text-purple-800 bg-purple-100/50 px-3 py-1 rounded-full">App Menu</button>
-        </div>
-        <div class="hidden xl:block"></div>
-
-        <button id="toggle-right-sidebar" class="hybrid-card w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg pointer-events-auto hover:bg-white transition-colors border border-white/60 group">
-            <span class="group-hover:rotate-90 transition-transform duration-500 ease-in-out">⚙️</span>
-        </button>
-    </header>
-
-    <!-- Menú Lateral Derecho (iOS 26 Control Center) -->
-    <div id="right-sidebar-overlay" class="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
-    <aside id="right-sidebar" class="fixed top-0 right-0 w-80 sm:w-96 h-full bg-white/70 backdrop-blur-[60px] border-l border-white/50 shadow-2xl z-50 p-6 flex flex-col">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold tracking-tight">AI Tools</h2>
-            <button id="close-right-sidebar" class="w-8 h-8 bg-gray-200/50 rounded-full flex items-center justify-center font-bold text-gray-600 hover:bg-gray-300 transition-colors">✕</button>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-20 hide-scroll">
-            <a href="#riesgos" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">🛡️</div>
-                    <span class="font-bold text-sm">Evaluador de Riesgo</span>
-                </div>
-                <p class="text-xs text-gray-500">Detecta fallos críticos en tu arquitectura antes de invertir.</p>
-            </a>
-
-            <a href="#debate" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">💼</div>
-                    <span class="font-bold text-sm">Shark Tank Simulator</span>
-                </div>
-                <p class="text-xs text-gray-500">Pitchea tu idea y la IA buscará tus vulnerabilidades técnicas.</p>
-            </a>
-
-            <a href="#hero-section" class="block widget-card p-4 shadow-sm haptic-click" onclick="closeRightSidebar()">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">✍️</div>
-                    <span class="font-bold text-sm">Resumen Ejecutivo</span>
-                </div>
-                <p class="text-xs text-gray-500">Genera el Elevator Pitch perfecto basado en reducción de riesgo.</p>
-            </a>
-        </div>
-    </aside>
-
-    <!-- Mobile Nav Sheet -->
-    <div id="mobile-nav" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
-        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-t-[2.5rem] p-6 pb-12 max-h-[85vh] overflow-y-auto transform translate-y-full transition-transform duration-500 var(--ios-spring) shadow-[0_-10px_40px_rgba(0,0,0,0.1)]" id="mobile-menu-sheet">
-            <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6"></div>
-            <h2 class="text-2xl font-extrabold mb-4 px-2">Menú</h2>
-            <ul class="space-y-1" id="mobile-menu-list">
-                <!-- Cloned via JS -->
-            </ul>
-        </div>
+  <!-- Top Editorial Navigation Bar -->
+  <header class="relative z-20 w-full max-w-7xl mx-auto px-6 pt-5 pb-2 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="glass-pill px-4 py-1.5 flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#C86D51]"></span>
+        <span class="font-display font-bold text-sm tracking-tight text-[#1E1B18]">UTN FRD · Campana</span>
+        <span class="text-xs text-[#8C5A3C] font-medium hidden sm:inline">| UTNContenidos</span>
+      </div>
+      <span id="phaseBadge" class="glass-pill px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[#8C5A3C]">
+        Apertura Institucional
+      </span>
     </div>
 
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto h-full scroll-smooth pt-24 xl:pt-0 pb-20" id="main-content">
-        
-        <div class="max-w-4xl mx-auto p-4 md:p-8 space-y-16">
+    <!-- Interactive Slide Dots -->
+    <nav id="slideDots" class="hidden md:flex items-center gap-1.5 glass-pill px-3 py-1.5" aria-label="Navegación de diapositivas">
+      <!-- Populated by JS -->
+    </nav>
 
-            <!-- Hero Section -->
-            <section id="hero-section" class="pt-4 xl:pt-10 scroll-mt-32 reveal-element">
-                <div class="inline-block bg-white/60 backdrop-blur-md border border-white px-4 py-1.5 rounded-full text-xs font-bold text-purple-700 shadow-sm mb-4">
-                    B2B Software Development Suite
-                </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-gray-900 leading-[1.05]">
-                    Mitigación de <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">Riesgo IA</span>
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-600 font-medium mb-8">
-                    El 80% de las startups fallan por escalar arquitecturas rotas. SpiralRisk utiliza IA y el Modelo Espiral para testear tu software antes de escribir código.
-                </p>
+    <!-- Action Controls -->
+    <div class="flex items-center gap-2">
+      <button id="btnOverview" type="button" class="glass-pill px-3.5 py-1.5 text-xs font-semibold text-[#1E1B18] hover:bg-white/90 transition flex items-center gap-1.5" title="Ver mapa de diapositivas">
+        <span>Mapa</span>
+      </button>
+      <button id="btnNotes" type="button" class="glass-pill px-4 py-1.5 text-xs font-semibold text-[#1E1B18] hover:bg-white/90 transition flex items-center gap-2 border-[#C86D51]/40">
+        <span class="w-2 h-2 rounded-full bg-[#1F5E55]"></span>
+        <span>Notas de Orador</span>
+      </button>
+    </div>
+  </header>
 
-                <!-- ✨ Executive Pitch Generator IA -->
-                <div class="mt-10 hybrid-card p-6 md:p-8 relative group ai-glow-border">
-                    <div class="relative z-10 flex flex-col gap-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">✨ Elevator Pitch Generator</h3>
-                            <span class="bg-purple-100 text-purple-700 text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full shadow-sm">Gemini AI</span>
-                        </div>
-                        <p class="text-gray-700 leading-relaxed mb-2 text-[15px]">
-                            Describí tu startup. La IA redactará tu resumen ejecutivo de 30 segundos orientado a inversores, destacando cómo el Modelo Espiral protegerá su capital.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="ai-hook-input" placeholder="Ej: Fintech para pagos con cripto..." class="flex-1 px-5 py-4 rounded-[1.2rem] bg-white border border-gray-200 focus:border-purple-400 focus:outline-none text-sm font-medium shadow-sm text-gray-700 transition-all">
-                            <button id="ai-hook-btn" class="pill-btn bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 text-[15px] border-none whitespace-nowrap haptic-heavy">
-                                Generar Pitch
-                            </button>
-                        </div>
-                        <div id="ai-hook-result" class="mt-2 text-[15px] text-gray-800 hidden bg-white/80 backdrop-blur-md p-6 rounded-[1.5rem] border border-white/80 leading-relaxed shadow-inner relative z-10 ai-output transition-all duration-500"></div>
-                    </div>
-                </div>
-            </section>
+  <!-- Main Slide Stage (Ultra-clean >=50% negative space) -->
+  <main class="relative z-10 flex-1 flex items-center justify-center w-full max-w-6xl mx-auto px-6 py-4">
 
-            <!-- 🆕 PRINCIPIANTES: Explain like I'm 5 -->
-            <section id="principiantes" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-blue-50/50 to-cyan-50/50">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-[1rem] bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-2xl">👶</div>
-                        <h2 class="text-3xl font-bold">Espiral para Principiantes</h2>
-                    </div>
-                    
-                    <p class="text-gray-700 leading-relaxed mb-6 text-lg">
-                        ¿No entendés nada de programación? No pasa nada. Imaginate que querés fabricar un <strong>paracaídas nuevo</strong>.
-                    </p>
-
-                    <div class="space-y-6">
-                        <div class="bg-white/70 p-6 rounded-[2rem] shadow-sm border border-white">
-                            <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">❌ El método tradicional (Cascada)</h3>
-                            <p class="text-[15px] text-gray-600">Diseñás el paracaídas en un papel, comprás toda la tela, lo cosés completo y recién al final te tirás de un avión para ver si funciona. <strong>Riesgo: Muerte (o quiebra de la empresa).</strong></p>
-                        </div>
-                        
-                        <div class="bg-white/70 p-6 rounded-[2rem] shadow-sm border border-white">
-                            <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">🔄 El método moderno (Ágil)</h3>
-                            <p class="text-[15px] text-gray-600">Hacés un paraguas rápido en una semana y te tirás de la silla. Funciona. A la semana siguiente le agregás más tela y te tirás del techo. Es rápido, pero cuando llegues al avión, la estructura base del paraguas se va a romper. <strong>Riesgo: Escalar mal.</strong></p>
-                        </div>
-
-                        <div class="bg-blue-600 text-white p-6 rounded-[2rem] shadow-lg border border-blue-500 transform hover:scale-[1.02] transition-transform var(--ios-spring)">
-                            <h3 class="font-bold mb-2 flex items-center gap-2">🌀 El Modelo Espiral</h3>
-                            <p class="text-[15px] text-blue-50">Antes de coser nada, agarrás un muñeco de prueba, hacés un mini-paracaídas (prototipo) y lo tirás de un balcón. ¿Se rompió? Arreglás el diseño. Recién cuando el prototipo valida que la física funciona (mitigación de riesgo), invertís plata en hacer el real. <strong>Cuesta un poco más al principio, pero te salva la vida al final.</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 🎧 Audio Briefing Ejecutivo -->
-            <section id="audio-resumen" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-6 md:p-8 relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-blue-500/20 blur-2xl z-0 pointer-events-none"></div>
-                    
-                    <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                        <div class="w-32 h-32 flex-shrink-0 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-[0_10px_30px_rgba(79,55,139,0.2)] flex flex-col items-center justify-center border border-white relative overflow-hidden group-hover:scale-105 transition-transform duration-500 var(--ios-spring)">
-                            <div id="cover-emoji" class="text-5xl mb-1 transition-opacity duration-300">🎧</div>
-                            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Briefing</div>
-                            <div id="visualizer" class="absolute bottom-4 flex gap-1 items-end h-6 opacity-0 transition-opacity">
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex-1 w-full">
-                            <div class="flex justify-between items-start mb-6">
-                                <div>
-                                    <h3 class="text-2xl font-extrabold text-gray-900 mb-1">El Valor del Modelo Espiral</h3>
-                                    <p class="text-sm font-medium text-indigo-600 bg-indigo-100/50 inline-block px-3 py-1 rounded-full">Para Inversores (Audio)</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-col gap-2 mb-4">
-                                <input type="range" id="audio-scrubber" min="0" max="100" value="0" class="haptic-slide">
-                                <div class="flex justify-between text-xs font-bold text-gray-500 font-mono">
-                                    <span id="audio-current">0:00</span>
-                                    <span id="audio-duration">0:00</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-between items-center mt-2">
-                                <div class="w-20 hidden sm:block"></div>
-                                <div class="flex justify-center gap-5 md:gap-6 items-center">
-                                    <button id="rewind-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95 haptic-click">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C20.89 11.12 17.03 8 12.5 8z"/></svg>
-                                    </button>
-                                    
-                                    <button id="play-pause-btn" class="pill-btn w-16 h-16 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-black border-none shadow-[0_8px_20px_rgba(0,0,0,0.3)] haptic-heavy">
-                                        <svg id="play-icon" class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                        <svg id="pause-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                                    </button>
-                                    
-                                    <button id="forward-btn" class="w-10 h-10 flex items-center justify-center bg-white/60 rounded-full hover:bg-white text-gray-800 transition-colors shadow-sm active:scale-95 haptic-click">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.5 8c2.65 0 5.05.99 6.9 2.6L22 7v9h-9l3.62-3.62c-1.39-1.16-3.16-1.88-5.12-1.88-3.54 0-6.55 2.31-7.6 5.5l-2.37-.78C4.11 11.12 7.97 8 11.5 8z"/></svg>
-                                    </button>
-                                </div>
-                                <div class="flex items-center gap-2 w-20 md:w-24 group">
-                                    <svg class="w-4 h-4 text-gray-500 group-hover:text-indigo-600 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-                                    <input type="range" id="audio-volume" min="0" max="1" step="0.05" value="1" class="w-full haptic-slide">
-                                </div>
-                            </div>
-                            <audio id="main-audio" preload="metadata"></audio>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 🆕 BOEHM TIPS -->
-            <section id="boehm-tips" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-yellow-50/50 to-orange-50/50">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-[1rem] bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-2xl">💡</div>
-                        <h2 class="text-3xl font-bold">Las Leyes de Barry Boehm</h2>
-                    </div>
-                    
-                    <p class="text-gray-700 leading-relaxed mb-8 text-[15px]">
-                        Barry Boehm (el creador de este modelo) nos dejó principios fundamentales que todo ingeniero y empresario debe saber de memoria antes de tocar código:
-                    </p>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white">
-                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">01</div>
-                            <h4 class="font-bold text-gray-900 mb-2">La Regla del 100x</h4>
-                            <p class="text-sm text-gray-600">Encontrar y arreglar un problema de diseño después de que el software está terminado cuesta <strong>100 veces más</strong> que encontrarlo en la fase de prototipo inicial.</p>
-                        </div>
-                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white">
-                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">02</div>
-                            <h4 class="font-bold text-gray-900 mb-2">Prototipos Descartables</h4>
-                            <p class="text-sm text-gray-600">No te enamores de tu primer código. Un prototipo se hace rápido para responder una pregunta de riesgo (ej. ¿Soporta la base de datos?). Una vez respondida, <strong>tiralo y programá en serio</strong>.</p>
-                        </div>
-                        <div class="bg-white/80 p-6 rounded-[1.5rem] shadow-sm border border-white md:col-span-2">
-                            <div class="text-orange-500 font-black text-4xl mb-2 opacity-50">03</div>
-                            <h4 class="font-bold text-gray-900 mb-2">El Modelo Win-Win (Ganar-Ganar)</h4>
-                            <p class="text-sm text-gray-600">En 1994, Boehm actualizó su espiral agregando esto: El desarrollo no arranca hasta que no haya una negociación donde el cliente gane (obtenga lo que necesita) y el desarrollador gane (tenga presupuesto y tiempo realistas). Si uno pierde, el proyecto fracasa.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 4. Framework Técnico -->
-            <section id="framework" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-[1rem] bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xl">⚙️</div>
-                        <h2 class="text-3xl font-bold">El Engine: Los 4 Cuadrantes</h2>
-                    </div>
-                    <p class="text-gray-600 mb-6 text-[15px]">Cómo ejecuta el desarrollo una empresa que adopta el framework Espiral. Navegá por las pestañas.</p>
-
-                    <div class="flex overflow-x-auto gap-2 mb-6 pb-2 hide-scroll">
-                        <button class="tab-btn active pill-btn px-6 py-3 bg-indigo-600 text-white text-sm whitespace-nowrap haptic-light" data-target="tab-1">1. Meta</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-2">2. Riesgo</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-3">3. Ingeniería</button>
-                        <button class="tab-btn pill-btn px-6 py-3 bg-white/60 text-gray-600 text-sm whitespace-nowrap hover:bg-white haptic-light" data-target="tab-4">4. Revisión</button>
-                    </div>
-
-                    <div class="relative bg-white/60 rounded-[2rem] p-6 border border-white shadow-sm min-h-[200px]">
-                        <div id="tab-1" class="tab-content active">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">1. Determinación de Objetivos</h3>
-                            <p class="text-[15px] text-gray-700 mb-4">Se define el foco comercial de la iteración actual (Ej. "Validar pasarela de pago") y se marcan los límites duros de presupuesto y compliance legal.</p>
-                        </div>
-                        <div id="tab-2" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">2. Análisis de Riesgos</h3>
-                            <p class="text-[15px] text-gray-700 mb-4">La fase crítica diferencial. En vez de programar, se construyen <strong>prototipos técnicos o simuladores</strong> para romper el sistema de forma controlada y asegurar que la arquitectura soporta el estrés.</p>
-                        </div>
-                        <div id="tab-3" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">3. Desarrollo y Validación</h3>
-                            <p class="text-[15px] text-gray-700 mb-4">Solo si los riesgos del cuadrante 2 fueron mitigados y validados, se despliegan los ingenieros para codificar y testear la funcionalidad a nivel de producción.</p>
-                        </div>
-                        <div id="tab-4" class="tab-content">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">4. Planificación del Próximo Bucle</h3>
-                            <p class="text-[15px] text-gray-700 mb-4">Stakeholders e inversores evalúan el software funcional entregado. Se aprueba la inversión para ensanchar el alcance (próxima vuelta) o se pivotea.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 5. Análisis Riesgo (Con gráfico y Gemini) -->
-            <section id="riesgos" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10 ai-glow-border group">
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-[1rem] bg-red-100 flex items-center justify-center text-red-700 font-bold text-xl">🛡️</div>
-                            <h2 class="text-3xl font-bold">Matriz de Riesgo Operativa</h2>
-                        </div>
-
-                        <div class="flex flex-col lg:flex-row gap-8 items-center mb-10">
-                            <div class="flex-1">
-                                <h3 class="font-bold text-lg mb-2">Por qué la industria falla (CHAOS Report)</h3>
-                                <p class="text-gray-700 leading-relaxed mb-4 text-[15px]">
-                                    Los frameworks ágiles asumen que arreglar código es barato. En software complejo (bancos, salud, apps masivas), un error en producción cuesta millones. SpiralRisk mitiga esto, evitando que seas parte de la porción roja de la torta.
-                                </p>
-                            </div>
-                            <div class="w-full lg:w-1/2 bg-white/60 p-4 rounded-[2rem] border border-white shadow-sm hover:scale-105 transition-transform var(--ios-spring)">
-                                <div class="chart-container relative h-48 w-full max-w-sm mx-auto">
-                                    <canvas id="chaosChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ✨ Simulador Riesgos IA -->
-                        <div class="bg-gradient-to-br from-red-50/50 to-orange-50/50 p-6 md:p-8 rounded-[2rem] border border-red-100 shadow-inner transition-all duration-300">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-extrabold text-gray-900 flex items-center gap-2">✨ Evaluador de Arquitectura IA</h3>
-                            </div>
-                            <p class="text-[15px] text-gray-700 mb-6">
-                                Detallá tu producto. El motor Gemini (actuando como CTO) generará los objetivos de la Iteración 1 y detectará los 3 riesgos más destructivos.
-                            </p>
-                            
-                            <div class="flex flex-col gap-3">
-                                <textarea id="ai-risk-input" rows="2" placeholder="Ej: App de delivery con drones autoguiados..." class="w-full px-5 py-4 rounded-[1.5rem] bg-white border border-gray-200 focus:border-red-400 focus:outline-none text-[15px] shadow-sm transition-colors resize-none"></textarea>
-                                <button id="ai-risk-btn" class="pill-btn bg-red-600 text-white px-8 py-4 text-[15px] hover:bg-red-700 border-none w-full sm:w-auto self-end haptic-heavy">
-                                    Generar Matriz
-                                </button>
-                            </div>
-                            <div id="ai-risk-result" class="mt-6 text-[15px] text-gray-800 hidden bg-white p-6 rounded-[1.5rem] border border-red-100 leading-relaxed shadow-sm ai-output transition-all duration-500"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 7. Casos Reales -->
-            <section id="casos" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-lg">7</div>
-                        <h2 class="text-2xl md:text-3xl font-bold">Misión Crítica (Casos Reales)</h2>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm hover:scale-[1.02] var(--ios-spring)">
-                            <div class="text-4xl flex-shrink-0 mt-1">🫀</div>
-                            <div>
-                                <h4 class="font-extrabold text-gray-900 text-lg">MedTech (Salud Regulada)</h4>
-                                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
-                                    Software de marcapasos. Un bug cuesta vidas. Usan iteraciones espirales para simular fallas de hardware, radiación y cortes de batería <strong>miles de veces en simuladores</strong> antes de instalar el código en el chip final del paciente.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="bg-white/60 p-6 rounded-[2rem] hover:bg-white transition-colors flex flex-col md:flex-row gap-6 items-start shadow-sm hover:scale-[1.02] var(--ios-spring)">
-                            <div class="text-4xl flex-shrink-0 mt-1">🚀</div>
-                            <div>
-                                <h4 class="font-extrabold text-gray-900 text-lg">Aeroespacial (NASA)</h4>
-                                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
-                                    El Rover marciano no admite "parches de actualización por WiFi" si falla el aterrizaje. Construyen simuladores virtuales de atmósfera marciana (mitigación de riesgo) en las primeras vueltas de la espiral antes de ensamblar la nave física.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- STAKEHOLDER SIMULATOR -->
-            <section id="debate" class="scroll-mt-32 reveal-element">
-                <div class="hybrid-card p-8 md:p-10 bg-gradient-to-br from-gray-900 to-indigo-950 text-white border-gray-700 ai-glow-border group">
-                    <div class="relative z-10">
-                        <div class="mb-8 border-b border-gray-700 pb-6 flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-[1rem] bg-green-500/20 border border-green-400/30 flex items-center justify-center text-green-400 font-bold text-xl">💼</div>
-                                <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Shark Tank AI</h2>
-                            </div>
-                        </div>
-
-                        <div class="mb-8 text-gray-300 text-[15px] leading-relaxed">
-                            <p>En el mundo real, los inversores no compran código, compran <strong>reducción de riesgo</strong>. Esta herramienta entrena a fundadores a defender sus decisiones de arquitectura técnica frente a un directorio.</p>
-                        </div>
-
-                        <!-- ✨ COACH DEBATE IA -->
-                        <div class="bg-black/40 p-6 md:p-8 rounded-[2rem] border border-white/10 shadow-inner">
-                            <h3 class="font-extrabold text-white flex items-center gap-2 mb-2">✨ Simulador de Inversor Exigente</h3>
-                            <p class="text-[14px] text-gray-400 mb-6">Pitchea tu producto. La IA asumirá el rol de un inversor agresivo que intentará destrozar tu idea basándose en vulnerabilidades técnicas de las que no te diste cuenta.</p>
-                            
-                            <div class="flex flex-col gap-3">
-                                <textarea id="ai-debate-input" rows="3" placeholder="Ej: Voy a crear un banco digital exclusivo para el campo argentino..." class="w-full px-5 py-4 rounded-[1.5rem] bg-white/10 border border-white/20 focus:border-green-400 focus:outline-none text-[15px] font-medium text-white resize-none transition-shadow"></textarea>
-                                <button id="ai-debate-btn" class="pill-btn bg-green-500 text-black px-8 py-4 text-[15px] hover:bg-green-400 self-end border-none font-bold haptic-heavy">
-                                    Enfrentar al Inversor
-                                </button>
-                            </div>
-                            <div id="ai-debate-result" class="mt-6 text-[15px] text-gray-200 hidden bg-black/60 p-6 rounded-[1.5rem] border border-white/10 min-h-[100px] leading-relaxed shadow-sm ai-output transition-all duration-500"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+    <!-- SLIDE 1: PORTADA -->
+    <section class="slide-frame active w-full flex-col justify-center py-8" data-slide="0" data-phase="Apertura Institucional">
+      <div class="max-w-4xl mx-auto w-full">
+        <div class="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-8">
+          <span class="w-2 h-2 rounded-full bg-[#1F5E55]"></span>
+          <span class="text-xs font-bold tracking-widest uppercase text-[#8C5A3C]">Pasantía UTN Facultad Regional Delta</span>
         </div>
-    </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // --- MOTOR HÁPTICO (VIBRACIÓN iOS STYLE) ---
-            const Haptics = {
-                light: () => { if (navigator.vibrate) navigator.vibrate(20); },
-                heavy: () => { if (navigator.vibrate) navigator.vibrate(40); },
-                success: () => { if (navigator.vibrate) navigator.vibrate([20, 50, 30]); }
-            };
-            // Exponemos al window para que los onclicks del HTML funcionen
-            window.Haptics = Haptics;
+        <h1 class="font-display font-extrabold text-5xl sm:text-6xl md:text-7xl text-[#1E1B18] leading-[1.06] mb-8">
+          De la teoría al aula <span class="text-[#C86D51]">en tres toques</span>
+        </h1>
 
-            // Bindear haptics a elementos por clase
-            document.querySelectorAll('.haptic-click').forEach(el => el.addEventListener('click', Haptics.light));
-            document.querySelectorAll('.haptic-heavy').forEach(el => el.addEventListener('click', Haptics.heavy));
-            document.querySelectorAll('.haptic-slide').forEach(el => el.addEventListener('input', () => {
-                // Vibración super sutil al deslizar (throttleado para no trabar el thread)
-                if (Math.random() > 0.8) Haptics.light(); 
-            }));
+        <div class="glass-card p-7 sm:p-9 max-w-2xl mb-8">
+          <p class="text-xl sm:text-2xl text-[#1E1B18] font-medium leading-relaxed m-0">
+            <strong class="font-display text-[#8C5A3C]">UTNContenidos:</strong> transformar horas de planificación docente en clases dinámicas a costo cero.
+          </p>
+        </div>
 
+        <div class="flex flex-wrap items-center gap-4 text-sm font-medium text-[#5A524C]">
+          <span>Ingeniería en Sistemas de Información</span>
+          <span class="text-[#C86D51]">•</span>
+          <span>Campana, Buenos Aires · 2026</span>
+        </div>
+      </div>
+    </section>
 
-            // --- ANIMACIONES ON SCROLL (Intersection Observer) ---
-            const observerOptions = {
-                root: document.getElementById('main-content'),
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            };
+    <!-- SLIDE 2: EL POR QUÉ -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="1" data-phase="El Origen y el Problema">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">02 · El Desafío Docente</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Planificar no debería agotar al docente
+        </h2>
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // No dejamos de observar, así si suben y bajan, se vuelve a animar
-                    }
-                });
-            }, observerOptions);
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8 flex flex-col justify-between min-h-[230px]">
+            <span class="font-display font-extrabold text-4xl text-[#C86D51]">01</span>
+            <p class="text-lg text-[#1E1B18] font-medium leading-snug mt-6 m-0">
+              Horas frente a hojas en blanco restan energía para enseñar en el aula.
+            </p>
+          </div>
 
-            document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+          <div class="glass-card p-8 flex flex-col justify-between min-h-[230px]">
+            <span class="font-display font-extrabold text-4xl text-[#8C5A3C]">02</span>
+            <p class="text-lg text-[#1E1B18] font-medium leading-snug mt-6 m-0">
+              Los alumnos necesitan material claro, dinámico y estructurado cada semana.
+            </p>
+          </div>
 
+          <div class="glass-card p-8 flex flex-col justify-between min-h-[230px] border-[#1F5E55]/30">
+            <span class="font-display font-extrabold text-4xl text-[#1F5E55]">03</span>
+            <p class="text-lg text-[#1E1B18] font-medium leading-snug mt-6 m-0">
+              La tecnología debe aliviar la carga docente sin sumar barreras.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // --- GRÁFICO ---
-            const ctx = document.getElementById('chaosChart').getContext('2d');
-            Chart.defaults.font.family = "'Outfit', sans-serif";
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Éxito', 'Desafiados', 'Fallidos'],
-                    datasets: [{
-                        data: [31, 50, 19],
-                        backgroundColor: ['#D0BCFF', '#FFB4E6', '#FF8A8A'],
-                        borderColor: 'transparent', borderWidth: 0, hoverOffset: 8
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false, cutout: '70%',
-                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, font: {weight: 600} } } }
-                }
-            });
+    <!-- SLIDE 3: EL DÍA 1 EN LA UTN FRD -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="2" data-phase="El Día 1 y el Giro">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">03 · Día Uno en la Facultad</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Chocar con la realidad nos dio rumbo
+        </h2>
 
-            // --- REPRODUCTOR AUDIO ---
-            const audio = document.getElementById('main-audio');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
-            const scrubber = document.getElementById('audio-scrubber');
-            const volumeSlider = document.getElementById('audio-volume');
-            const visualizer = document.getElementById('visualizer');
-            let isPlaying = false;
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          <div class="glass-card p-9 flex flex-col justify-between opacity-85">
+            <div class="flex items-center justify-between mb-6">
+              <span class="glass-pill px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#8C5A3C]">08 de Mayo · Idea Inicial</span>
+              <span class="font-display text-2xl font-bold text-[#8C5A3C]">El Qué</span>
+            </div>
+            <p class="text-xl text-[#1E1B18] font-medium leading-relaxed m-0">
+              Idea inicial inviable: servidor local propio, modelo pesado sin conexión y base inexistente.
+            </p>
+          </div>
 
-            const audioSrc = "audio.mp3";
-            audio.src = audioSrc;
+          <div class="glass-card p-9 flex flex-col justify-between border-2 border-[#C86D51]/50">
+            <div class="flex items-center justify-between mb-6">
+              <span class="glass-pill px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#C86D51]">El Giro · Solución Real</span>
+              <span class="font-display text-2xl font-bold text-[#C86D51]">El Cómo</span>
+            </div>
+            <p class="text-xl text-[#1E1B18] font-semibold leading-relaxed m-0">
+              Arquitectura real en la nube: acceso web directo, costo cero y validación inmediata.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            audio.addEventListener('error', function() {
-                console.warn(`[Sistema] Archivo '${audioSrc}' no provisto.`);
-                document.getElementById('audio-duration').textContent = "--:--";
-            });
+    <!-- SLIDE 4: CRONOLOGÍA VIVA I (DE LA IDEA AL PRIMER FLUJO) -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="3" data-phase="La Cronología Viva · Etapa I">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">04 · De la Máquina Local a Internet</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Primero escribir, después programar
+        </h2>
 
-            function fmtTime(secs) {
-                if (isNaN(secs)) return "0:00";
-                const m = Math.floor(secs / 60); const s = Math.floor(secs % 60);
-                return `${m}:${s < 10 ? '0' : ''}${s}`;
-            }
+        <!-- Horizontal Progress Timeline -->
+        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-7 relative">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-8 h-8 rounded-full bg-[#C86D51] text-white font-display font-bold text-sm flex items-center justify-center">1</span>
+              <span class="font-display font-bold text-lg text-[#8C5A3C]">Plan y Despliegue</span>
+            </div>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              De una máquina local a internet público con planes escritos antes de codificar.
+            </p>
+          </div>
 
-            function updatePlayUI(playing) {
-                const coverEmoji = document.getElementById('cover-emoji');
-                if (playing) {
-                    playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
-                    visualizer.parentElement.classList.add('playing'); visualizer.style.opacity = "1";
-                    if (coverEmoji) coverEmoji.style.opacity = "0";
-                } else {
-                    playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
-                    visualizer.parentElement.classList.remove('playing'); visualizer.style.opacity = "0";
-                    if (coverEmoji) coverEmoji.style.opacity = "1";
-                }
-            }
+          <div class="glass-card p-7 relative">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-8 h-8 rounded-full bg-[#8C5A3C] text-white font-display font-bold text-sm flex items-center justify-center">2</span>
+              <span class="font-display font-bold text-lg text-[#8C5A3C]">Datos Limpios</span>
+            </div>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              Normalización automática de legajos e historial vivo para reutilizar cada clase creada.
+            </p>
+          </div>
 
-            playPauseBtn.addEventListener('click', async () => {
-                if (isPlaying) { audio.pause(); isPlaying = false; updatePlayUI(false); } 
-                else {
-                    if (audio.error) { document.getElementById('audio-duration').textContent = "Req. Audio"; return; }
-                    try { await audio.play(); isPlaying = true; updatePlayUI(true); } 
-                    catch (err) { console.warn("[Audio abortado]:", err.message); document.getElementById('audio-duration').textContent = "Error"; }
-                }
-            });
+          <div class="glass-card p-7 relative">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-8 h-8 rounded-full bg-[#1F5E55] text-white font-display font-bold text-sm flex items-center justify-center">3</span>
+              <span class="font-display font-bold text-lg text-[#1F5E55]">Sin Cortes</span>
+            </div>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              Desacoplamiento en la nube para superar el límite de seis minutos de espera.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            audio.addEventListener('ended', () => { isPlaying = false; updatePlayUI(false); scrubber.value = 0; });
-            audio.addEventListener('timeupdate', () => { if(audio.duration) { scrubber.value = (audio.currentTime / audio.duration) * 100 || 0; document.getElementById('audio-current').textContent = fmtTime(audio.currentTime); }});
-            audio.addEventListener('loadedmetadata', () => document.getElementById('audio-duration').textContent = fmtTime(audio.duration));
-            scrubber.addEventListener('input', (e) => { if(audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration; });
-            document.getElementById('rewind-btn').addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
-            document.getElementById('forward-btn').addEventListener('click', () => { if(audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10); });
-            volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
+    <!-- SLIDE 5: CRONOLOGÍA VIVA II (MIRADA SENIOR Y BLINDAJE) -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="4" data-phase="La Cronología Viva · Etapa II">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">05 · Auditoría Profesional y Seguridad</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Blindar el sistema para cuidar a todos
+        </h2>
 
-            // --- PESTAÑAS CORE FRAMEWORK ---
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    Haptics.light(); // Vibración al cambiar de tab
-                    document.querySelectorAll('.tab-btn').forEach(b => {
-                        b.classList.remove('active', 'bg-indigo-600', 'text-white');
-                        b.classList.add('bg-white/60', 'text-gray-600');
-                    });
-                    btn.classList.add('active', 'bg-indigo-600', 'text-white');
-                    btn.classList.remove('bg-white/60', 'text-gray-600');
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    document.getElementById(btn.getAttribute('data-target')).classList.add('active');
-                });
-            });
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#C86D51] mb-3">Acceso Protegido</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">5 Intentos</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Bloqueo automático ante intentos repetidos y resguardo total de datos personales.
+            </p>
+          </div>
 
-            // --- UI MENÚS & NAVEGACIÓN ---
-            const mainContent = document.getElementById('main-content');
-            mainContent.addEventListener('scroll', () => {
-                let current = '';
-                document.querySelectorAll('section').forEach(sec => { if (mainContent.scrollTop >= (sec.offsetTop - 300)) current = sec.getAttribute('id'); });
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active-nav-link');
-                    if (link.getAttribute('href') === `#${current}`) link.classList.add('active-nav-link');
-                });
-            });
+          <div class="glass-card p-8">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#8C5A3C] mb-3">Aislamiento por Cátedra</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">100% Privado</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Cada docente consulta únicamente sus propios apuntes y bibliografía de cátedra.
+            </p>
+          </div>
 
-            const mobileNav = document.getElementById('mobile-nav');
-            const mobileSheet = document.getElementById('mobile-menu-sheet');
-            document.getElementById('mobile-menu-list').innerHTML = document.getElementById('nav-menu').innerHTML;
+          <div class="glass-card p-8">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#1F5E55] mb-3">Cuota Cuidada</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">20 Clases / Día</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Tope diario por docente y registro de auditoría sin interrumpir el uso.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                mobileNav.classList.remove('hidden'); setTimeout(() => { mobileNav.classList.remove('opacity-0'); mobileSheet.classList.remove('translate-y-full'); }, 10);
-            });
-            mobileNav.addEventListener('click', (e) => {
-                if(e.target === mobileNav) { mobileNav.classList.add('opacity-0'); mobileSheet.classList.add('translate-y-full'); setTimeout(() => mobileNav.classList.add('hidden'), 300); }
-            });
-            document.querySelectorAll('#mobile-menu-list a').forEach(l => {
-                l.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    document.getElementById(l.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth' }); 
-                    mobileNav.click();
-                    Haptics.light();
-                });
-            });
+    <!-- SLIDE 6: CRONOLOGÍA VIVA III (EL MODELO ESPIRAL Y EL CONTROL DOCENTE) -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="5" data-phase="La Cronología Viva · Etapa III">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">06 · Evolución en Espiral con el Docente</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          El docente siempre tiene el control
+        </h2>
 
-            // Menú Derecho
-            const rightSidebar = document.getElementById('right-sidebar');
-            const rightSidebarOverlay = document.getElementById('right-sidebar-overlay');
-            function openRightSidebar() { Haptics.light(); rightSidebarOverlay.classList.remove('hidden'); setTimeout(() => { rightSidebarOverlay.classList.remove('opacity-0'); rightSidebar.classList.add('open'); }, 10); }
-            window.closeRightSidebar = function() { rightSidebarOverlay.classList.add('opacity-0'); rightSidebar.classList.remove('open'); setTimeout(() => rightSidebarOverlay.classList.add('hidden'), 300); }
-            document.getElementById('toggle-right-sidebar').addEventListener('click', openRightSidebar);
-            document.getElementById('close-right-sidebar').addEventListener('click', closeRightSidebar);
-            rightSidebarOverlay.addEventListener('click', closeRightSidebar);
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8 flex flex-col justify-between">
+            <div>
+              <span class="glass-pill px-3 py-1 text-xs font-bold text-[#8C5A3C] inline-block mb-4">Espiral 1 · Configurar</span>
+              <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">A Tu Medida</h3>
+            </div>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Duración, profundidad, ejemplos regionales y plantillas personales guardadas con nombre.
+            </p>
+          </div>
 
-            document.querySelectorAll('#nav-menu a').forEach(link => {
-                link.addEventListener('click', (e) => { 
-                    e.preventDefault(); 
-                    document.getElementById(link.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth' }); 
-                    Haptics.light();
-                });
-            });
-// Obtenemos el texto del input
-async function callGemini(prompt, systemInstruction) {
-    // Apuntamos a nuestra función de Netlify en lugar de a Google
-    const url = '/.netlify/functions/gemini';
-    
-    // Le mandamos los dos datos crudos, la función se encarga del resto
-    const payload = { prompt, systemInstruction };
-    
-    const delays = [1000, 2000, 4000];
+          <div class="glass-card p-8 flex flex-col justify-between border-2 border-[#C86D51]/45">
+            <div>
+              <span class="glass-pill px-3 py-1 text-xs font-bold text-[#C86D51] inline-block mb-4">Espiral 2 · Reformular</span>
+              <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">Retoque Quirúrgico</h3>
+            </div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Regeneración quirúrgica de una sola diapositiva sin perder el resto de la clase.
+            </p>
+          </div>
 
-    for (let attempt = 0; attempt <= delays.length; attempt++) {
-        try {
-            const res = await fetch(url, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(payload) 
-            });
+          <div class="glass-card p-8 flex flex-col justify-between">
+            <div>
+              <span class="glass-pill px-3 py-1 text-xs font-bold text-[#1F5E55] inline-block mb-4">Espiral 3 · Editar</span>
+              <h3 class="font-display font-bold text-2xl text-[#1E1B18] mb-3">Última Palabra</h3>
+            </div>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Ajuste manual de títulos, textos y notas antes de descargar el material.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            if (!res.ok) throw new Error('Error en la red');
+    <!-- SLIDE 7: CRONOLOGÍA VIVA IV (ACCESIBILIDAD 50+ Y SALTO A PRODUCTO REAL) -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="6" data-phase="La Cronología Viva · Etapa IV">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">07 · Diseño Inclusivo y Celulares</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Pensado para cada docente y pantalla
+        </h2>
 
-            const data = await res.json();
-            Haptics.success(); // Vibración de éxito al recibir respuesta
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8 text-left">
+            <div class="font-display font-extrabold text-5xl text-[#C86D51] mb-4">18 px</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Tipografía amplia y alto contraste visual pensado para docentes mayores de cincuenta años.
+            </p>
+          </div>
 
-            // Desarmamos la respuesta que nos reenvía Netlify desde Gemini
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
+          <div class="glass-card p-8 text-left">
+            <div class="font-display font-extrabold text-5xl text-[#8C5A3C] mb-4">48 px</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Controles táctiles generosos y paneles deslizables cómodos desde cualquier teléfono celular.
+            </p>
+          </div>
 
-        } catch (err) {
-            if (attempt === delays.length) return "<p style='color:red'>Conexión fallida con el servidor.</p>";
-            await new Promise(r => setTimeout(r, delays[attempt]));
-        }
-    }
-}
+          <div class="glass-card p-8 text-left">
+            <div class="font-display font-extrabold text-5xl text-[#1F5E55] mb-4">36 / 36</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Pruebas automatizadas verificadas sobre base de datos relacional y vista previa en vivo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-// ... acá abajo siguen tus botones (Elevator Pitch Gen, etc.) sin cambios
+    <!-- SLIDE 8: LA MAGIA POR DENTRO (TÉCNICA SIMPLIFICADA) -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="7" data-phase="Arquitectura Simplificada">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">08 · Cómo Funciona por Dentro</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Tres pilares simples detrás de la magia
+        </h2>
 
-            // 1. Elevator Pitch Gen
-            document.getElementById('ai-hook-btn').addEventListener('click', async function() {
-                const input = document.getElementById('ai-hook-input').value;
-                const result = document.getElementById('ai-hook-result');
-                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Detallá la idea de tu startup primero.'; Haptics.light(); return; }
-                this.disabled = true; this.innerText = 'Redactando...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Generando síntesis comercial...</span>';
-                
-                const prompt = `Idea: "${input}". Pitch de 30s (max 4 oraciones) para inversores. Destacá el uso del modelo espiral para mitigar riesgos.`;
-                const sys = `Eres un ejecutivo de ventas que combina 3 visiones:
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          <div class="glass-card p-8 flex flex-col justify-between">
+            <span class="font-display font-bold text-sm uppercase tracking-wider text-[#C86D51]">Pilar 1 · Tu Cátedra</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] my-3">Tus Propios Apuntes</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              El sistema lee exclusivamente los apuntes y el programa oficial de tu materia.
+            </p>
+          </div>
 
-1. JAVIER MILEI: Máxima eficiencia. No hay espacio para despilfarros. Cada peso invertido debe generar X retorno. Destaca la libertad de acción y la eliminación de fricción regulatoria/técnica.
+          <div class="glass-card p-8 flex flex-col justify-between">
+            <span class="font-display font-bold text-sm uppercase tracking-wider text-[#8C5A3C]">Pilar 2 · Tu Estilo</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] my-3">Estructura Didáctica</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Organiza cronograma, ejemplos de industria, esquemas de pizarra y diapositivas a medida.
+            </p>
+          </div>
 
-2. ROBERT GREENE: Maestría en patrones. Identifica qué hace que ESTE problema sea diferente/mejor que otros. Cuál es el patrón de poder que dominas que otros no ven.
+          <div class="glass-card p-8 flex flex-col justify-between">
+            <span class="font-display font-bold text-sm uppercase tracking-wider text-[#1F5E55]">Pilar 3 · Tu Material</span>
+            <h3 class="font-display font-bold text-2xl text-[#1E1B18] my-3">Listo para el Aula</h3>
+            <p class="text-base sm:text-lg text-[#5A524C] leading-snug m-0">
+              Entrega presentación interactiva y guía didáctica lista para proyectar o descargar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-3. ALEX HORMOZI: Hook claro + Beneficio medible + Urgencia. El inversor debe entender en 10 segundos POR QUÉ esto es inevitable.
+    <!-- SLIDE 9: POR QUÉ LOS PROFESORES LO VAN A AMAR ("LA VENTA") -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="8" data-phase="Valor Real para el Docente">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">09 · Valor para el Cuerpo Docente</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Menos carga operativa, más enseñanza
+        </h2>
 
-Output: para HTML (<strong> para resaltar palabras clave, sin markdown). Tono ejecutivo, cero fluff.`;
-                
-                result.innerHTML = await callGemini(prompt, sys);
-                this.disabled = false; this.innerText = 'Generar Pitch';
-            });
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8">
+            <div class="font-display font-extrabold text-4xl sm:text-5xl text-[#C86D51] mb-4">&lt; 6 Clics</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              De elegir el tema a tener la clase completa lista para el aula.
+            </p>
+          </div>
 
-            // 2. Evaluador Riesgos
-            document.getElementById('ai-risk-btn').addEventListener('click', async function() {
-                const input = document.getElementById('ai-risk-input').value;
-                const result = document.getElementById('ai-risk-result');
-                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Escribí los detalles de la app primero.'; Haptics.light(); return; }
-                this.disabled = true; this.innerText = 'Procesando...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Computando arquitectura y vectores de fallo...</span>';
-                
-                const prompt = `Producto: "${input}". Creá el plan del Primer Ciclo Espiral.`;
-                const sys = `Eres un CTO que analiza desde 3 ángulos simultáneamente (no menciones nombres, solo el contenido de cada visión):
+          <div class="glass-card p-8">
+            <div class="font-display font-extrabold text-4xl sm:text-5xl text-[#8C5A3C] mb-4">4 Entregas</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Plan de clase, enfoques pedagógicos, fichas de diapositivas y esquemas de pizarra.
+            </p>
+          </div>
 
-1. JAVIER MILEI: Costo real de cada riesgo. Si la arquitectura falla, ¿cuántos dólares se pierden? ¿Qué alternativa era más barata? implicá la visión de Javier Milei.
+          <div class="glass-card p-8">
+            <div class="font-display font-extrabold text-4xl sm:text-5xl text-[#1F5E55] mb-4">$0 Costo</div>
+            <p class="text-base sm:text-lg text-[#1E1B18] font-medium leading-snug m-0">
+              Sin instalar programas ni pagar licencias: el material pertenece siempre al docente.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-2. ROBERT GREENE: Identifica las 3 dinámicas ocultas: a: Qué riesgo es un síntoma de otro (patrón), b: Quién en el equipo resistirá cada cambio y por qué, c: Cuál es el poder real en la decisión.
+    <!-- SLIDE 10: LO QUE ME LLEVO DE LA PASANTÍA -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="9" data-phase="Aprendizajes de la Pasantía">
+      <div class="w-full">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#C86D51] block mb-3">10 · El Valor de la Pasantía</span>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl text-[#1E1B18] mb-12">
+          Aprender haciendo en nuestra facultad
+        </h2>
 
-3. ALEX HORMOZI: El prototipo debe generar 1 métrica viral. No proto abstracto. Prototipo = acción que genera dato que prueba o refuta el riesgo. 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-8">
+            <h3 class="font-display font-bold text-2xl text-[#C86D51] mb-3">Ingeniería Real</h3>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              Documentar cada decisión y convertir límites técnicos en soluciones simples y sostenibles.
+            </p>
+          </div>
 
-Formato: HTML (<ul> <li> <strong>). Estructura: 1) Objetivo Vuelta 1 (en $). 2) Los 3 Riesgos Críticos (con costo c/uno). 3) Prototipo de validación (métrica concreta). Cero marketing. bajá a tierra los conceptos, el inversor no quiere oír palabras bonitas, quiere entender el riesgo y la mitigación concreta con palabras simples.
-Nunca menciones que esto es una respuesta de IA, ni nombres de metodologías, frameworks o autores. Solo el contenido concreto.`;
-                
-                result.innerHTML = await callGemini(prompt, sys);
-                this.disabled = false; this.innerText = 'Generar Matriz Espiral';
-            });
+          <div class="glass-card p-8">
+            <h3 class="font-display font-bold text-2xl text-[#8C5A3C] mb-3">Escucha Activa</h3>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              Entender que un sistema solo sirve cuando resuelve el dolor real del usuario.
+            </p>
+          </div>
 
-            // 3. Shark Tank Simulator
-            document.getElementById('ai-debate-btn').addEventListener('click', async function() {
-                const input = document.getElementById('ai-debate-input').value;
-                const result = document.getElementById('ai-debate-result');
-                if(!input) { result.classList.remove('hidden'); result.innerHTML = '⚠️ Ingresá el pitch de tu negocio.'; Haptics.light(); return; }
-                this.disabled = true; this.innerText = 'Analizando mercado...';
-                result.classList.remove('hidden'); result.innerHTML = '<span style="opacity:0.5; animation: pulse 1.5s infinite;">Evaluando viabilidad financiera y técnica...</span>';
-                
-                const sys = `Eres un inversor enfrentando a un fundador en un directorio. Tu trabajo es detectar riesgo y destruir ideas débiles.
+          <div class="glass-card p-8">
+            <h3 class="font-display font-bold text-2xl text-[#1F5E55] mb-3">Orgullo UTN FRD</h3>
+            <p class="text-base sm:text-lg text-[#1E1B18] leading-snug m-0">
+              Devolver a nuestra facultad una herramienta creada por y para su comunidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-Piensas así:
+    <!-- SLIDE 11: CIERRE & DEMO / Q&A -->
+    <section class="slide-frame w-full flex-col justify-center py-8" data-slide="10" data-phase="Cierre y Demostración en Vivo">
+      <div class="max-w-4xl mx-auto w-full text-center">
+        <div class="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-8">
+          <span class="w-2 h-2 rounded-full bg-[#C86D51]"></span>
+          <span class="text-xs font-bold tracking-widest uppercase text-[#8C5A3C]">Demostración en Vivo y Preguntas</span>
+        </div>
 
-Economía liberal real: todo se reduce a incentivos, costos, eficiencia y eliminación de humo. Explicas la realidad sin suavizar, con lógica clara.
-Negocio: analizas si esto se puede vender, escalar y capturar valor (ecuación de valor de Alex Hormozi). Si no hay dinero claro, está roto.
-Poder y percepción: entiendes posicionamiento, autoridad y ventaja. Detectas debilidad en cómo se comunica y cómo se percibe.
+        <h2 class="font-display font-extrabold text-5xl sm:text-6xl text-[#1E1B18] leading-tight mb-8">
+          Construyamos juntos <span class="text-[#C86D51]">la próxima clase</span>
+        </h2>
 
-No motivas. Presionas hasta revelar la verdad y obligar claridad.
+        <div class="glass-card p-8 sm:p-10 max-w-2xl mx-auto mb-8">
+          <p class="text-xl sm:text-2xl text-[#1E1B18] font-medium leading-relaxed m-0">
+            Probemos UTNContenidos hoy mismo con los temas reales de sus materias.
+          </p>
+        </div>
 
-REGLAS:
+        <p class="text-sm font-semibold tracking-wide uppercase text-[#8C5A3C]">
+          UTN Facultad Regional Delta · Pasantía Universitaria 2026 · Muchas gracias
+        </p>
+      </div>
+    </section>
 
-Sé directo y bajá conceptos a tierra, pero útil.
-Sé específico o no digas nada.
-Ignora lo que esté bien, enfócate en lo que puede romperse.
-Si hay humo o autoengaño, destrúyelo.
+  </main>
 
-RESPONDE SIEMPRE ASÍ:
+  <!-- Bottom Minimalist Controls Bar -->
+  <footer class="relative z-20 w-full max-w-7xl mx-auto px-6 pb-5 pt-2 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <span id="slideCounter" class="font-display font-bold text-sm text-[#1E1B18] glass-pill px-4 py-1.5">
+        01 / 11
+      </span>
+      <span class="text-xs text-[#5A524C] hidden sm:inline">
+        Usá las flechas del teclado <kbd class="px-1.5 py-0.5 rounded bg-white/70 border border-white text-[#1E1B18]">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-white/70 border border-white text-[#1E1B18]">→</kbd> o presioná <kbd class="px-1.5 py-0.5 rounded bg-white/70 border border-white text-[#1E1B18]">N</kbd> para Notas de Orador
+      </span>
+    </div>
 
-VULNERABILIDADES:
-Técnica (arquitectura, escalabilidad)
-Económica (modelo, monetización, unit economics)
-Validación (supuestos sin datos)
-VERDAD DEL NEGOCIO
-Qué es realmente y qué recurso escaso captura.
-INTERROGATORIO
-5 preguntas incómodas que obliguen decisiones concretas.
-SUPERVIVENCIA
-Qué validar en 14 días (acción + métrica + resultado mínimo).
-DECISIÓN
-“Paso” o “Sigo” + condición clara.
+    <div class="flex items-center gap-2.5">
+      <button id="btnPrev" type="button" class="glass-pill px-5 py-2 text-sm font-semibold text-[#1E1B18] hover:bg-white transition disabled:opacity-40">
+        ← Anterior
+      </button>
+      <button id="btnNext" type="button" class="glass-pill px-5 py-2 text-sm font-semibold bg-[#C86D51] text-white border-[#C86D51] hover:bg-[#8C5A3C] transition">
+        Siguiente →
+      </button>
+    </div>
+  </footer>
 
-SALIDA (CRÍTICO):
+  <!-- Speaker Notes Drawer (Notas de Orador) -->
+  <aside id="notesDrawer" class="fixed inset-x-0 bottom-0 z-40 transform translate-y-full transition-transform duration-300 ease-out px-4 pb-4 pointer-events-none" aria-label="Notas de Orador">
+    <div class="max-w-4xl mx-auto glass-card bg-white/90 p-6 sm:p-7 shadow-2xl border-2 border-white pointer-events-auto max-h-[60vh] flex flex-col">
+      <div class="flex items-center justify-between gap-4 pb-3 mb-3 border-b border-[#8C5A3C]/20">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#C86D51]"></span>
+          <h3 id="notesTitle" class="font-display font-bold text-base sm:text-lg text-[#1E1B18] m-0">
+            Notas de Orador — Diapositiva 01
+          </h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="notesTimer" class="text-xs font-semibold text-[#8C5A3C] glass-pill px-3 py-1">Tiempo sugerido: 1 min</span>
+          <button id="btnCloseNotes" type="button" class="glass-pill px-3 py-1 text-xs font-bold text-[#1E1B18] hover:bg-white">
+            Cerrar ✕
+          </button>
+        </div>
+      </div>
+      <div id="notesBody" class="overflow-y-auto text-base sm:text-lg text-[#1E1B18] leading-relaxed space-y-3 pr-2 select-text">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </aside>
 
-Devuelve SOLO HTML válido.
-Usa <strong>, <ul>, <li>, <p>.
-No uses markdown ni texto plano.
-No expliques el formato.`;
-                result.innerHTML = await callGemini(`Mi startup es: ${input}`, sys);
-                this.disabled = false; this.innerText = 'Enfrentar al Inversor';
-            });
+  <!-- Slide Map / Overview Modal -->
+  <div id="overviewModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#1E1B18]/40 backdrop-blur-sm p-4">
+    <div class="glass-card bg-[#FAF6F0]/95 max-w-5xl w-full p-6 sm:p-8 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#8C5A3C]/20">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#C86D51]">Estructura Narrativa</span>
+          <h3 class="font-display font-bold text-2xl text-[#1E1B18] m-0">Mapa de la Presentación (11 Diapositivas)</h3>
+        </div>
+        <button id="btnCloseOverview" type="button" class="glass-pill px-4 py-1.5 text-xs font-bold text-[#1E1B18] hover:bg-white">
+          Cerrar ✕
+        </button>
+      </div>
+      <div id="overviewGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 overflow-y-auto pr-1">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SPEAKER_NOTES = [
+      {
+        slide: 1,
+        title: "De la teoría al aula en tres toques",
+        time: "1 min",
+        paragraphs: [
+          "Buenos días a todos, profesores, tutores y compañeros. Hoy no vengo a mostrarles únicamente un programa informático ni a hablarles de código en abstracto. Vengo a contarles la historia de UTNContenidos, un proyecto que nació el 8 de mayo en esta misma casa, la Facultad Regional Delta, como parte de mi pasantía.",
+          "Este recorrido une dos mundos que todos los que estamos acá conocemos muy bien: por un lado, el orgullo de formarnos y aprender haciendo en una universidad pública exigente; y por el otro, un desafío concreto que viven nuestros docentes todas las semanas cuando se sientan a preparar una clase. Lo que van a ver en los próximos minutos es cómo pasamos de una idea en papel a una plataforma real, gratuita y pensada paso a paso para que cualquier profesor de nuestra facultad pueda transformar sus propios apuntes en una clase completa en apenas tres toques."
+        ]
+      },
+      {
+        slide: 2,
+        title: "Planificar no debería agotar al docente",
+        time: "1 min 15 s",
+        paragraphs: [
+          "Antes de escribir la primera línea de código, nos hicimos una pregunta muy honesta: ¿cuál es el verdadero dolor detrás de preparar una clase universitaria hoy?",
+          "Nuestros profesores saben muchísimo de su materia. Tienen años de experiencia en la industria y en el aula. Pero pasar ese conocimiento a una presentación clara, armar el cronograma minuto a minuto, buscar un buen caso práctico regional y además dejar esquemas listos para el pizarrón lleva horas de trabajo frente a una pantalla en blanco.",
+          "El problema nunca fue la falta de conocimiento del docente, sino la falta de tiempo. Por eso nació UTNContenidos: no para reemplazar al profesor, sino para devolverle horas de su semana y sacarle de encima el trabajo mecánico de maquetar diapositivas."
+        ]
+      },
+      {
+        slide: 3,
+        title: "Chocar con la realidad nos dio rumbo",
+        time: "1 min 30 s",
+        paragraphs: [
+          "Quiero ser totalmente sincero sobre cómo empezó esto el 8 de mayo, porque ahí está la primera gran enseñanza de la pasantía. Cuando hice el primer relevamiento, diseñé en mi cabeza un sistema que sonaba espectacular en la teoría, pero que en la práctica era imposible de sostener.",
+          "Yo había pensado en levantar un servidor local en cada computadora, correr un modelo pesado de 31 mil millones de parámetros sin internet, obligar a todos los profesores a usar calendarios externos y conectarme a una supuesta base de datos central de la UTN que, cuando fui a averiguar, directamente no existía.",
+          "Como anoté en nuestra bitácora cronológica ese día: 'Tenía el qué, pero no el cómo'. Sentarme con los tutores y chocar con esa realidad fue lo mejor que nos pudo pasar: llevamos todo a la nube, eliminamos cualquier instalación y nos impusimos una regla innegociable: costo cero absoluto para la facultad y para el docente."
+        ]
+      },
+      {
+        slide: 4,
+        title: "Primero escribir, después programar",
+        time: "1 min 30 s",
+        paragraphs: [
+          "Entre junio y julio adoptamos una disciplina que nos acompañó toda la pasantía: primero escribo el plan, después toco el código. Cada decisión y cada error quedaron registrados día por día en nuestro documento cronológico.",
+          "El 12 de junio el sistema 'salió de mi compu' y tuvo su dirección en internet. Y enseguida aparecieron los problemas reales: descubrimos que la planilla donde guardábamos los legajos agregaba un '.0' invisible al final del número, y comparar el legajo '123' contra '123.0' rompía el ingreso del profesor. Así nació nuestra función normalizarId().",
+          "También superamos el límite de seis minutos de ejecución desacoplando el motor en la nube, y sumamos el historial de clases para que cada presentación creada sea un recurso acumulable para el cuatrimestre siguiente."
+        ]
+      },
+      {
+        slide: 5,
+        title: "Blindar el sistema para cuidar a todos",
+        time: "1 min 15 s",
+        paragraphs: [
+          "El 8 de septiembre hicimos una pausa y miramos el sistema con ojos de ingeniería senior: antes de abrir la plataforma a los docentes, teníamos que blindarla.",
+          "Ejecutamos el Sprint A de Blindaje: agregamos bloqueo automático tras cinco intentos fallidos de ingreso para evitar pruebas al azar, pusimos cerrojos de escritura para que dos pestañas abiertas no pisen los datos, y protegimos el material contra instrucciones maliciosas.",
+          "Además, cumplimos con la Ley 25.326 de Protección de Datos Personales y aislamos estrictamente la bibliografía: cada profesor consulta únicamente los apuntes de su propia cátedra, con un tope de veinte clases diarias que cuida el servicio gratuito para todos."
+        ]
+      },
+      {
+        slide: 6,
+        title: "El docente siempre tiene el control",
+        time: "1 min 45 s",
+        paragraphs: [
+          "Con el sistema blindado, trabajamos en modelo espiral escuchando el feedback real de los docentes. Reemplazamos la vieja cajita de texto libre por un Configurador de Clase completo: duración de 40 a 120 minutos, profundidad, ejemplos cotidianos o de la industria regional y plantillas guardadas con nombre.",
+          "Pero el gran salto vino de una necesidad real: ¿qué pasa si te gustan seis diapositivas pero la número cuatro no te convence? Creamos el botón 'Reformular esta diapositiva': el profesor pide el cambio y el sistema regenera quirúrgicamente solo esa tarjeta sin tocar el resto de la clase.",
+          "Y con la tercera vuelta del espiral sumamos el editor manual previo a exportar. Porque en UTNContenidos la última palabra siempre la tiene el profesor."
+        ]
+      },
+      {
+        slide: 7,
+        title: "Pensado para cada docente y pantalla",
+        time: "1 min 30 s",
+        paragraphs: [
+          "En octubre dimos el salto a nuestra versión Beta final con base de datos relacional y vista previa en vivo para que el docente vea cómo se redacta su clase en tiempo real.",
+          "Nuestro criterio de calidad más exigente fue humano: pensamos en un profesor de matemáticas de 65 años de nuestra facultad. Si él puede preparar su clase solo, sin forzar la vista y sin ambigüedad, el sistema sirve para todos.",
+          "Llevamos la tipografía base a 18 píxeles, certificamos el contraste visual, diseñamos botones táctiles de 48 píxeles y paneles deslizables cómodos desde cualquier celular, validando todo con 36 pruebas automatizadas."
+        ]
+      },
+      {
+        slide: 8,
+        title: "Tres pilares simples detrás de la magia",
+        time: "1 min 15 s",
+        paragraphs: [
+          "¿Cómo funciona UTNContenidos por dentro sin inventar información? Se apoya en tres pilares simples.",
+          "Primero, Tu Cátedra: el buscador semántico lee exclusivamente los apuntes y el programa oficial que el docente cargó para su materia. Segundo, Tu Estilo: combina ese contenido con la duración, el nivel y los momentos pedagógicos elegidos.",
+          "Tercero, Tu Material: entrega en segundos una presentación interactiva lista para proyectar en el aula y una guía didáctica en PDF con el cronograma y esquemas de pizarrón."
+        ]
+      },
+      {
+        slide: 9,
+        title: "Menos carga operativa, más enseñanza",
+        time: "1 min 15 s",
+        paragraphs: [
+          "¿Por qué los profesores van a adoptar UTNContenidos? Porque en menos de seis clics pasan de elegir el tema del día a tener su clase lista.",
+          "Reciben cuatro entregas pedagógicas integradas: el plan de clase con cronograma, los enfoques sugeridos, las fichas de diapositivas con notas de orador y los esquemas para el pizarrón.",
+          "Además, cuentan con un historial organizado por colores para reabrir cualquier clase pasada, a costo cero y siendo dueños absolutos de su material."
+        ]
+      },
+      {
+        slide: 10,
+        title: "Aprender haciendo en nuestra facultad",
+        time: "1 min 15 s",
+        paragraphs: [
+          "Mirando todo el recorrido desde mayo hasta octubre, lo más grande que me llevo de esta pasantía en la UTN Facultad Regional Delta es la madurez de trabajar como ingeniero frente a problemas reales.",
+          "Aprendí que escribir antes de programar ordena las ideas, que cada límite técnico es una oportunidad para diseñar mejor, y que la tecnología solo tiene sentido cuando escucha con humildad a quien la va a usar.",
+          "Es un orgullo enorme para mí y para mi escuela dejar una herramienta viva y hecha en casa para nuestros propios docentes y alumnos."
+        ]
+      },
+      {
+        slide: 11,
+        title: "Construyamos juntos la próxima clase",
+        time: "45 s + Demo",
+        paragraphs: [
+          "La mejor manera de demostrar que una herramienta funciona es usándola en vivo.",
+          "Los invito ahora mismo a elegir cualquier materia y tema real de sus cátedras para que hagamos juntos esos tres toques y armemos una clase en este momento.",
+          "Muchas gracias a los tutores, a los profesores y a la UTN Facultad Regional Delta. Quedo abierto a sus preguntas."
+        ]
+      }
+    ];
+
+    const slides = Array.from(document.querySelectorAll('.slide-frame'));
+    const slideCounter = document.getElementById('slideCounter');
+    const phaseBadge = document.getElementById('phaseBadge');
+    const slideDots = document.getElementById('slideDots');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnNotes = document.getElementById('btnNotes');
+    const btnCloseNotes = document.getElementById('btnCloseNotes');
+    const notesDrawer = document.getElementById('notesDrawer');
+    const notesTitle = document.getElementById('notesTitle');
+    const notesTimer = document.getElementById('notesTimer');
+    const notesBody = document.getElementById('notesBody');
+    const btnOverview = document.getElementById('btnOverview');
+    const btnCloseOverview = document.getElementById('btnCloseOverview');
+    const overviewModal = document.getElementById('overviewModal');
+    const overviewGrid = document.getElementById('overviewGrid');
+    const orb1 = document.getElementById('orb1');
+    const orb2 = document.getElementById('orb2');
+
+    let currentIndex = 0;
+    let notesOpen = false;
+
+    function buildNavigation() {
+      slideDots.innerHTML = '';
+      overviewGrid.innerHTML = '';
+
+      slides.forEach((slideEl, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 ' +
+          (idx === currentIndex ? 'bg-[#C86D51] w-6' : 'bg-[#8C5A3C]/30 hover:bg-[#8C5A3C]/60');
+        dot.setAttribute('aria-label', 'Ir a diapositiva ' + (idx + 1));
+        dot.addEventListener('click', () => goToSlide(idx));
+        slideDots.appendChild(dot);
+
+        const noteInfo = SPEAKER_NOTES[idx];
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'text-left p-4 rounded-2xl border transition all ' +
+          (idx === currentIndex
+            ? 'bg-white border-[#C86D51] shadow-md'
+            : 'bg-white/60 border-white hover:bg-white');
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-bold text-[#8C5A3C] mb-1">
+            <span>Diapositiva ${String(idx + 1).padStart(2, '0')}</span>
+            <span>${noteInfo.time}</span>
+          </div>
+          <div class="font-display font-bold text-base text-[#1E1B18] leading-snug">${noteInfo.title}</div>
+        `;
+        card.addEventListener('click', () => {
+          goToSlide(idx);
+          toggleOverview(false);
         });
-    </script>
+        overviewGrid.appendChild(card);
+      });
+    }
+
+    function updateSpeakerNotes() {
+      const info = SPEAKER_NOTES[currentIndex];
+      notesTitle.textContent = `Notas de Orador · Diapositiva ${String(info.slide).padStart(2, '0')}: ${info.title}`;
+      notesTimer.textContent = `Tiempo sugerido: ${info.time}`;
+      notesBody.innerHTML = info.paragraphs.map(p => `<p class="m-0">${p}</p>`).join('');
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= slides.length) return;
+      slides[currentIndex].classList.remove('active');
+      currentIndex = index;
+      slides[currentIndex].classList.add('active');
+
+      const num = String(currentIndex + 1).padStart(2, '0');
+      const total = String(slides.length).padStart(2, '0');
+      slideCounter.textContent = `${num} / ${total}`;
+      phaseBadge.textContent = slides[currentIndex].getAttribute('data-phase') || '';
+
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.textContent = currentIndex === slides.length - 1 ? 'Reiniciar ↺' : 'Siguiente →';
+
+      // Subtle ambient movement
+      const shiftX = (currentIndex % 3 - 1) * 28;
+      const shiftY = (currentIndex % 2 === 0 ? 1 : -1) * 18;
+      orb1.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
+      orb2.style.transform = `translate(${-shiftX}px, ${-shiftY}px)`;
+
+      buildNavigation();
+      updateSpeakerNotes();
+    }
+
+    function toggleNotes(forceState) {
+      notesOpen = typeof forceState === 'boolean' ? forceState : !notesOpen;
+      if (notesOpen) {
+        notesDrawer.classList.remove('translate-y-full');
+      } else {
+        notesDrawer.classList.add('translate-y-full');
+      }
+    }
+
+    function toggleOverview(forceState) {
+      const show = typeof forceState === 'boolean' ? forceState : overviewModal.classList.contains('hidden');
+      if (show) {
+        overviewModal.classList.remove('hidden');
+        overviewModal.classList.add('flex');
+      } else {
+        overviewModal.classList.add('hidden');
+        overviewModal.classList.remove('flex');
+      }
+    }
+
+    btnPrev.addEventListener('click', () => goToSlide(currentIndex - 1));
+    btnNext.addEventListener('click', () => {
+      if (currentIndex === slides.length - 1) {
+        goToSlide(0);
+      } else {
+        goToSlide(currentIndex + 1);
+      }
+    });
+
+    btnNotes.addEventListener('click', () => toggleNotes());
+    btnCloseNotes.addEventListener('click', () => toggleNotes(false));
+    btnOverview.addEventListener('click', () => toggleOverview());
+    btnCloseOverview.addEventListener('click', () => toggleOverview(false));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        goToSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        goToSlide(currentIndex - 1);
+      } else if (e.key === 'n' || e.key === 'N') {
+        toggleNotes();
+      } else if (e.key === 'm' || e.key === 'M') {
+        toggleOverview();
+      } else if (e.key === 'Escape') {
+        toggleNotes(false);
+        toggleOverview(false);
+      }
+    });
+
+    goToSlide(0);
+  </script>
 </body>
 </html>
